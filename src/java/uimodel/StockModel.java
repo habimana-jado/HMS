@@ -1,4 +1,3 @@
-
 package uimodel;
 
 import dao.ItemDao;
@@ -8,8 +7,10 @@ import dao.VendorDao;
 import domain.Account;
 import domain.Item;
 import domain.ItemDescription;
+import domain.ItemUnit;
 import domain.Purchase;
 import domain.Vendor;
+import java.util.Date;
 import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.faces.application.FacesMessage;
@@ -24,7 +25,7 @@ import javax.faces.context.FacesContext;
 @ManagedBean
 @SessionScoped
 public class StockModel {
-    
+
     private Account loggedInUser = new Account();
     private Vendor vendor = new Vendor();
     private List<Vendor> vendors = new VendorDao().findAll(Vendor.class);
@@ -36,65 +37,80 @@ public class StockModel {
     private String itemId = new String();
     private List<Item> items = new ItemDao().findAll(Item.class);
     private List<ItemDescription> itemDescriptions = new ItemDescriptionDao().findAll(ItemDescription.class);
+    private ItemUnit itemUnitChosen = new ItemUnit();
+    private Date newDate = new Date();
     
     @PostConstruct
-    public void init(){
+    public void init() {
         userInit();
         vendors = new VendorDao().findAll(Vendor.class);
         items = new ItemDao().findAll(Item.class);
         itemDescriptions = new ItemDescriptionDao().findAll(ItemDescription.class);
     }
-    
+
     public void userInit() {
         loggedInUser = (Account) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("session");
     }
 
-    public void vendorRegistration(){
+    public void vendorRegistration() {
         try {
             new VendorDao().register(vendor);
             vendors = new VendorDao().findAll(Vendor.class);
             vendor = new Vendor();
-            
+
             FacesContext fc = FacesContext.getCurrentInstance();
             fc.addMessage(null, new FacesMessage("Vendor Registered"));
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
-    
-    public void purchaseRegistration(){
+
+    public void purchaseRegistration() {
         try {
             Vendor vendor = new VendorDao().findOne(Vendor.class, vendorId);
-            purchase.setVendor(vendor);
-            new PurchaseDao().register(purchase);
             
+            for(ItemDescription desc: itemDescriptions){
+                purchase.setVendor(vendor);
+                purchase.setItemDescription(desc);
+                new PurchaseDao().register(purchase);
+                
+                new ItemDescriptionDao().delete(desc);
+            }
+
             purchases = new PurchaseDao().findAll(Purchase.class);
-            
+
             FacesContext fc = FacesContext.getCurrentInstance();
             fc.addMessage(null, new FacesMessage("Purchase Registered"));
-            
+
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
-    public void itemDescriptionRegister(){
+    public void itemDescriptionRegister() {
         try {
-            Item item = new ItemDao().findOne(Item.class, itemId);
-            itemDescription.setItem(item);
+            System.out.println(itemId);
+            Item it = new ItemDao().findOne(Item.class, itemId);
+            itemDescription.setItem(it);
+
             new ItemDescriptionDao().register(itemDescription);
-                       
+            itemDescriptions = new ItemDescriptionDao().findAll(ItemDescription.class);
             FacesContext fc = FacesContext.getCurrentInstance();
             fc.addMessage(null, new FacesMessage("Item Added"));
         } catch (Exception e) {
         }
     }
-    
-    public List<Item> autoCompleteItem(){
+
+    public void unitListener() {
+        Item ite = new ItemDao().findOne(Item.class, itemId);
+        itemUnitChosen = ite.getItemUnit();
+    }
+
+    public List<Item> autoCompleteItem() {
         List<Item> list = new ItemDao().findAll(Item.class);
         return list;
     }
-    
+
     public Account getLoggedInUser() {
         return loggedInUser;
     }
@@ -182,5 +198,21 @@ public class StockModel {
     public void setItemDescriptions(List<ItemDescription> itemDescriptions) {
         this.itemDescriptions = itemDescriptions;
     }
-    
+
+    public ItemUnit getItemUnitChosen() {
+        return itemUnitChosen;
+    }
+
+    public void setItemUnitChosen(ItemUnit itemUnitChosen) {
+        this.itemUnitChosen = itemUnitChosen;
+    }
+
+    public Date getNewDate() {
+        return newDate;
+    }
+
+    public void setNewDate(Date newDate) {
+        this.newDate = newDate;
+    }
+
 }

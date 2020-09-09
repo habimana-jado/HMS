@@ -1,13 +1,10 @@
 
 package domain;
 
-import enums.EMenuType;
 import java.io.Serializable;
 import java.util.List;
 import java.util.UUID;
 import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
