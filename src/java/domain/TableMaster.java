@@ -1,0 +1,81 @@
+
+package domain;
+
+import enums.ETableStatus;
+import java.io.Serializable;
+import java.util.UUID;
+import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
+import javax.persistence.Id;
+import javax.persistence.ManyToOne;
+
+/**
+ *
+ * @author Jean de Dieu HABIMANA @2020
+ */
+@Entity
+public class TableMaster implements Serializable{
+    @Id
+    private String tableMasterId = UUID.randomUUID().toString();
+    private String tableNo;
+    private int chairNo;
+    @Enumerated(EnumType.STRING)
+    private ETableStatus tableStatus;
+    
+    @ManyToOne
+    private TableGroup tableGroup;
+
+    @ManyToOne
+    private Restaurant restaurant;
+    
+    public String getTableMasterId() {
+        return tableMasterId;
+    }
+
+    public void setTableMasterId(String tableMasterId) {
+        this.tableMasterId = tableMasterId;
+    }
+
+    public String getTableNo() {
+        return tableNo;
+    }
+
+    public void setTableNo(String tableNo) {
+        this.tableNo = tableNo;
+    }
+
+    public int getChairNo() {
+        return chairNo;
+    }
+
+    public void setChairNo(int chairNo) {
+        this.chairNo = chairNo;
+    }
+
+    public ETableStatus getTableStatus() {
+        return tableStatus;
+    }
+
+    public void setTableStatus(ETableStatus tableStatus) {
+        this.tableStatus = tableStatus;
+    }
+
+    public TableGroup getTableGroup() {
+        return tableGroup;
+    }
+
+    public void setTableGroup(TableGroup tableGroup) {
+        this.tableGroup = tableGroup;
+    }
+
+    public Restaurant getRestaurant() {
+        return restaurant;
+    }
+
+    public void setRestaurant(Restaurant restaurant) {
+        this.restaurant = restaurant;
+    }
+    
+    
+}

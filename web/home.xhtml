@@ -1,0 +1,172 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html">
+    <h:head>
+        <link href="background/logo.ico" rel="shortcut icon"/>
+        <title>
+            360HMS (Home)
+        </title>
+        <meta http-equiv="Page-Enter" content="blendTrans(Duration=0)"/>
+        <meta http-equiv="Page-Exit" content="blendTrans(Duration=0)"/>
+        <link href="css/pagecontrol.css" rel="stylesheet" type="text/css"/>
+        <style type="text/css">
+            .style1
+            {
+                width: 100%;
+            }
+            .circle {
+                display: block;
+                width: 150px;
+                height: 150px;
+                margin: 1em auto;
+                background-size: cover;
+                background-repeat: no-repeat;
+                background-position: center center;
+                -webkit-border-radius: 99em;
+                -moz-border-radius: 99em;
+                border-radius: 99em;
+                border: 5px solid #eee;
+                box-shadow: 0 3px 2px rgba(0, 0, 0, 0.3);  
+            }
+            .shade {
+                border: 1px solid tranparent;
+                padding: 2px;
+                box-shadow: 5px 2px 8px #888888;
+            }
+        </style>
+
+    </h:head>
+    <h:body>
+        <h:form>
+            <table width="100%">
+                <tbody>
+                    <tr>
+                        <td align="right" style="padding-right: 20px">
+                            Welcome: <h:outputLabel style="font-weight:bold;" value="#{adminModel.loggedInUser.person.names}" /><span style="color: #C9C9C9"> | </span><a id="lnkLogOut" href="index.xhtml" style="color:#0296CF;font-weight:bold;text-decoration:none;">Logout</a>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <table width="100%" cellspacing="0" style="height: 100%; position: absolute">
+                <tbody>
+                    <tr>
+                        <td align="center">
+                            <table width="950px" style="border: 1px solid #c4c4c4; height: 530px">
+                                <tbody>
+                                    <tr>
+                                        <td align="center" valign="middle">
+                                            <div id="Panel1" style="height:480px;width:900px;box-shadow: 0px 5px 10px #f0f0f0">
+                                                <table cellpadding="0" cellspacing="10" width="100%" background="background/pattern-bg.jpg" style="background-repeat: repeat; border-radius: 5px">
+                                                    <tbody>
+                                                        <tr>
+                                                            <td align="center" class="shade">
+                                                                <div id="PanelAdmin" style="height:150px;width:150px;background-image:url(background/menu_box_blank.png);">
+                                                                    <table cellpadding="0" cellspacing="0" class="style1">
+                                                                        <tbody>
+                                                                            <tr>
+                                                                                <td align="center" colspan="2">
+                                                                                    <input type="image" name="ImageButtonAdmin" id="ImageButtonAdmin" class="circle" src="image/administrator.png" style="height:100px;width:100px;border-width:0px;"/>
+                                                                                </td>
+                                                                            </tr>
+                                                                            <tr>
+                                                                                <td align="center" style="padding-left: 25px">
+                                                                                    <a id="LinkAdmin" href="Admin/main.xhtml" style="text-decoration:none;font-weight: 700;
+                                                                                       font-size: small; color: #036CDA;">Admin</a>
+                                                                                </td>
+                                                                                <td align="right" style="width: 17px; padding-right: 5px">
+                                                                                    <img id="imgAdmin" src="images/right.png" style="height:16px;width:16px;border-width:0px;"/>
+                                                                                </td>
+                                                                            </tr>
+                                                                        </tbody>
+                                                                    </table>
+                                                                </div>
+                                                            </td>
+                                                            <td align="center" class="shade">
+                                                                <div id="PanelFrontOffice" style="height:150px;width:150px;background-image:url(background/menu_box_blank.png);">
+
+                                                                    <table cellpadding="0" cellspacing="0" class="style1">
+                                                                        <tbody>
+                                                                            <tr>
+                                                                                <td align="center" colspan="2">
+                                                                                    <input type="image" name="ImageButtonFrontOffice" id="ImageButtonFrontOffice" class="circle" src="image/Front%20Office.jpg" style="height:100px;width:100px;border-width:0px;"/>
+                                                                                </td>
+                                                                            </tr>
+                                                                            <tr>
+                                                                                <td align="center" style="padding-left: 25px">
+                                                                                    <a href="FrontOffice/main.xhtml" style="text-decoration:none;font-weight: 700;
+                                                                                       font-size: small; color: #036CDA;">Front Office</a>
+                                                                                </td>
+                                                                                <td align="right" style="width: 17px; padding-right: 5px">
+                                                                                    <img id="imgFrontOffice" src="images/right.png" style="height:16px;width:16px;border-width:0px;"/>
+                                                                                </td>
+                                                                            </tr>
+                                                                        </tbody>
+                                                                    </table>
+                                                                </div>
+                                                            </td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td align="center" class="shade">
+                                                                <div id="PanelRestaurant" style="height:150px;width:150px;background-image:url(background/menu_box_blank.png);">
+                                                                    <table cellpadding="0" cellspacing="0" class="style1">
+                                                                        <tbody>
+                                                                            <tr>
+                                                                                <td align="center" colspan="2">
+                                                                                    <input type="image" name="ImageButtonRestaurant" id="ImageButtonRestaurant" class="circle" src="image/restaurant.jpg" style="height:100px;width:100px;border-width:0px;"/>
+                                                                                </td>
+                                                                            </tr>
+                                                                            <tr>
+                                                                                <td align="center" style="padding-left: 25px">
+                                                                                    <a href="Restaurant/main.xhtml" style="text-decoration:none;font-weight: 700;
+                                                                                       font-size: small; color: #036CDA;">Restaurant</a>
+                                                                                </td>
+                                                                                <td align="right" style="width: 17px; padding-right: 5px">
+                                                                                    <img id="imgRestaurant" src="images/right.png" style="height:16px;width:16px;border-width:0px;"/>
+                                                                                </td>
+                                                                            </tr>
+                                                                        </tbody>
+                                                                    </table>
+
+                                                                </div>
+                                                            </td>
+                                                            <td align="center" class="shade">
+                                                                <div id="PanelStock" style="height:150px;width:150px;background-image:url(background/menu_box_blank.png);">
+
+                                                                    <table cellpadding="0" cellspacing="0" class="style1">
+                                                                        <tbody>
+                                                                            <tr>
+                                                                                <td align="center" colspan="2">
+                                                                                    <input type="image" name="ImageStock" id="ImageStock" class="circle" src="image/stock.jpg" style="height:100px;width:100px;border-width:0px;"/>
+                                                                                </td>
+                                                                            </tr>
+                                                                            <tr>
+                                                                                <td align="center" style="padding-left: 25px">
+                                                                                    <a href="Stock/main.xhtml" style="text-decoration:none;font-weight: 700;
+                                                                                       font-size: small; color: #036CDA;">Stock</a>
+                                                                                </td>
+                                                                                <td align="right" style="width: 17px; padding-right: 5px">
+                                                                                    <img id="imgStock" src="images/right.png" style="height:16px;width:16px;border-width:0px;"/>
+                                                                                </td>
+                                                                            </tr>
+                                                                        </tbody>
+                                                                    </table>
+                                                                </div>
+                                                            </td>
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </h:form>
+    </h:body>
+</html>
+
