@@ -39,6 +39,10 @@ public class TableTransaction implements Serializable {
     @Fetch(FetchMode.SUBSELECT)
     private List<Payment> payment;
 
+    @OneToMany(mappedBy = "tableTransaction", fetch = FetchType.EAGER)
+    @Fetch(FetchMode.SUBSELECT)
+    private List<AllTransaction> allTransaction;
+    
     public String getTransactionId() {
         return transactionId;
     }
@@ -102,4 +106,13 @@ public class TableTransaction implements Serializable {
     public void setStatus(String status) {
         this.status = status;
     }
+
+    public List<AllTransaction> getAllTransaction() {
+        return allTransaction;
+    }
+
+    public void setAllTransaction(List<AllTransaction> allTransaction) {
+        this.allTransaction = allTransaction;
+    }
+    
 }

@@ -66,5 +66,6 @@ Contributor(s):
     <mapping class="domain.Vendor"/>
     <mapping class="domain.Payment"/>
     <mapping class="domain.TableTransaction"/>
+    <mapping class="domain.AllTransaction"/>
   </session-factory>
 </hibernate-configuration>

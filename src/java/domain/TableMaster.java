@@ -12,6 +12,8 @@ import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
 
 /**
  *
@@ -33,8 +35,13 @@ public class TableMaster implements Serializable{
     private Restaurant restaurant;
     
     @OneToMany(mappedBy = "tableMaster", fetch = FetchType.EAGER)
+    @Fetch(FetchMode.SUBSELECT)
     private List<TableTransaction> tableTransaction;
     
+    @OneToMany(mappedBy = "tableMaster", fetch = FetchType.EAGER)
+    @Fetch(FetchMode.SUBSELECT)
+    private List<AllTransaction> allTransaction;
+            
     public String getTableMasterId() {
         return tableMasterId;
     }
@@ -89,6 +96,14 @@ public class TableMaster implements Serializable{
 
     public void setTableTransaction(List<TableTransaction> tableTransaction) {
         this.tableTransaction = tableTransaction;
+    }
+
+    public List<AllTransaction> getAllTransaction() {
+        return allTransaction;
+    }
+
+    public void setAllTransaction(List<AllTransaction> allTransaction) {
+        this.allTransaction = allTransaction;
     }
     
     

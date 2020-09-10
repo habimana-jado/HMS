@@ -15,8 +15,8 @@ import enums.EStatus;
 public class Test {
     public static void main(String[] args) throws Exception {
         
-        HibernateUtil.getSessionFactory().openSession();
-        HibernateUtil.getSessionFactory().close();
+//        HibernateUtil.getSessionFactory().openSession();
+//        HibernateUtil.getSessionFactory().close();
 //        UserDepartment dep = new UserDepartment();
 //        dep.setDepartmentName("ADMINISTRATOR");
 //        dep.setStatus(EStatus.ACTIVE);
@@ -43,5 +43,8 @@ public class Test {
 //        h.setSlogan("Slogan Test");
 //        h.setStreetNo("KK. 324 St");
 //        new HotelConfigDao().register(h);
+
+
+            for(T)
     }
 }

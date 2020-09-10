@@ -4,6 +4,7 @@ package dao;
 import domain.Restaurant;
 import domain.TableGroup;
 import domain.TableMaster;
+import domain.TableTransaction;
 import java.util.List;
 import org.hibernate.Query;
 import org.hibernate.Session;
@@ -27,6 +28,15 @@ public class TableMasterDao extends GenericDao<TableMaster>{
         Session s = HibernateUtil.getSessionFactory().openSession();
         Query q = s.createQuery("SELECT a FROM TableMaster a WHERE a.tableGroup = :x");
         q.setParameter("x", group);
+        List<TableMaster> list = q.list();
+        s.close();
+        return list;
+    }    
+    
+    public List<TableMaster> findByTotalTableAndStatus(String status){
+        Session s = HibernateUtil.getSessionFactory().openSession();
+        Query q = s.createQuery("SELECT m FROM TableMaster m, TableTransaction t, Person p WHERE t.status = :status AND t.tableMaster.tableNo = m.tableNo");
+        q.setParameter("status", status);
         List<TableMaster> list = q.list();
         s.close();
         return list;

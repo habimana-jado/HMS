@@ -812,11 +812,22 @@
                                 <div class="row">
                                     <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                                         <div class="tab-content-details shadow-reset">
-                                            #{item.tableNo}
+                                            <div class="row">
+                                                <c:choose>
+                                                    <c:when test="#{item.tableStatus eq 'VACANT'}">
+                                                        <h:outputLabel value="#{item.tableNo}" class="btn btn-block btn-success" />                                                        
+                                                    </c:when>
+                                                    <c:when test="#{item.tableStatus eq 'FULL'}">
+                                                        <h:outputLabel value="#{item.tableNo}" class="btn btn-block btn-danger" />                                                        
+                                                    </c:when>
+                                                    <c:when test="#{item.tableStatus eq 'BILLED'}">
+                                                        <h:outputLabel value="#{item.tableNo}" class="btn btn-block btn-primary" />                                                        
+                                                    </c:when>
+                                                </c:choose>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
-
                             </div>
                         </div>
                     </div>                    

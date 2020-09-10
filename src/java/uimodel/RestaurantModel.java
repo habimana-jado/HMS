@@ -1,10 +1,12 @@
 package uimodel;
 
+import dao.AllTransactionDao;
 import dao.ItemDao;
 import dao.TableGroupDao;
 import dao.TableMasterDao;
 import dao.TableTransactionDao;
 import domain.Account;
+import domain.AllTransaction;
 import domain.Item;
 import domain.Payment;
 import domain.TableGroup;
@@ -36,7 +38,9 @@ public class RestaurantModel {
     private List<TableMaster> tableMasters = new TableMasterDao().findAll(TableMaster.class);
     private List<TableTransaction> tableTransactions = new ArrayList<>();
     private TableMaster chosenTableMaster = new TableMaster();
-
+    private List<TableTransaction> tableTransactions1 = new ArrayList<>();
+    private List<AllTransaction> allTransactions = new AllTransactionDao().findAll(AllTransaction.class);
+    
     @PostConstruct
     public void init() {
         userInit();
@@ -63,7 +67,7 @@ public class RestaurantModel {
             e.printStackTrace();
         }
     }
-
+    
     public void openTransactions() {
         tableTransactions = new TableTransactionDao().findByTableAndStatus(chosenTableMaster, "Pending");
     }
@@ -146,6 +150,22 @@ public class RestaurantModel {
 
     public void setChosenTableMaster(TableMaster chosenTableMaster) {
         this.chosenTableMaster = chosenTableMaster;
+    }
+
+    public List<TableTransaction> getTableTransactions1() {
+        return tableTransactions1;
+    }
+
+    public void setTableTransactions1(List<TableTransaction> tableTransactions1) {
+        this.tableTransactions1 = tableTransactions1;
+    }
+
+    public List<AllTransaction> getAllTransactions() {
+        return allTransactions;
+    }
+
+    public void setAllTransactions(List<AllTransaction> allTransactions) {
+        this.allTransactions = allTransactions;
     }
 
     
