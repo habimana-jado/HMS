@@ -42,7 +42,7 @@ Contributor(s):
 <hibernate-configuration>
   <session-factory>
     <property name="hibernate.connection.driver_class">org.postgresql.Driver</property>
-    <property name="hibernate.connection.url">jdbc:postgresql://localhost:5432/hms_db</property>
+    <property name="hibernate.connection.url">jdbc:postgresql://localhost:5432/hms_db2</property>
     <property name="hibernate.connection.username">postgres</property>
     <property name="hibernate.connection.password">root</property>
     <property name="hibernate.dialect">org.hibernate.dialect.PostgreSQLDialect</property>
@@ -64,5 +64,7 @@ Contributor(s):
     <mapping class="domain.Stock"/>
     <mapping class="domain.Transfer"/>
     <mapping class="domain.Vendor"/>
+    <mapping class="domain.Payment"/>
+    <mapping class="domain.TableTransaction"/>
   </session-factory>
 </hibernate-configuration>

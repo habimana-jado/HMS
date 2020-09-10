@@ -4,6 +4,7 @@ package domain;
 import java.io.Serializable;
 import java.util.List;
 import java.util.UUID;
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.Id;
@@ -23,8 +24,9 @@ public class ItemDescription implements Serializable {
     private Double quantity;
     private Double unitPrice;
     private Double totalPrice;
+    private String status;
     
-    @OneToMany(mappedBy = "itemDescription", fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "itemDescription", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @Fetch(FetchMode.SUBSELECT)
     private List<Purchase> purchase;
 
@@ -89,6 +91,14 @@ public class ItemDescription implements Serializable {
 
     public void setItem(Item item) {
         this.item = item;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
     }
     
     

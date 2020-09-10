@@ -3,12 +3,15 @@ package domain;
 
 import enums.ETableStatus;
 import java.io.Serializable;
+import java.util.List;
 import java.util.UUID;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 
 /**
  *
@@ -28,6 +31,9 @@ public class TableMaster implements Serializable{
 
     @ManyToOne
     private Restaurant restaurant;
+    
+    @OneToMany(mappedBy = "tableMaster", fetch = FetchType.EAGER)
+    private List<TableTransaction> tableTransaction;
     
     public String getTableMasterId() {
         return tableMasterId;
@@ -75,6 +81,14 @@ public class TableMaster implements Serializable{
 
     public void setRestaurant(Restaurant restaurant) {
         this.restaurant = restaurant;
+    }
+
+    public List<TableTransaction> getTableTransaction() {
+        return tableTransaction;
+    }
+
+    public void setTableTransaction(List<TableTransaction> tableTransaction) {
+        this.tableTransaction = tableTransaction;
     }
     
     

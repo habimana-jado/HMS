@@ -8,7 +8,7 @@
     <h:head>
         <meta charset="utf-8"/>
         <meta http-equiv="x-ua-compatible" content="ie=edge"/>
-        <title>Vendor</title>
+        <title>Employee</title>
         <meta name="description" content=""/>
         <meta name="viewport" content="width=device-width, initial-scale=1"/>
         <!-- favicon
@@ -71,27 +71,6 @@
         <script src="./../resources/js/vendor/modernizr-2.8.3.min.js"></script>
     </h:head>
     <h:body>
-        <style type="text/css">
-            .ui-datalist .ui-datalist-content {
-                border:0 none
-            }
-
-            .ui-datalist ul {
-                padding: 0px 10px 0 20px;
-                margin: 5px 0;
-            }
-
-            .value {
-                font-weight: bold;
-            }
-
-            .ui-autocomplete-itemtip {
-                -moz-box-sizing: content-box;
-                -webkit-box-sizing: content-box;
-                box-sizing: content-box;
-            }
-        </style>
-
         <!--[if lt IE 8]>
             <p class="browserupgrade">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
         <![endif]-->
@@ -811,7 +790,7 @@
                                             <ul class="breadcome-menu">
                                                 <li><a href="#">Home</a> <span class="bread-slash">/</span>
                                                 </li>
-                                                <li><span class="bread-blod">Users</span>
+                                                <li><span class="bread-blod">Units</span>
                                                 </li>
                                             </ul>
                                         </div>
@@ -823,292 +802,29 @@
                 </div>
             </div>
             <!-- Modals Start-->
-            <div class="login-form-area adminpro-pd mg-tb-15">
-                <div class="container-fluid">
-                    <div class="row" style="padding-left: 50px;">
-                        <div class="col-lg-4">
-                            <h5>Vendor Configuration</h5>
-                            <div class="modal-area-button">
-                                <a class="Primary mg-b-10" href="#" data-toggle="modal" data-target="#PrimaryModalalert">New Vendor</a>
-                            </div>
-                        </div>
-                        <div class="col-lg-8"></div>
-                    </div>
-                    <!--                    <div class="row">
-                                            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                                                <div class="tab-content-details shadow-reset">-->
-
-                    <div id="PrimaryModalalert" class="modal modal-adminpro-general default-popup-PrimaryModal fade" role="dialog">
-                        <div class="modal-dialog">
-                            <div class="modal-content">
-                                <div class="modal-close-area modal-close-df">
-                                    <a class="close" data-dismiss="modal" href="#"><i class="fa fa-close"></i></a>
-                                </div>
-                                <div class="modal-body">
-                                    <h:form>
-
-                                        <div class="form-group-inner">
-                                            <div class="row">
-                                                <div class="col-lg-3 col-md-3 col-sm-3 col-xs-12">
-                                                    <label class="login2 pull-right pull-right-pro">Item Name:</label>
-                                                </div>
-                                                <div class="col-lg-9 col-md-9 col-sm-9 col-xs-12">
-                                                    <h:inputText value="#{adminModel.item.itemName}" class="form-control" required="true" requiredMessage="Please Fill Item Name"/>
-                                                </div>
-                                            </div>
-                                        </div>
-
-                                        <div class="form-group-inner">
-                                            <div class="row">
-                                                <div class="col-lg-3 col-md-3 col-sm-3 col-xs-12">
-                                                    <label class="login2 pull-right pull-right-pro">Rate:</label>
-                                                </div>
-                                                <div class="col-lg-9 col-md-9 col-sm-9 col-xs-12">
-                                                    <h:inputText value="#{adminModel.item.unitRate}" class="form-control" required="true" requiredMessage="Please Rate"/>
-                                                </div>
-                                            </div>
-                                        </div>
-
-                                        <div class="form-group-inner">
-                                            <div class="row">
-                                                <div class="col-lg-3 col-md-3 col-sm-3 col-xs-12">
-                                                    <label class="login2 pull-right pull-right-pro">Category:</label>
-                                                </div>
-                                                <div class="col-lg-9 col-md-9 col-sm-9 col-xs-12">
-                                                    <h:selectOneMenu class="form-control" value="#{adminModel.itemCategoryId}" >
-                                                        <f:selectItems value="#{adminModel.itemCategories}" var="dep" itemLabel="#{dep.categoryName}" itemValue="#{dep.itemCategoryId}" />
-                                                    </h:selectOneMenu>
-                                                </div>
-                                            </div>
-                                        </div>
-
-                                        <div class="form-group-inner">
-                                            <div class="row">
-                                                <div class="col-lg-3 col-md-3 col-sm-3 col-xs-12">
-                                                    <label class="login2 pull-right pull-right-pro">Unit:</label>
-                                                </div>
-                                                <div class="col-lg-9 col-md-9 col-sm-9 col-xs-12">
-                                                    <h:selectOneMenu class="form-control" value="#{adminModel.itemUnitId}" >
-                                                        <f:selectItems value="#{adminModel.itemUnits}" var="dep" itemLabel="#{dep.unitName}" itemValue="#{dep.itemUnitId}" />
-                                                    </h:selectOneMenu>
-                                                </div>
-                                            </div>
-                                        </div>
-
-                                        <div class="form-group-inner">
-                                            <div class="row">
-                                                <div class="col-lg-3 col-md-3 col-sm-3 col-xs-12">
-                                                    <label class="login2 pull-right pull-right-pro">Menu Type:</label>
-                                                </div>
-                                                <div class="col-lg-9 col-md-9 col-sm-9 col-xs-12">
-                                                    <h:selectOneMenu class="form-control" value="#{adminModel.item.menuType}" >
-                                                        <f:selectItem itemValue="Food" itemLabel="Food" />
-                                                        <f:selectItem itemValue="Beverage" itemLabel="Beverage" />
-                                                        <f:selectItem itemValue="Cigarette" itemLabel="Cigarette" />
-                                                        <f:selectItem itemValue="Banquet" itemLabel="Banquet" />
-                                                        <f:selectItem itemValue="House Keeping" itemLabel="House Keeping" />
-                                                    </h:selectOneMenu>
-                                                </div>
-                                            </div>
-                                        </div>
-
-                                        <div class="form-group-inner">
-                                            <div class="row">
-                                                <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
-                                                </div>
-                                                <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
-                                                    <h:commandButton class="btn btn-primary btn-sm" action="#{adminModel.itemRegister()}" value="Register"></h:commandButton>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </h:form>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <!--                            </div>
-                                            </div>
-                                        </div>-->
-
-                    <h:form>
-                        <div class="row">
-                            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                                <div class="tab-content-details shadow-reset">
 
 
-                                    <div class="row">
-                                        <div class="col-lg-4">
-                                            <div class="form-group-inner">
-                                                <div class="row">
-                                                    <div class="col-lg-3 col-md-3 col-sm-3 col-xs-12">
-                                                        <label class="login2 pull-right pull-right-pro">Invoice Date:</label>
-                                                    </div>
-                                                    <div class="col-lg-9 col-md-9 col-sm-9 col-xs-12">
-                                                        #{stockModel.newDate}
-                                                    </div>
-                                                </div>
-                                            </div>
-
-                                        </div>
-
-                                        <div class="col-lg-4">
-                                            <div class="form-group-inner">
-                                                <div class="row">
-                                                    <div class="col-lg-3 col-md-3 col-sm-3 col-xs-12">
-                                                        <label class="login2 pull-right pull-right-pro">Invoice No.:</label>
-                                                    </div>
-                                                    <div class="col-lg-9 col-md-9 col-sm-9 col-xs-12">
-                                                        <h:inputText class="form-control" value="#{stockModel.purchase.invoiceNo}" />
-                                                    </div>
-                                                </div>
-                                            </div>
-
-                                        </div>
-
-                                        <div class="col-lg-4">
-                                            <div class="form-group-inner">
-                                                <div class="row">
-                                                    <div class="col-lg-3 col-md-3 col-sm-3 col-xs-12">
-                                                        <label class="login2 pull-right pull-right-pro">EBM No.:</label>
-                                                    </div>
-                                                    <div class="col-lg-9 col-md-9 col-sm-9 col-xs-12">
-                                                        <h:inputText class="form-control" value="#{stockModel.purchase.ebmNo}" />
-                                                    </div>
-                                                </div>
-                                            </div>
+            <div class="row">
+                <c:forEach items="#{restaurantModel.tableMasters}" var="item">
+                    <div class="col-sm-4">
+                        <div class="login-form-area adminpro-pd mg-tb-15">
+                            <div class="container-fluid">                            
+                                <div class="row">
+                                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                        <div class="tab-content-details shadow-reset">
+                                            #{item.tableNo}
                                         </div>
                                     </div>
-
-                                    <div class="row">
-                                        <div class="col-lg-6">
-                                            <div class="form-group-inner">
-                                                <div class="row">
-                                                    <div class="col-lg-3 col-md-3 col-sm-3 col-xs-12">
-                                                        <label class="login2 pull-right pull-right-pro">Purchase Account:</label>
-                                                    </div>
-                                                    <div class="col-lg-9 col-md-9 col-sm-9 col-xs-12">
-                                                        <h:selectOneMenu class="form-control" value="#{stockModel.vendorId}" >
-                                                            <f:selectItems value="#{stockModel.vendors}" var="dep" itemLabel="#{dep.supplierNames}" itemValue="#{dep.vendorId}" />
-                                                        </h:selectOneMenu>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-
-                                    </div>
                                 </div>
+
                             </div>
                         </div>
-                        <div class="row">
-                            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                                <div class="tab-content-details shadow-reset">
-
-
-                                    <!--List Vendors-->
-                                    <p:growl />
-                                    <table class="table table-striped table-hover">
-                                        <thead class="bg-light">
-                                            <tr class="border-0">
-                                                <th class="border-0">Item Name</th>
-                                                <th class="border-0">Quantity</th>
-                                                <th class="border-0">Unit</th>
-                                                <th class="border-0">Rate</th>
-                                                <th class="border-0">Amount</th>                                                
-                                                <th class="border-0">Action</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            <tr>
-                                                <td>
-                                                    <p:inputText value="#{stockModel.itemSearchKeyWord}">
-                                                        <p:ajax event="keyup" listener="#{stockModel.searchItems()}" update="suggestionsTable"/>
-                                                        <p:ajax event="click" update="suggestionsTable" />
-                                                    </p:inputText>
-                                                    <a class="Primary mg-b-10" href="#" data-toggle="modal" data-target="#PrimaryModalalert">New</a>
-
-                                                    <h:dataTable id="suggestionsTable" value="#{stockModel.suggestedItems}" var="item">
-                                                        <h:column>
-                                                            <h:commandButton value="#{item.itemName}" action="#{stockModel.chooseItem(item)}" class="btn btn-link"></h:commandButton>
-                                                        </h:column>
-                                                    </h:dataTable>
-                                                </td>
-                                                <td>
-                                                    <p:inputText value="#{stockModel.quantity}" >
-                                                        <p:ajax event="keyup" listener="#{stockModel.assignQuantity()}" />                                                    
-                                                    </p:inputText>
-                                                </td>
-                                                <td>
-                                                    <h:outputLabel id="unit" value="#{stockModel.itemUnitChosen.unitName}" />
-                                                </td>
-                                                <td>
-                                                    <p:inputText value="#{stockModel.unitPrice}">
-                                                        <p:ajax event="keyup" update="totalPrice" listener="#{stockModel.calculateTotalPrice()}" />
-                                                    </p:inputText>
-                                                </td>
-                                                <td>
-                                                    <p:inputText value="#{stockModel.totalPrice}" id="totalPrice">
-                                                    </p:inputText>
-                                                </td>
-                                                <td>
-                                                    <h:commandLink value="Add to Grid" action="#{stockModel.itemDescriptionRegister()}" class="btn btn-primary"></h:commandLink>
-                                                </td>
-                                            </tr>
-                                        </tbody>
-                                    </table>
-                                    <p:growl />
-                                    <table class="table table-striped table-hover">
-                                        <thead class="bg-light">
-                                            <tr class="border-0">
-                                                <th class="border-0">Item Name</th>
-                                                <th class="border-0">Quantity</th>
-                                                <th class="border-0">Rate</th>
-                                                <th class="border-0">Amount</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            <c:forEach items="#{stockModel.itemDescriptions}" var="desc">
-                                                <tr>
-                                                    <td>
-                                                        #{desc.item.itemName}
-                                                    </td>
-                                                    <td>
-                                                        #{desc.quantity}
-                                                    </td>
-                                                    <td>
-                                                        #{desc.unitPrice}
-                                                    </td>
-                                                    <td>
-                                                        #{desc.totalPrice}
-                                                    </td>
-                                                </tr>
-                                            </c:forEach>
-                                        </tbody>
-                                    </table>
-                                </div>
-                            </div>
-                        </div>
-
-
-
-                        <div class="row">
-                            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                                <div class="tab-content-details shadow-reset">
-                                    <div class="col-lg-4"></div>
-                                    <div class="col-lg-4">
-                                        <div class="col-lg-2">
-                                            <h:commandButton value="Save" action="#{stockModel.purchaseRegistration()}" class="btn btn-success" />
-                                        </div>
-                                        <div class="col-lg-2">                                        
-                                            <h:commandButton value="Reset" action="#{stockModel.purchaseReset()}" class="btn btn-danger" />
-                                        </div>
-                                    </div>
-                                    <div class="col-lg-4"></div>
-                                </div>
-                            </div>
-                        </div>
-                    </h:form>
-                </div>
+                    </div>                    
+                </c:forEach>
             </div>
+
+
+
             <!-- Modals End-->
             <div class="footer-copyright-area">
                 <div class="container-fluid">
@@ -1122,6 +838,10 @@
                 </div>
             </div>
         </div>
+
+
+
+
 
         <!-- jquery
                     ============================================ -->

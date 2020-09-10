@@ -42,6 +42,10 @@ public class Person implements Serializable{
     @Fetch(FetchMode.SUBSELECT)
     private List<Transfer> transfer;
     
+    @OneToMany(mappedBy = "person", fetch = FetchType.EAGER)
+    @Fetch(FetchMode.SUBSELECT)
+    private List<TableTransaction> tableTransaction;
+    
     public String getUserId() {
         return userId;
     }
@@ -112,6 +116,14 @@ public class Person implements Serializable{
 
     public void setTransfer(List<Transfer> transfer) {
         this.transfer = transfer;
+    }
+
+    public List<TableTransaction> getTableTransaction() {
+        return tableTransaction;
+    }
+
+    public void setTableTransaction(List<TableTransaction> tableTransaction) {
+        this.tableTransaction = tableTransaction;
     }
     
 }

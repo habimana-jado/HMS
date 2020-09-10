@@ -22,4 +22,13 @@ public class TableMasterDao extends GenericDao<TableMaster>{
         s.close();
         return list;
     }
+    
+    public List<TableMaster> findByTableGroup(TableGroup group){
+        Session s = HibernateUtil.getSessionFactory().openSession();
+        Query q = s.createQuery("SELECT a FROM TableMaster a WHERE a.tableGroup = :x");
+        q.setParameter("x", group);
+        List<TableMaster> list = q.list();
+        s.close();
+        return list;
+    }
 }
