@@ -26,6 +26,7 @@ public class Payment implements Serializable {
     @Enumerated(EnumType.STRING)
     private EPaymentMode paymentMode;
     private Double amountPaid;
+    private String mobileNumber;
     
     @ManyToOne
     private TableTransaction tableTransaction;
@@ -68,6 +69,14 @@ public class Payment implements Serializable {
 
     public void setTableTransaction(TableTransaction tableTransaction) {
         this.tableTransaction = tableTransaction;
+    }
+
+    public String getMobileNumber() {
+        return mobileNumber;
+    }
+
+    public void setMobileNumber(String mobileNumber) {
+        this.mobileNumber = mobileNumber;
     }
     
     

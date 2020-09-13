@@ -28,6 +28,10 @@ public class Item implements Serializable {
     @Fetch(FetchMode.SUBSELECT)
     private List<ItemDescription> itemDescription;
 
+    @OneToMany(mappedBy = "item", fetch = FetchType.EAGER)
+    @Fetch(FetchMode.SUBSELECT)
+    private List<TableTransaction> tableTransaction;
+            
     @ManyToOne
     private ItemCategory itemCategory;
     
@@ -90,9 +94,12 @@ public class Item implements Serializable {
         this.itemUnit = itemUnit;
     }
 
-    @Override
-    public String toString() {
-        return itemName;
+    public List<TableTransaction> getTableTransaction() {
+        return tableTransaction;
+    }
+
+    public void setTableTransaction(List<TableTransaction> tableTransaction) {
+        this.tableTransaction = tableTransaction;
     }
     
     

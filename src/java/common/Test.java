@@ -5,12 +5,18 @@ import dao.AccountDao;
 import dao.HibernateUtil;
 import dao.HotelConfigDao;
 import dao.PersonDao;
+import dao.TableMasterDao;
+import dao.TableTransactionDao;
 import dao.UserDepartmentDao;
 import domain.Account;
 import domain.HotelConfig;
 import domain.Person;
+import domain.TableMaster;
+import domain.TableTransaction;
 import domain.UserDepartment;
 import enums.EStatus;
+import enums.ETableStatus;
+import java.util.List;
 
 public class Test {
     public static void main(String[] args) throws Exception {
@@ -44,7 +50,10 @@ public class Test {
 //        h.setStreetNo("KK. 324 St");
 //        new HotelConfigDao().register(h);
 
-
-            for(T)
+        List<TableMaster> list = new TableTransactionDao().findByTableStatus(ETableStatus.FULL, "Sent");
+        for(TableMaster t: list){
+            System.out.println(t.getTableNo());
+        }
+        
     }
 }

@@ -28,6 +28,7 @@ public class TableTransaction implements Serializable {
     private Double quantity;
     private String kotRemarks;
     private String status;
+    private Double totalPrice;
     
     @ManyToOne
     private Person person;
@@ -39,9 +40,8 @@ public class TableTransaction implements Serializable {
     @Fetch(FetchMode.SUBSELECT)
     private List<Payment> payment;
 
-    @OneToMany(mappedBy = "tableTransaction", fetch = FetchType.EAGER)
-    @Fetch(FetchMode.SUBSELECT)
-    private List<AllTransaction> allTransaction;
+    @ManyToOne
+    private Item item;
     
     public String getTransactionId() {
         return transactionId;
@@ -107,12 +107,20 @@ public class TableTransaction implements Serializable {
         this.status = status;
     }
 
-    public List<AllTransaction> getAllTransaction() {
-        return allTransaction;
+    public Item getItem() {
+        return item;
     }
 
-    public void setAllTransaction(List<AllTransaction> allTransaction) {
-        this.allTransaction = allTransaction;
+    public void setItem(Item item) {
+        this.item = item;
+    }
+
+    public Double getTotalPrice() {
+        return totalPrice;
+    }
+
+    public void setTotalPrice(Double totalPrice) {
+        this.totalPrice = totalPrice;
     }
     
 }

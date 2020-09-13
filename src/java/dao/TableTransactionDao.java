@@ -3,7 +3,9 @@ package dao;
 
 import domain.TableMaster;
 import domain.TableTransaction;
+import enums.ETableStatus;
 import java.util.List;
+import org.hibernate.Criteria;
 import org.hibernate.Query;
 import org.hibernate.Session;
 
@@ -21,5 +23,47 @@ public class TableTransactionDao extends GenericDao<TableTransaction>{
         List<TableTransaction> list = q.list();
         s.close();
         return list;
+    }       
+    
+    public Double findTotalByTableAndStatus(TableMaster table, String status, String menuType){
+        Session s = HibernateUtil.getSessionFactory().openSession();
+        Query q = s.createQuery("SELECT SUM(a.totalPrice) FROM TableTransaction a WHERE a.status = :status AND a.tableMaster = :table AND a.item.menuType = :type");
+        q.setParameter("status", status);
+        q.setParameter("table", table);
+        q.setParameter("type", menuType);
+        Double list = (Double) q.uniqueResult();
+        s.close();
+        return list;
     }
+       
+    public List<TableMaster> findByTableStatus(ETableStatus tableStatus, String status){
+        Session s = HibernateUtil.getSessionFactory().openSession();
+        Query q = s.createQuery("SELECT DISTINCT a.tableMaster FROM TableTransaction a WHERE a.status= :status AND a.tableMaster.tableStatus = :tableStatus");
+        q.setParameter("status", status);
+        q.setParameter("tableStatus", tableStatus);
+        q.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
+        List<TableMaster> list = q.list();        
+        s.close();
+        return list;
+    }
+    
+    public List<TableTransaction> findByStatus(String status){
+        Session s = HibernateUtil.getSessionFactory().openSession();
+        Query q = s.createQuery("SELECT a FROM TableTransaction a WHERE a.status= :status");
+        q.setParameter("status", status);
+        List<TableTransaction> list = q.list();        
+        s.close();
+        return list;
+    }
+    
+//    
+//    public List<TableTransaction> findByTableStatus(String status, ETableStatus tableStatus){
+//        Session s = HibernateUtil.getSessionFactory().openSession();
+//        Query q = s.createQuery("SELECT a FROM TableTransaction a WHERE a.status = :status AND a.tableMaster.tableStatus = :tableStatus");
+//        q.setParameter("status", status);
+//        q.setParameter("tableStatus", tableStatus);
+//        List<TableTransaction> list = q.list();
+//        s.close();
+//        return list;
+//    }
 }

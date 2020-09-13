@@ -38,10 +38,7 @@ public class TableMaster implements Serializable{
     @Fetch(FetchMode.SUBSELECT)
     private List<TableTransaction> tableTransaction;
     
-    @OneToMany(mappedBy = "tableMaster", fetch = FetchType.EAGER)
-    @Fetch(FetchMode.SUBSELECT)
-    private List<AllTransaction> allTransaction;
-            
+     
     public String getTableMasterId() {
         return tableMasterId;
     }
@@ -98,13 +95,5 @@ public class TableMaster implements Serializable{
         this.tableTransaction = tableTransaction;
     }
 
-    public List<AllTransaction> getAllTransaction() {
-        return allTransaction;
-    }
-
-    public void setAllTransaction(List<AllTransaction> allTransaction) {
-        this.allTransaction = allTransaction;
-    }
-    
     
 }
