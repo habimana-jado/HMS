@@ -24,6 +24,15 @@ public class TableMasterDao extends GenericDao<TableMaster> {
         return list;
     }
 
+    public Long findTotalByStatus(ETableStatus status) {
+        Session s = HibernateUtil.getSessionFactory().openSession();
+        Query q = s.createQuery("SELECT COUNT(a.tableNo) FROM TableMaster a WHERE a.tableStatus = :x");
+        q.setParameter("x", status);
+        Long list = (Long) q.uniqueResult();
+        s.close();
+        return list;
+    }
+
     public List<TableMaster> findByRestaurant(Restaurant restaurant) {
         Session s = HibernateUtil.getSessionFactory().openSession();
         Query q = s.createQuery("SELECT a FROM TableMaster a WHERE a.tableGroup = :x");

@@ -28,10 +28,13 @@ public class Test {
 //        dep.setStatus(EStatus.ACTIVE);
 //        new UserDepartmentDao().register(dep);        
 //        
-//        Person u = new PersonDao().findOne(Person.class, "614ed5d7-f324-4d70-87ee-29b23ac3e0e7");
-//        u.setUserDepartment(u);
-//        new PersonDao().update(u);
-        
+//        Person u = new Person();
+//        u.setUserDepartment(dep);
+//        u.setNames("Admin");
+//        u.setPhone("0788909884");
+//        u.setStatus(EStatus.ACTIVE);
+//        new PersonDao().register(u);
+//        
 //        Account a = new Account();
 //        a.setPerson(u);
 //        a.setUsername("administrator");
@@ -50,10 +53,18 @@ public class Test {
 //        h.setStreetNo("KK. 324 St");
 //        new HotelConfigDao().register(h);
 
-        List<TableMaster> list = new TableTransactionDao().findByTableStatus(ETableStatus.FULL, "Sent");
-        for(TableMaster t: list){
-            System.out.println(t.getTableNo());
-        }
+//        List<TableMaster> list = new TableTransactionDao().findByTableStatus(ETableStatus.FULL, "Sent");
+//        for(TableMaster t: list){
+//            System.out.println(t.getTableNo());
+//        }
         
+//        for(TableTransaction tr: new TableTransactionDao().findAll(TableTransaction.class)){
+//            tr.setTotalPrice(tr.getQuantity() * tr.getItem().getUnitRate());
+//            new TableTransactionDao().update(tr);
+//        }
+
+        for(TableMaster tm: new TableTransactionDao().findByTableStatus(ETableStatus.BILLED, "Sent")){
+            System.out.println(tm.getTableNo());
+        }
     }
 }

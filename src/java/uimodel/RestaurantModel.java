@@ -1,6 +1,7 @@
 package uimodel;
 
 import dao.ItemDao;
+import dao.PaymentDao;
 import dao.PersonDao;
 import dao.TableGroupDao;
 import dao.TableMasterDao;
@@ -15,14 +16,25 @@ import domain.TableMaster;
 import domain.TableTransaction;
 import domain.UserDepartment;
 import enums.ETableStatus;
+import java.awt.Font;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.print.PageFormat;
+import java.awt.print.Paper;
+import java.awt.print.Printable;
+import java.awt.print.PrinterException;
+import java.awt.print.PrinterJob;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import javax.annotation.PostConstruct;
+import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
+import javax.swing.table.TableModel;
 
 /**
  *
@@ -44,7 +56,7 @@ public class RestaurantModel {
     private TableMaster chosenTableMaster = new TableMaster();
     private List<TableTransaction> tableTransactions1 = new ArrayList<>();
     private List<TableMaster> vacantTableMasters = new TableMasterDao().findByStatus(ETableStatus.VACANT);
-    private List<TableMaster> billedTableTransactions = new TableTransactionDao().findByTableStatus(ETableStatus.BILLED, "Billed");
+    private List<TableMaster> billedTableTransactions = new TableTransactionDao().findByTableStatus(ETableStatus.BILLED, "Sent");
     private List<TableMaster> fullTableTransactions = new TableTransactionDao().findByTableStatus(ETableStatus.FULL, "Sent");
     private UserDepartment waitery = new UserDepartmentDao().findByDepartment("Waiter");
     private List<Person> waiters = new PersonDao().findByDepartment(waitery);
@@ -58,16 +70,24 @@ public class RestaurantModel {
     private Double totalBilledFoods = 0.0;
     private Double dailyCollection = 0.0;
     private Double dailyBilled = 0.0;
-    
+    private Long availableTable;
+    private Long billedTable;
+    private Long occupiedTable;
+
     @PostConstruct
     public void init() {
         userInit();
         tableMasters = new TableMasterDao().findAll(TableMaster.class);
         tableGroups = new TableGroupDao().findAll(TableGroup.class);
         vacantTableMasters = new TableMasterDao().findByStatus(ETableStatus.VACANT);
-        billedTableTransactions = new TableTransactionDao().findByTableStatus(ETableStatus.BILLED, "Billed");
+        billedTableTransactions = new TableTransactionDao().findByTableStatus(ETableStatus.BILLED, "Sent");
         fullTableTransactions = new TableTransactionDao().findByTableStatus(ETableStatus.FULL, "Sent");
         waiters = new PersonDao().findByDepartment(waitery);
+        dailyCollection = new TableTransactionDao().findTotalByDate(new Date());
+        dailyBilled = new TableTransactionDao().findTotalByDateAndTableStatus(new Date(), "Billed");
+        availableTable = new TableMasterDao().findTotalByStatus(ETableStatus.VACANT);
+        billedTable = new TableMasterDao().findTotalByStatus(ETableStatus.BILLED);
+        occupiedTable = new TableMasterDao().findTotalByStatus(ETableStatus.FULL);
     }
 
     public void userInit() {
@@ -75,29 +95,111 @@ public class RestaurantModel {
     }
 
     public void populateTableTransactions(TableMaster tableMaster) {
-        
+
         chosenTableMaster = tableMaster;
         tableTransactions = new ArrayList<>();
     }
-    
+
     public void populateSentTableTransactions(TableMaster tableMaster) {
         totalBilledBeverage = new TableTransactionDao().findTotalByTableAndStatus(tableMaster, "Sent", "Beverage");
         totalBilledFoods = new TableTransactionDao().findTotalByTableAndStatus(tableMaster, "Sent", "Food");
-        
+
         chosenTableMaster = tableMaster;
         tableTransactions = new TableTransactionDao().findByTableAndStatus(tableMaster, "Sent");
     }
-    
-    public void populateBilledTableTransactions(TableMaster tableMaster) {
-        
-        chosenTableMaster = tableMaster;
-        tableTransactions = new TableTransactionDao().findByTableAndStatus(tableMaster, "Billed");
+    public static String title[] = new String[]{"#", "Product"};
+
+    public static String now() {
+        Calendar cal = Calendar.getInstance();
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss a");
+        return sdf.format(cal.getTime());
     }
-        
-    public void removeUnsavedTransactions(){
-        for(TableTransaction t: new TableTransactionDao().findByStatus("Pending")){
-            new TableTransactionDao().delete(t);
+
+    public void printBill() {
+
+        final PrinterJob job = PrinterJob.getPrinterJob();
+
+        Printable contentToPrint = new Printable() {
+            @Override
+            public int print(Graphics graphics, PageFormat pageFormat, int pageIndex) throws PrinterException {
+                Graphics2D g = (Graphics2D) graphics;
+                g.translate(pageFormat.getImageableX(), pageFormat.getImageableY());
+                g.setFont(new Font("Monospaced", Font.BOLD, 10));
+
+                if (pageIndex > 0) {
+                    return NO_SUCH_PAGE;
+                } //Only one page
+
+                int y = 80;
+                g.drawString("Rebero Resort", 20, y);
+                g.drawString(now(), 5, y + 20);
+                g.drawLine(10, y + 40, 180, y + 40);
+
+                g.drawString(title[0], 0, y + 50);
+                g.drawString(title[1], 30, y + 50);
+//            g.drawString(title[2], 30, y+50);
+                g.drawLine(10, y + 40, 180, y + 40);
+
+                int cH = 0;
+                int i = 0;
+                for (TableTransaction tt : tableTransactions) {
+                    String id = i + "";
+                    String prod = tt.getItem().getItemName();
+                    String quant = tt.getQuantity() + "";
+
+                    cH = (y + 70) + (10 * i);
+
+                    g.drawString(quant, 0, cH);
+                    g.drawString(prod, 30, cH);
+//                g.drawString(quant, 30, cH);
+                    i++;
+                }
+                g.drawLine(10, y + 40, 180, y + 40);
+
+                g.drawString("Thank You", 10, cH + 30);
+
+                return PAGE_EXISTS;
+            }
+        };
+
+        PageFormat pageFormat = new PageFormat();
+        pageFormat.setOrientation(PageFormat.PORTRAIT);
+
+        Paper pPaper = pageFormat.getPaper();
+        pPaper.setImageableArea(0, 0, pPaper.getWidth(), pPaper.getHeight() - 2);
+        pageFormat.setPaper(pPaper);
+
+        job.setPrintable(contentToPrint, pageFormat);
+
+        try {
+            job.print();
+
+        } catch (PrinterException e) {
+            System.err.println(e.getMessage());
         }
+    }
+
+    public void populateBilledTableTransactions(TableMaster tableMaster) {
+
+        tableMaster.setTableStatus(ETableStatus.BILLED);
+        new TableMasterDao().update(tableMaster);
+
+        chosenTableMaster = tableMaster;
+        tableTransactions = new TableTransactionDao().findByTableAndStatus(tableMaster, "Sent");
+
+        availableTable = new TableMasterDao().findTotalByStatus(ETableStatus.VACANT);
+        billedTable = new TableMasterDao().findTotalByStatus(ETableStatus.BILLED);
+        occupiedTable = new TableMasterDao().findTotalByStatus(ETableStatus.FULL);
+        
+        vacantTableMasters = new TableMasterDao().findByStatus(ETableStatus.VACANT);
+        billedTableTransactions = new TableTransactionDao().findByTableStatus(ETableStatus.BILLED, "Sent");
+        fullTableTransactions = new TableTransactionDao().findByTableStatus(ETableStatus.FULL, "Sent");
+    }
+
+    public void removeUnsavedTransactions() {
+        new TableTransactionDao().findByStatus("Pending").forEach((t) -> {
+            new TableTransactionDao().delete(t);
+        });
     }
 
     public void registerTransaction() {
@@ -107,12 +209,19 @@ public class RestaurantModel {
             tableTransaction.setPerson(new PersonDao().findOne(Person.class, waiterId));
             tableTransaction.setTableMaster(chosenTableMaster);
             tableTransaction.setItem(itemChosen);
+            tableTransaction.setTotalPrice(tableTransaction.getQuantity() * itemChosen.getUnitRate());
             new TableTransactionDao().register(tableTransaction);
 
-            tableTransactions = new TableTransactionDao().findByTableAndStatus(chosenTableMaster, "Pending");
+            tableTransactions = new TableTransactionDao().findByTableAndOrStatus(chosenTableMaster, "Pending", "Sent");
 
             tableTransaction = new TableTransaction();
 
+            dailyCollection = new TableTransactionDao().findTotalByDate(new Date());
+            dailyBilled = new TableTransactionDao().findTotalByDateAndTableStatus(new Date(), "Billed");
+
+            availableTable = new TableMasterDao().findTotalByStatus(ETableStatus.VACANT);
+            billedTable = new TableMasterDao().findTotalByStatus(ETableStatus.BILLED);
+            occupiedTable = new TableMasterDao().findTotalByStatus(ETableStatus.FULL);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -121,9 +230,9 @@ public class RestaurantModel {
     public void completeTransaction() {
         try {
             TableMaster master = new TableMaster();
-            
+
             for (TableTransaction table : tableTransactions) {
-                System.out.println("KOT: "+table.getKotRemarks());
+                System.out.println("KOT: " + table.getKotRemarks());
                 table.setStatus("Sent");
                 new TableTransactionDao().update(table);
 
@@ -132,12 +241,54 @@ public class RestaurantModel {
                 tableDao.update(master);
             }
 
-            tableTransactions = new TableTransactionDao().findByTableAndStatus(chosenTableMaster, "Pending");
+            tableTransactions = new TableTransactionDao().findByTableAndStatus(chosenTableMaster, "Sent");
 
             vacantTableMasters = new TableMasterDao().findByStatus(ETableStatus.VACANT);
-            billedTableTransactions = new TableTransactionDao().findByTableStatus(ETableStatus.BILLED, "Billed");
+            billedTableTransactions = new TableTransactionDao().findByTableStatus(ETableStatus.BILLED, "Sent");
             fullTableTransactions = new TableTransactionDao().findByTableStatus(ETableStatus.FULL, "Sent");
 
+            dailyCollection = new TableTransactionDao().findTotalByDate(new Date());
+            dailyBilled = new TableTransactionDao().findTotalByDateAndTableStatus(new Date(), "Billed");
+
+            availableTable = new TableMasterDao().findTotalByStatus(ETableStatus.VACANT);
+            billedTable = new TableMasterDao().findTotalByStatus(ETableStatus.BILLED);
+            occupiedTable = new TableMasterDao().findTotalByStatus(ETableStatus.FULL);
+
+            FacesContext fc = FacesContext.getCurrentInstance();
+            fc.addMessage(null, new FacesMessage("Transaction Saved"));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+    
+    public void payTransaction() {
+        new PaymentDao().register(payment);
+        payment = new Payment();
+        
+        try {
+            TableMaster master = new TableMaster();
+
+            for (TableTransaction table : tableTransactions) {
+                table.setStatus("Completed");
+                new TableTransactionDao().update(table);
+
+                master = table.getTableMaster();
+                master.setTableStatus(ETableStatus.VACANT);
+                tableDao.update(master);
+            }
+
+            tableTransactions = new TableTransactionDao().findByTableAndStatus(chosenTableMaster, "Completed");
+
+            vacantTableMasters = new TableMasterDao().findByStatus(ETableStatus.VACANT);
+            billedTableTransactions = new TableTransactionDao().findByTableStatus(ETableStatus.BILLED, "Sent");
+            fullTableTransactions = new TableTransactionDao().findByTableStatus(ETableStatus.FULL, "Sent");
+
+            availableTable = new TableMasterDao().findTotalByStatus(ETableStatus.VACANT);
+            billedTable = new TableMasterDao().findTotalByStatus(ETableStatus.BILLED);
+            occupiedTable = new TableMasterDao().findTotalByStatus(ETableStatus.FULL);
+
+            FacesContext fc = FacesContext.getCurrentInstance();
+            fc.addMessage(null, new FacesMessage("Payment Saved"));
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -153,6 +304,21 @@ public class RestaurantModel {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    public void refreshTables() {
+
+        vacantTableMasters = new TableMasterDao().findByStatus(ETableStatus.VACANT);
+        billedTableTransactions = new TableTransactionDao().findByTableStatus(ETableStatus.BILLED, "Sent");
+        fullTableTransactions = new TableTransactionDao().findByTableStatus(ETableStatus.FULL, "Sent");
+
+        dailyCollection = new TableTransactionDao().findTotalByDate(new Date());
+        dailyBilled = new TableTransactionDao().findTotalByDateAndTableStatus(new Date(), "Billed");
+
+        availableTable = new TableMasterDao().findTotalByStatus(ETableStatus.VACANT);
+        billedTable = new TableMasterDao().findTotalByStatus(ETableStatus.BILLED);
+        occupiedTable = new TableMasterDao().findTotalByStatus(ETableStatus.FULL);
+
     }
 
     public void chooseItem(Item it) {
@@ -367,6 +533,30 @@ public class RestaurantModel {
 
     public void setDailyBilled(Double dailyBilled) {
         this.dailyBilled = dailyBilled;
+    }
+
+    public Long getAvailableTable() {
+        return availableTable;
+    }
+
+    public void setAvailableTable(Long availableTable) {
+        this.availableTable = availableTable;
+    }
+
+    public Long getBilledTable() {
+        return billedTable;
+    }
+
+    public void setBilledTable(Long billedTable) {
+        this.billedTable = billedTable;
+    }
+
+    public Long getOccupiedTable() {
+        return occupiedTable;
+    }
+
+    public void setOccupiedTable(Long occupiedTable) {
+        this.occupiedTable = occupiedTable;
     }
 
 }

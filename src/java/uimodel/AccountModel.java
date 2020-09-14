@@ -46,8 +46,8 @@ public class AccountModel {
             switch (account.getPerson().getUserDepartment().getDepartmentName()) {
                 case "ADMINISTRATOR":
                     FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("session", account);
-                    ec.redirect(ec.getRequestContextPath() + "/home.xhtml");
-                    return "home.xhtml?faces-redirect=true";
+                    ec.redirect(ec.getRequestContextPath() + "/Admin/employee.xhtml");
+                    return "Admin/employee?faces-redirect=true";
                 case "Front Office":
                     FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("session", account);
                     ec.redirect(ec.getRequestContextPath() + "/home.xhtml");
