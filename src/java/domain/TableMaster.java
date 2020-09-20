@@ -38,6 +38,10 @@ public class TableMaster implements Serializable{
     @Fetch(FetchMode.SUBSELECT)
     private List<TableTransaction> tableTransaction;
     
+    
+    @ManyToOne
+    private Person person;
+    
      
     public String getTableMasterId() {
         return tableMasterId;
@@ -93,6 +97,14 @@ public class TableMaster implements Serializable{
 
     public void setTableTransaction(List<TableTransaction> tableTransaction) {
         this.tableTransaction = tableTransaction;
+    }
+
+    public Person getPerson() {
+        return person;
+    }
+
+    public void setPerson(Person person) {
+        this.person = person;
     }
 
     

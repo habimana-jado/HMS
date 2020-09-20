@@ -52,10 +52,10 @@ public class AccountModel {
                     FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("session", account);
                     ec.redirect(ec.getRequestContextPath() + "/home.xhtml");
                     return "home.xhtml?faces-redirect=true";
-                case "Waiter":
+                case "Cashier":
                     FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("session", account);
-                    ec.redirect(ec.getRequestContextPath() + "/home.xhtml");
-                    return "home.xhtml?faces-redirect=true";
+                    ec.redirect(ec.getRequestContextPath() + "/Cashier/main.xhtml");
+                    return "Cashier/main.xhtml?faces-redirect=true";
                 case "Back Office":
                     FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("session", account);
                     ec.redirect(ec.getRequestContextPath() + "/home.xhtml");

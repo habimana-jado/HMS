@@ -31,9 +31,6 @@ public class TableTransaction implements Serializable {
     private Double totalPrice;
     
     @ManyToOne
-    private Person person;
-    
-    @ManyToOne
     private TableMaster tableMaster;
     
     @OneToMany(mappedBy = "tableTransaction", fetch = FetchType.EAGER)
@@ -73,14 +70,6 @@ public class TableTransaction implements Serializable {
 
     public void setKotRemarks(String kotRemarks) {
         this.kotRemarks = kotRemarks;
-    }
-
-    public Person getPerson() {
-        return person;
-    }
-
-    public void setPerson(Person person) {
-        this.person = person;
     }
 
     public TableMaster getTableMaster() {

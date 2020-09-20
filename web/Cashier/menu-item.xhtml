@@ -83,62 +83,85 @@
                 </div>
                 <div class="left-custom-menu-adp-wrap comment-scrollbar">
                     <nav class="sidebar-nav left-sidebar-menu-pro">
-                        <ul class="metismenu" id="menu1">
+                        <ul style="padding-top: 50px; padding-left: 10px;">
                             <li>
-                                <a class="has-arrow" href="index.html">
-                                    <i class="fa big-icon fa-home"></i>
-                                    <span class="mini-click-non">Frontoffice Configuration</span>
+                                <a class="has-arrow">
+                                    <span class="mini-click-non">
+                                        <h:outputLabel value="Date as on: #{cashierModel.newDate}" />
+                                    </span>
                                 </a>
-                                <ul class="submenu-angle" aria-expanded="true">
-                                    <li><a title="Room Category" href="#"><i class="fa fa-bullseye sub-icon-mg" aria-hidden="true"></i> <span class="mini-sub-pro">Room Category</span></a></li>
-                                    <li><a title="Floor Master" href="#"><i class="fa fa-circle-o sub-icon-mg" aria-hidden="true"></i> <span class="mini-sub-pro">Floor Master</span></a></li>
-                                    <li><a title="Room Master" href="#"><i class="fa fa-cube sub-icon-mg" aria-hidden="true"></i> <span class="mini-sub-pro">Room Master</span></a></li>
-
-                                </ul>
                             </li>
+                            <li style="padding-top: 20px;">
+                                <a class="has-arrow">
+                                    <span class="mini-click-non">
+                                        <h:outputLabel value="Your Collection: #{cashierModel.dailyCollection}" />
+                                    </span>
+                                </a>
+                            </li>
+                            <li style="padding-top: 20px;">
+                                <a class="has-arrow">
+                                    <span class="mini-click-non">
+                                        <h:outputLabel value="Table Billed: #{cashierModel.dailyBilled}" />
+                                    </span>
+                                </a>
+                            </li>
+                        </ul>
+                        <ul style="padding-top: 50px; padding-left: 10px;">
                             <li>
-                                <a class="has-arrow" href="employee.xhtml" aria-expanded="false"><i class="fa big-icon fa-envelope icon-wrap"></i> <span class="mini-click-non">User Configuration </span></a>
-                                <ul class="submenu-angle" aria-expanded="false">
-                                    <li><a title="Department" href="department.xhtml"><i class="fa fa-inbox sub-icon-mg" aria-hidden="true"></i> <span class="mini-sub-pro">Department</span></a></li>
-                                    <li><a title="New User" href="employee.xhtml"><i class="fa fa-television sub-icon-mg" aria-hidden="true"></i> <span class="mini-sub-pro">New User</span></a></li>
-                                    <li><a title="User Rights" href="#"><i class="fa fa-paper-plane sub-icon-mg" aria-hidden="true"></i> <span class="mini-sub-pro">User Rights</span></a></li>
-                                </ul>
+                                <a class="has-arrow">
+                                    <span class="mini-click-non">
+                                        <h3 style="text-decoration: #000"><Bold>Table Information</Bold></h3>
+                                    </span>
+                                </a>
                             </li>
-                            <li>
-                                <a class="has-arrow" href="#" aria-expanded="false"><i class="fa big-icon fa-flask icon-wrap"></i> <span class="mini-click-non">Room Service Configuration</span></a>
-                                <ul class="submenu-angle" aria-expanded="false">
-                                    <li><a title="Room Service Category" href="#"><i class="fa fa-map-marker sub-icon-mg" aria-hidden="true"></i> <span class="mini-sub-pro">Room Service Category</span></a></li>
-                                    <li><a title="Room Service" href="#"><i class="fa fa-map-o sub-icon-mg" aria-hidden="true"></i> <span class="mini-sub-pro">Room Service </span></a></li>
-                                    <li><a title="Housekeeping Config" href="#"><i class="fa fa-file-pdf-o sub-icon-mg" aria-hidden="true"></i> <span class="mini-sub-pro">Housekeeping Config</span></a></li>
-
-                                </ul>
+                            <li style="padding-top: 10px;">
+                                <a class="has-arrow">
+                                    <span class="mini-click-non">
+                                        <h:outputLabel class="btn btn-block btn-success font-weight-bold text-body" value="Available: #{cashierModel.availableTable}" />
+                                    </span>
+                                </a>
                             </li>
+                            <li style="padding-top: 3px;">
+                                <a class="has-arrow">
+                                    <span class="mini-click-non">
+                                        <h:outputLabel class="btn btn-block btn-danger font-weight-bold text-body" value="Occupied : #{cashierModel.occupiedTable}" />
+                                    </span>
+                                </a>
+                            </li>
+                            <li style="padding-top: 3px;">
+                                <a class="has-arrow">
+                                    <span class="mini-click-non">
+                                        <h:outputLabel class="btn btn-block font-weight-bold text-body"  style="background-color: #007ee5" value="Billed : #{cashierModel.billedTable}" />
+                                    </span>
+                                </a>
+                            </li>
+                            <li style="padding-top: 3px;">
+                                <a class="has-arrow">
+                                    <span class="mini-click-non">
+                                        <h:outputLabel class="btn btn-block font-weight-bold text-white bg-dark" style="background-color: #000" value="Total : #{cashierModel.occupiedTable + cashierModel.billedTable + cashierModel.availableTable}" />
+                                    </span>
+                                </a>
+                            </li>
+                        </ul>
+                        <ul class="metismenu" id="menu1" style="padding-top: 20px;">
+                            
                             <li>
                                 <a class="has-arrow" href="#" aria-expanded="false"><i class="fa big-icon fa-pie-chart icon-wrap"></i> <span class="mini-click-non">Menu Configuration</span></a>
                                 <ul class="submenu-angle" aria-expanded="false">
-                                    <li><a title="Menu Category" href="itemcategory.xhtml"><i class="fa fa-folder sub-icon-mg" aria-hidden="true"></i> <span class="mini-sub-pro">Menu Category</span></a></li>
-                                    <li><a title="Menu Master" href="menu-item.xhtml"><i class="fa fa-square sub-icon-mg" aria-hidden="true"></i> <span class="mini-sub-pro">Menu Master</span></a></li>
-                                    <li><a title="Unit Master" href="itemunit.xhtml"><i class="fa fa-square sub-icon-mg" aria-hidden="true"></i> <span class="mini-sub-pro">Unit Master</span></a></li>
-                                    <li><a title="Move Items To Inventory" href="#"><i class="fa fa-tags sub-icon-mg" aria-hidden="true"></i> <span class="mini-sub-pro">Move Items To Inventory</span></a></li>
-                                    <li><a title="Side Menu" href="#"><i class="fa fa-tint sub-icon-mg" aria-hidden="true"></i> <span class="mini-sub-pro">Side Menu</span></a></li>
-                                    <li><a title="Food And Beverage Costing" href="#"><i class="fa fa-tree sub-icon-mg" aria-hidden="true"></i> <span class="mini-sub-pro">Food And Beverage Costing</span></a></li>
+                                    <li><a title="Menu Master" href="#"><i class="fa fa-square sub-icon-mg" aria-hidden="true"></i> <span class="mini-sub-pro">Menu Master</span></a></li>
                                 </ul>
                             </li>
                             <li>
-                                <a class="has-arrow" href="item-purchase.xhtml" aria-expanded="false"><i class="fa big-icon fa-flask icon-wrap"></i> <span class="mini-click-non">Inventory Configuration</span></a>
+                                <a class="has-arrow" href="main.xhtml" aria-expanded="false"><i class="fa big-icon fa-bar-chart-o icon-wrap"></i> <span class="mini-click-non">Restaurant Configuration</span></a>
                                 <ul class="submenu-angle" aria-expanded="false">
-                                    <li><a title="Item Purchase" href="../Stock/item-purchase.xhtml"><i class="fa fa-map-marker sub-icon-mg" aria-hidden="true"></i> <span class="mini-sub-pro">Purchase</span></a></li>
-                                    <li><a title="Vendor" href="../Stock/vendor.xhtml"><i class="fa fa-map-o sub-icon-mg" aria-hidden="true"></i> <span class="mini-sub-pro">Vendor </span></a></li>
-                                </ul>
-                            </li>
-                            <li>
-                                <a class="has-arrow" href="./../Restaurant/main.xhtml" aria-expanded="false"><i class="fa big-icon fa-bar-chart-o icon-wrap"></i> <span class="mini-click-non">Restaurant Configuration</span></a>
-                                <ul class="submenu-angle" aria-expanded="false">
-                                    <li><a title="Restaurant KOT" href="./../Restaurant/main.xhtml"><i class="fa fa-signal sub-icon-mg" aria-hidden="true"></i> <span class="mini-sub-pro">Restaurant KOT</span></a></li>
-                                    <li><a title="Restaurant Setting" href="restaurant.xhtml"><i class="fa fa-line-chart sub-icon-mg" aria-hidden="true"></i> <span class="mini-sub-pro">Restaurant Setting</span></a></li>
-                                    <li><a title="Restaurant Menu Rate" href="#"><i class="fa fa-area-chart sub-icon-mg" aria-hidden="true"></i> <span class="mini-sub-pro">Restaurant Menu Rate</span></a></li>
-                                    <li><a title="Table Group Master" href="#"><i class="fa fa-pie-chart sub-icon-mg" aria-hidden="true"></i> <span class="mini-sub-pro">Table Group Master</span></a></li>
+                                    <li><a title="Restaurant KOT" href="main.xhtml"><i class="fa fa-signal sub-icon-mg" aria-hidden="true"></i> <span class="mini-sub-pro">Restaurant KOT</span></a></li>
                                     <li><a title="Table Master" href="table.xhtml"><i class="fa fa-signal sub-icon-mg" aria-hidden="true"></i> <span class="mini-sub-pro">Table Master</span></a></li>
+                                </ul>
+                            </li>
+                            <li>
+                                <a class="has-arrow" href="#" aria-expanded="false"><i class="fa big-icon fa-flask icon-wrap"></i> <span class="mini-click-non">Sales Report</span></a>
+                                <ul class="submenu-angle" aria-expanded="false">
+                                    <li><a title="Daily Report" href="#"><i class="fa fa-map-marker sub-icon-mg" aria-hidden="true"></i> <span class="mini-sub-pro">Daily Sales Report</span></a></li>
                                 </ul>
                             </li>
                         </ul>
@@ -249,7 +272,7 @@
                                             <ul class="breadcome-menu">
                                                 <li><a href="#">Home</a> <span class="bread-slash">/</span>
                                                 </li>
-                                                <li><span class="bread-blod">Table Group Master</span>
+                                                <li><span class="bread-blod">Users</span>
                                                 </li>
                                             </ul>
                                         </div>
@@ -263,168 +286,37 @@
             <!-- Modals Start-->
             <div class="login-form-area adminpro-pd mg-tb-15">
                 <div class="container-fluid">
-                    <div class="row" style="padding-left: 50px;">
-                        <div class="col-lg-4">
-                            <h5>Table Group Configuration</h5>
-                            <div class="modal-area-button">
-                                <a class="Primary mg-b-10" href="#" data-toggle="modal" data-target="#PrimaryModalalert">New Group</a>
-                            </div>
-                        </div>
-                        <div class="col-lg-8"></div>
-                    </div>
                     <div class="row">
                         <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                             <div class="tab-content-details shadow-reset">
 
-                                <div id="PrimaryModalalert" class="modal modal-adminpro-general default-popup-PrimaryModal fade" role="dialog">
-                                    <div class="modal-dialog">
-                                        <div class="modal-content">
-                                            <div class="modal-close-area modal-close-df">
-                                                <a class="close" data-dismiss="modal" href="#"><i class="fa fa-close"></i></a>
-                                            </div>
-                                            <div class="modal-body">
-                                                <h:form>
-                                                    <div class="form-group-inner">
-                                                        <div class="row">
-                                                            <div class="col-lg-3 col-md-3 col-sm-3 col-xs-12">
-                                                                <label class="login2 pull-right pull-right-pro">Group Name:</label>
-                                                            </div>
-                                                            <div class="col-lg-9 col-md-9 col-sm-9 col-xs-12">
-                                                                <h:inputText value="#{adminModel.tableGroup.groupName}" class="form-control" required="true" requiredMessage="Please Fill Group Name"/>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-
-                                                    <div class="form-group-inner">
-                                                        <div class="row">
-                                                            <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
-                                                            </div>
-                                                            <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
-                                                                <h:commandButton class="btn btn-primary btn-sm" action="#{adminModel.registerTableGroup()}" value="Register"></h:commandButton>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </h:form>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-
-
-
-                                <!--Edit A User-->
-                                <div id="PrimaryModalalert2" class="modal modal-adminpro-general default-popup-PrimaryModal fade" role="dialog">
-                                    <div class="modal-dialog">
-                                        <div class="modal-content">
-                                            <div class="modal-close-area modal-close-df">
-                                                <a class="close" data-dismiss="modal" href="#"><i class="fa fa-close"></i></a>
-                                            </div>
-                                            <div class="modal-body">
-                                                <h:form>
-                                                    <div class="form-group-inner">
-                                                        <div class="row">
-                                                            <div class="col-lg-3 col-md-3 col-sm-3 col-xs-12">
-                                                                <label class="login2 pull-right pull-right-pro">User ID:</label>
-                                                            </div>
-                                                            <div class="col-lg-9 col-md-9 col-sm-9 col-xs-12">                                                            
-                                                                <p:inputMask mask="9999999999999" class="form-control" requiredMessage="Please Fill User ID"/>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <div class="form-group-inner">
-                                                        <div class="row">
-                                                            <div class="col-lg-3 col-md-3 col-sm-3 col-xs-12">
-                                                                <label class="login2 pull-right pull-right-pro">Full Name:</label>
-                                                            </div>
-                                                            <div class="col-lg-9 col-md-9 col-sm-9 col-xs-12">
-                                                                <h:inputText value="#{adminModel.editPerson.names}" class="form-control" required="true" requiredMessage="Please Fill Full Name"/>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-
-                                                    <div class="form-group-inner">
-                                                        <div class="row">
-                                                            <div class="col-lg-3 col-md-3 col-sm-3 col-xs-12">
-                                                                <label class="login2 pull-right pull-right-pro">Address:</label>
-                                                            </div>
-                                                            <div class="col-lg-9 col-md-9 col-sm-9 col-xs-12">
-                                                                <h:inputText value="#{adminModel.editPerson.address}" class="form-control" required="true" requiredMessage="Please Fill Address"/>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <div class="form-group-inner">
-                                                        <div class="row">
-                                                            <div class="col-lg-3 col-md-3 col-sm-3 col-xs-12">
-                                                                <label class="login2 pull-right pull-right-pro">Phone:</label>
-                                                            </div>
-                                                            <div class="col-lg-9 col-md-9 col-sm-9 col-xs-12">
-                                                                <p:inputMask mask="999 999 9999" value="#{adminModel.editPerson.phone}" class="form-control" required="true" requiredMessage="Please Fill Phone Number"/>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <div class="form-group-inner">
-                                                        <div class="row">
-                                                            <div class="col-lg-3 col-md-3 col-sm-3 col-xs-12">
-                                                                <label class="login2 pull-right pull-right-pro">Designation:</label>
-                                                            </div>
-                                                            <div class="col-lg-9 col-md-9 col-sm-9 col-xs-12">
-                                                                <h:inputText value="#{adminModel.editPerson.designation}" class="form-control" required="true" requiredMessage="Please Fill Salary"/>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <div class="form-group-inner">
-                                                        <div class="row">
-                                                            <div class="col-lg-3 col-md-3 col-sm-3 col-xs-12">
-                                                                <label class="login2 pull-right pull-right-pro">Department:</label>
-                                                            </div>
-                                                            <div class="col-lg-9 col-md-9 col-sm-9 col-xs-12">
-                                                                <h:selectOneMenu class="form-control" value="#{adminModel.userDepartmentId}" >
-                                                                    <f:selectItems value="#{adminModel.userDepartments}" var="dep" itemLabel="#{dep.departmentName}" itemValue="#{dep.departmentId}" />
-                                                                </h:selectOneMenu>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-
-                                                    <div class="form-group-inner">
-                                                        <div class="row">
-                                                            <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
-                                                            </div>
-                                                            <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
-                                                                <h:commandButton class="btn btn-primary btn-sm" action="#{adminModel.userRegister()}" value="Register"></h:commandButton>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </h:form>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-
-
-
-                                <!--List Restaurant-->
+                                <!--List Users-->
                                 <h:form>
                                     <p:growl />
                                     <table class="table table-striped table-hover">
                                         <thead class="bg-light">
                                             <tr class="border-0">
                                                 <th class="border-0">#</th>
-                                                <th class="border-0">Name</th>
-                                                <th class="border-0">Edit</th>
+                                                <th class="border-0">Item Name</th>
+                                                <th class="border-0">Category Name</th>
+                                                <th class="border-0">Unit Name</th>
+                                                <th class="border-0">Menu Type</th>
+                                                <th class="border-0">Rate</th>
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            <c:forEach items="#{adminModel.tableGroups}" var="elements" varStatus="status">
+                                            <c:forEach items="#{adminModel.items}" var="elements" varStatus="status">
                                                 <tr>
-                                                    <td>${status.index+1}</td>                                                    
+                                                    <td>${status.index+1}</td>
                                                     <td>
-                                                        #{elements.groupName}
-                                                    </td>                                                   
-                                                    <td>
-                                                        <h:commandLink action="#{adminModel.navigateEditEmployee(elements)}">
-                                                            <a class="btn btn-warning" href="#" data-toggle="modal" data-target="#PrimaryModalalert2">Edit</a>
-                                                        </h:commandLink>
+                                                        #{elements.itemName}
                                                     </td>
+                                                    <td>
+                                                        #{elements.itemCategory.categoryName}
+                                                    </td>
+                                                    <td>#{elements.itemUnit.unitName}</td>
+                                                    <td>#{elements.menuType}</td>
+                                                    <td>#{elements.unitRate}</td>
                                                 </tr>
                                             </c:forEach>
                                         </tbody>

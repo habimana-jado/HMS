@@ -92,21 +92,21 @@
                             <li>
                                 <a class="has-arrow">
                                     <span class="mini-click-non">
-                                        <h:outputLabel value="Date as on: #{restaurantModel.newDate}" />
+                                        <h:outputLabel value="Date as on: #{cashierModel.newDate}" />
                                     </span>
                                 </a>
                             </li>
                             <li style="padding-top: 20px;">
                                 <a class="has-arrow">
                                     <span class="mini-click-non">
-                                        <h:outputLabel value="Your Collection: #{restaurantModel.dailyCollection}" />
+                                        <h:outputLabel value="Your Collection: #{cashierModel.dailyCollection}" />
                                     </span>
                                 </a>
                             </li>
                             <li style="padding-top: 20px;">
                                 <a class="has-arrow">
                                     <span class="mini-click-non">
-                                        <h:outputLabel value="Table Billed: #{restaurantModel.dailyBilled}" />
+                                        <h:outputLabel value="Table Billed: #{cashierModel.dailyBilled}" />
                                     </span>
                                 </a>
                             </li>
@@ -122,89 +122,51 @@
                             <li style="padding-top: 10px;">
                                 <a class="has-arrow">
                                     <span class="mini-click-non">
-                                        <h:outputLabel class="btn btn-block btn-success font-weight-bold text-body" value="Available: #{restaurantModel.availableTable}" />
+                                        <h:outputLabel class="btn btn-block btn-success font-weight-bold text-body" value="Available: #{cashierModel.availableTable}" />
                                     </span>
                                 </a>
                             </li>
                             <li style="padding-top: 3px;">
                                 <a class="has-arrow">
                                     <span class="mini-click-non">
-                                        <h:outputLabel class="btn btn-block btn-danger font-weight-bold text-body" value="Occupied : #{restaurantModel.occupiedTable}" />
+                                        <h:outputLabel class="btn btn-block btn-danger font-weight-bold text-body" value="Occupied : #{cashierModel.occupiedTable}" />
                                     </span>
                                 </a>
                             </li>
                             <li style="padding-top: 3px;">
                                 <a class="has-arrow">
                                     <span class="mini-click-non">
-                                        <h:outputLabel class="btn btn-block font-weight-bold text-body"  style="background-color: #007ee5" value="Billed : #{restaurantModel.billedTable}" />
+                                        <h:outputLabel class="btn btn-block font-weight-bold text-body"  style="background-color: #007ee5" value="Billed : #{cashierModel.billedTable}" />
                                     </span>
                                 </a>
                             </li>
                             <li style="padding-top: 3px;">
                                 <a class="has-arrow">
                                     <span class="mini-click-non">
-                                        <h:outputLabel class="btn btn-block font-weight-bold text-white bg-dark" style="background-color: #000" value="Total : #{restaurantModel.occupiedTable + restaurantModel.billedTable + restaurantModel.availableTable}" />
+                                        <h:outputLabel class="btn btn-block font-weight-bold text-white bg-dark" style="background-color: #000" value="Total : #{cashierModel.occupiedTable + cashierModel.billedTable + cashierModel.availableTable}" />
                                     </span>
                                 </a>
                             </li>
                         </ul>
                         <ul class="metismenu" id="menu1" style="padding-top: 20px;">
+                            
                             <li>
-                                <a class="has-arrow" href="index.html">
-                                    <i class="fa big-icon fa-home"></i>
-                                    <span class="mini-click-non">Frontoffice Configuration</span>
-                                </a>
-                                <ul class="submenu-angle" aria-expanded="true">
-                                    <li><a title="Room Category" href="#"><i class="fa fa-bullseye sub-icon-mg" aria-hidden="true"></i> <span class="mini-sub-pro">Room Category</span></a></li>
-                                    <li><a title="Floor Master" href="#"><i class="fa fa-circle-o sub-icon-mg" aria-hidden="true"></i> <span class="mini-sub-pro">Floor Master</span></a></li>
-                                    <li><a title="Room Master" href="#"><i class="fa fa-cube sub-icon-mg" aria-hidden="true"></i> <span class="mini-sub-pro">Room Master</span></a></li>
-
-                                </ul>
-                            </li>
-                            <li>
-                                <a class="has-arrow" href="mailbox.html" aria-expanded="false"><i class="fa big-icon fa-envelope icon-wrap"></i> <span class="mini-click-non">User Configuration </span></a>
+                                <a class="has-arrow" href="menu-item.xhtml" aria-expanded="false"><i class="fa big-icon fa-pie-chart icon-wrap"></i> <span class="mini-click-non">Menu Configuration</span></a>
                                 <ul class="submenu-angle" aria-expanded="false">
-                                    <li><a title="Department" href="./../Admin/department.xhtml"><i class="fa fa-inbox sub-icon-mg" aria-hidden="true"></i> <span class="mini-sub-pro">Department</span></a></li>
-                                    <li><a title="New User" href="./../Admin/employee.xhtml"><i class="fa fa-television sub-icon-mg" aria-hidden="true"></i> <span class="mini-sub-pro">New User</span></a></li>
-                                    <li><a title="User Rights" href="./../Admin/employee.xhtml"><i class="fa fa-paper-plane sub-icon-mg" aria-hidden="true"></i> <span class="mini-sub-pro">User Rights</span></a></li>
-                                </ul>
-                            </li>
-                            <li>
-                                <a class="has-arrow" href="#" aria-expanded="false"><i class="fa big-icon fa-flask icon-wrap"></i> <span class="mini-click-non">Room Service Configuration</span></a>
-                                <ul class="submenu-angle" aria-expanded="false">
-                                    <li><a title="Room Service Category" href="#"><i class="fa fa-map-marker sub-icon-mg" aria-hidden="true"></i> <span class="mini-sub-pro">Room Service Category</span></a></li>
-                                    <li><a title="Room Service" href="#"><i class="fa fa-map-o sub-icon-mg" aria-hidden="true"></i> <span class="mini-sub-pro">Room Service </span></a></li>
-                                    <li><a title="Housekeeping Config" href="#"><i class="fa fa-file-pdf-o sub-icon-mg" aria-hidden="true"></i> <span class="mini-sub-pro">Housekeeping Config</span></a></li>
-
-                                </ul>
-                            </li>
-                            <li>
-                                <a class="has-arrow" href="./../Admin/menu-item.xhtml" aria-expanded="false"><i class="fa big-icon fa-pie-chart icon-wrap"></i> <span class="mini-click-non">Menu Configuration</span></a>
-                                <ul class="submenu-angle" aria-expanded="false">
-                                    <li><a title="Menu Category" href="../Admin/itemcategory.xhtml"><i class="fa fa-folder sub-icon-mg" aria-hidden="true"></i> <span class="mini-sub-pro">Menu Category</span></a></li>
-                                    <li><a title="Menu Master" href="../Admin/menu-item.xhtml"><i class="fa fa-square sub-icon-mg" aria-hidden="true"></i> <span class="mini-sub-pro">Menu Master</span></a></li>
-                                    <li><a title="Unit Master" href="../Admin/itemunit.xhtml"><i class="fa fa-square sub-icon-mg" aria-hidden="true"></i> <span class="mini-sub-pro">Unit Master</span></a></li>
-                                    <li><a title="Move Items To Inventory" href="#"><i class="fa fa-tags sub-icon-mg" aria-hidden="true"></i> <span class="mini-sub-pro">Move Items To Inventory</span></a></li>
-                                    <li><a title="Side Menu" href="#"><i class="fa fa-tint sub-icon-mg" aria-hidden="true"></i> <span class="mini-sub-pro">Side Menu</span></a></li>
-                                    <li><a title="Food And Beverage Costing" href="#"><i class="fa fa-tree sub-icon-mg" aria-hidden="true"></i> <span class="mini-sub-pro">Food And Beverage Costing</span></a></li>
-                                </ul>
-                            </li>
-                            <li>
-                                <a class="has-arrow" href="item-purchase.xhtml" aria-expanded="false"><i class="fa big-icon fa-flask icon-wrap"></i> <span class="mini-click-non">Inventory Configuration</span></a>
-                                <ul class="submenu-angle" aria-expanded="false">
-                                    <li><a title="Item Purchase" href="../Stock/item-purchase.xhtml"><i class="fa fa-map-marker sub-icon-mg" aria-hidden="true"></i> <span class="mini-sub-pro">Purchase</span></a></li>
-                                    <li><a title="Vendor" href="../Stock/vendor.xhtml"><i class="fa fa-map-o sub-icon-mg" aria-hidden="true"></i> <span class="mini-sub-pro">Vendor </span></a></li>
+                                    <li><a title="Menu Master" href="menu-item.xhtml"><i class="fa fa-square sub-icon-mg" aria-hidden="true"></i> <span class="mini-sub-pro">Menu Master</span></a></li>
                                 </ul>
                             </li>
                             <li>
                                 <a class="has-arrow" href="#" aria-expanded="false"><i class="fa big-icon fa-bar-chart-o icon-wrap"></i> <span class="mini-click-non">Restaurant Configuration</span></a>
                                 <ul class="submenu-angle" aria-expanded="false">
                                     <li><a title="Restaurant KOT" href="#"><i class="fa fa-signal sub-icon-mg" aria-hidden="true"></i> <span class="mini-sub-pro">Restaurant KOT</span></a></li>
-                                    <li><a title="Restaurant Setting" href="../Admin/restaurant.xhtml"><i class="fa fa-line-chart sub-icon-mg" aria-hidden="true"></i> <span class="mini-sub-pro">Restaurant Setting</span></a></li>
-                                    <li><a title="Restaurant Menu Rate" href="#"><i class="fa fa-area-chart sub-icon-mg" aria-hidden="true"></i> <span class="mini-sub-pro">Restaurant Menu Rate</span></a></li>
-                                    <li><a title="Table Group Master" href="../Admin/tablegroup.xhtml"><i class="fa fa-pie-chart sub-icon-mg" aria-hidden="true"></i> <span class="mini-sub-pro">Table Group Master</span></a></li>
-                                    <li><a title="Table Master" href="../Admin/table.xhtml"><i class="fa fa-signal sub-icon-mg" aria-hidden="true"></i> <span class="mini-sub-pro">Table Master</span></a></li>
-
+                                    <li><a title="Table Master" href="table.xhtml"><i class="fa fa-signal sub-icon-mg" aria-hidden="true"></i> <span class="mini-sub-pro">Table Master</span></a></li>
+                                </ul>
+                            </li>
+                            <li>
+                                <a class="has-arrow" href="#" aria-expanded="false"><i class="fa big-icon fa-flask icon-wrap"></i> <span class="mini-click-non">Sales Report</span></a>
+                                <ul class="submenu-angle" aria-expanded="false">
+                                    <li><a title="Daily Report" href="#"><i class="fa fa-map-marker sub-icon-mg" aria-hidden="true"></i> <span class="mini-sub-pro">Daily Sales Report</span></a></li>
                                 </ul>
                             </li>
                         </ul>
@@ -245,57 +207,30 @@
                                 <div class="mobile-menu">
                                     <nav id="dropdown">
                                         <ul class="mobile-menu-nav">
-                                            <li><a data-toggle="collapse" data-target="#Charts" href="#">FrontOffice Configuration <span class="admin-project-icon adminpro-icon adminpro-down-arrow"></span></a>
-                                                <ul class="collapse dropdown-header-top">
-                                                    <li><a href="index.html">Room Category</a></li>
-                                                    <li><a href="index-1.html">Floor Master</a></li>
-                                                    <li><a href="index-3.html">Room Master</a></li>
-                                                </ul>
-                                            </li>
-                                            <li><a data-toggle="collapse" data-target="#demo" href="#">User Configuration <span class="admin-project-icon adminpro-icon adminpro-down-arrow"></span></a>
-                                                <ul id="demo" class="collapse dropdown-header-top">
-                                                    <li><a href="mailbox.html">Department</a>
-                                                    </li>
-                                                    <li><a href="mailbox-view.html">New User</a>
-                                                    </li>
-                                                    <li><a href="mailbox-compose.html">User Rights</a>
+                                            <li>
+                                                <a data-toggle="collapse" data-target="#Miscellaneousmob" href="#">Menu Configuration <span class="admin-project-icon adminpro-icon adminpro-down-arrow"></span></a>
+                                                <ul id="Miscellaneousmob" class="collapse dropdown-header-top">                                                    
+                                                    <li><a href="menu-item.xhtml">Menu Master</a>
                                                     </li>
                                                 </ul>
                                             </li>
-                                            <li><a data-toggle="collapse" data-target="#others" href="#">Room Service Configuration <span class="admin-project-icon adminpro-icon adminpro-down-arrow"></span></a>
-                                                <ul id="others" class="collapse dropdown-header-top">
-                                                    <li><a href="file-manager.html">Room Service Category</a></li>
-                                                    <li><a href="contacts.html">Room Service</a></li>
-                                                    <li><a href="projects.html">House Keeping Config</a></li>
-                                                </ul>
-                                            </li>
-                                            <li><a data-toggle="collapse" data-target="#Miscellaneousmob" href="#">Menu Configuration <span class="admin-project-icon adminpro-icon adminpro-down-arrow"></span></a>
-                                                <ul id="Miscellaneousmob" class="collapse dropdown-header-top">
-                                                    <li><a href="google-map.html">Menu Category</a>
-                                                    </li>
-                                                    <li><a href="data-maps.html">Menu Master</a>
-                                                    </li>
-                                                    <li><a href="pdf-viewer.html">Move Items To Inventory</a>
-                                                    </li>
-                                                    <li><a href="x-editable.html">Side Menu</a>
-                                                    </li>
-                                                    <li><a href="code-editor.html">Food And Beverage Costing</a>
-                                                    </li>
-                                                </ul>
-                                            </li>
-                                            <li><a data-toggle="collapse" data-target="#Chartsmob" href="#">Restaurant Configuration <span class="admin-project-icon adminpro-icon adminpro-down-arrow"></span></a>
+                                            <li>
+                                                <a data-toggle="collapse" data-target="#Chartsmob" href="#">Restaurant Configuration <span class="admin-project-icon adminpro-icon adminpro-down-arrow"></span></a>
                                                 <ul id="Chartsmob" class="collapse dropdown-header-top">
-                                                    <li><a href="bar-charts.html">Restaurant Setting</a>
+                                                    <li><a href="#">Restaurant KOT</a>
                                                     </li>
-                                                    <li><a href="line-charts.html">Restaurant Menu Rate</a>
+                                                    <li><a href="menu-item.xhtml">Menu Master</a>
                                                     </li>
-                                                    <li><a href="area-charts.html">Table Group Master</a>
-                                                    </li>
-                                                    <li><a href="rounded-chart.html">Table Master</a>
+                                                    <li><a href="table.xhtml">Table Master</a>
                                                     </li>
                                                 </ul>
                                             </li>
-
+                                            <li>
+                                                <a class="has-arrow" href="#" aria-expanded="false"><i class="fa big-icon fa-flask icon-wrap"></i> <span class="mini-click-non">Reports</span></a>
+                                                <ul class="submenu-angle" aria-expanded="false">
+                                                    <li><a title="Room Service Category" href="#"><i class="fa fa-map-marker sub-icon-mg" aria-hidden="true"></i> <span class="mini-sub-pro">Daily Sales Report</span></a></li>
+                                                </ul>
+                                            </li>
                                         </ul>
                                     </nav>
                                 </div>
@@ -329,7 +264,7 @@
             <!-- Modals Start-->
 
             <p:dialog header="Restaurant KOT" id="dialog" widgetVar="dlg2" modal="true">
-                <p:ajax update="tablelist" event="close" listener="#{restaurantModel.removeUnsavedTransactions()}" />
+                <p:ajax update="tablelist" event="close" listener="#{cashierModel.removeUnsavedTransactions()}" />
                 <h:form>
                     <div class="row">
                         <div class="col-lg-5">
@@ -339,8 +274,8 @@
                                         <label class="login2 pull-right pull-right-pro">Waiter Name:</label>
                                     </div>
                                     <div class="col-lg-9 col-md-9 col-sm-9 col-xs-12">
-                                        <h:selectOneMenu value="#{restaurantModel.waiterId}" class="form-control" >
-                                            <f:selectItems value="#{restaurantModel.waiters}" var="waiter" itemValue="#{waiter.userId}" itemLabel="#{waiter.names}" />
+                                        <h:selectOneMenu value="#{cashierModel.waiterId}" class="form-control" >
+                                            <f:selectItems value="#{cashierModel.waiters}" var="waiter" itemValue="#{waiter.userId}" itemLabel="#{waiter.names}" />
                                         </h:selectOneMenu>
                                     </div>
                                 </div>
@@ -352,14 +287,14 @@
                                         <label class="login2 pull-right pull-right-pro">Item Name:</label>
                                     </div>
                                     <div class="col-lg-9 col-md-9 col-sm-9 col-xs-12">
-                                        <p:inputText id="itemId" value="#{restaurantModel.itemSearchKeyWord}" class="form-control" >
-                                            <p:ajax event="keyup" listener="#{restaurantModel.searchItems()}" update="suggestionsTable"/>           
+                                        <p:inputText id="itemId" value="#{cashierModel.itemSearchKeyWord}" class="form-control" >
+                                            <p:ajax event="keyup" listener="#{cashierModel.searchItems()}" update="suggestionsTable"/>           
                                         </p:inputText>
 
-                                        <h:dataTable id="suggestionsTable" value="#{restaurantModel.suggestedItems}" var="item">
+                                        <h:dataTable id="suggestionsTable" value="#{cashierModel.suggestedItems}" var="item">
                                             <h:column>
                                                 <p:commandLink value="#{item.itemName}" oncomplete="PF('dlg2').show();" class="btn btn-link">
-                                                    <p:ajax event="click" listener="#{restaurantModel.chooseItem(item)}" update="@form"/> 
+                                                    <p:ajax event="click" listener="#{cashierModel.chooseItem(item)}" update="@form"/> 
                                                 </p:commandLink>
                                             </h:column>
                                         </h:dataTable>
@@ -372,7 +307,7 @@
                                         <label class="login2 pull-right pull-right-pro">Quantity:</label>
                                     </div>
                                     <div class="col-lg-9 col-md-9 col-sm-9 col-xs-12">
-                                        <h:inputText value="#{restaurantModel.tableTransaction.quantity}" class="form-control" required="true" requiredMessage="Please Fill Quantity"/>
+                                        <h:inputText value="#{cashierModel.tableTransaction.quantity}" class="form-control" required="true" requiredMessage="Please Fill Quantity"/>
                                     </div>
                                 </div>
                             </div>
@@ -382,7 +317,7 @@
                                         <label class="login2 pull-right pull-right-pro">KOT Remarks:</label>
                                     </div>
                                     <div class="col-lg-9 col-md-9 col-sm-9 col-xs-12">
-                                        <h:inputText value="#{restaurantModel.tableTransaction.kotRemarks}" class="form-control"/>
+                                        <h:inputText value="#{cashierModel.tableTransaction.kotRemarks}" class="form-control"/>
                                     </div>
                                 </div>
                             </div>
@@ -391,7 +326,7 @@
                                     <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
                                     </div>
                                     <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
-                                        <p:commandButton class="btn btn-primary btn-sm" action="#{restaurantModel.registerTransaction()}" value="Register" update="@form" oncomplete="PF('dlg2').show();" ></p:commandButton>
+                                        <p:commandButton class="btn btn-primary btn-sm" action="#{cashierModel.registerTransaction()}" value="Register" update="@form" oncomplete="PF('dlg2').show();" ></p:commandButton>
                                     </div>
                                 </div>
                             </div>
@@ -410,10 +345,10 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <c:forEach items="#{restaurantModel.tableTransactions}" var="elements" varStatus="status">
+                                    <c:forEach items="#{cashierModel.tableTransactions}" var="elements" varStatus="status">
                                         <tr>
                                             <td>
-                                                <p:commandLink update="@form" actionListener="#{restaurantModel.deleteTransaction(elements)}" process="@this" value="Delete" class="btn btn-link" />
+                                                <p:commandLink update="@form" actionListener="#{cashierModel.deleteTransaction(elements)}" process="@this" value="Delete" class="btn btn-link" />
                                             </td>
                                             <td>${status.index+1}</td>
                                             <td>
@@ -442,12 +377,12 @@
                                     <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
                                         <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
                                             <p:commandButton value="Save" update="@form" oncomplete="PF('dlg2').show();" icon="pi pi-save">
-                                                <p:ajax event="click" listener="#{restaurantModel.completeTransaction()}"/> 
+                                                <p:ajax event="click" listener="#{cashierModel.completeTransaction()}"/> 
                                             </p:commandButton>
                                         </div>
-                                        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                                        <div class="col-lg-6 col-xs-12">
                                             <p:commandButton value="Save + Print" update="@form" oncomplete="PF('dlg2').show();" >
-                                                <p:ajax event="click" listener="#{restaurantModel.completeTransactionAndPrint()}"/> 
+                                                <p:ajax event="click" listener="#{cashierModel.completeTransactionAndPrint()}"/> 
                                             </p:commandButton>
                                         </div>
                                     </div>
@@ -459,19 +394,19 @@
             </p:dialog>
 
             <p:dialog header="Restaurant Payment" id="dialogPayment" widgetVar="dlgpayment" modal="true">
-                <p:ajax update="tablelist" event="close" listener="#{restaurantModel.updatePaymentTables()}" />
+                <p:ajax update="tablelist" event="close" listener="#{cashierModel.updatePaymentTables()}" />
                 <h:form id="restaurantpayment">
                     <div class="row">                        
                         <div class="col-lg-12 col-md-12 col-sm-12">
                             <div class="row">
                                 <div class="col-lg-3">
-                                    <h:outputLabel value="Table No.: #{restaurantModel.chosenTableMaster.tableNo}" />
+                                    <h:outputLabel value="Table No.: #{cashierModel.chosenTableMaster.tableNo}" />
                                 </div>
                                 <div class="col-lg-3">
-                                    <h:outputLabel value="Waiter: #{restaurantModel.chosenTableMaster.person.names}" />
+                                    <h:outputLabel value="Waiter: #{cashierModel.chosenTableMaster.person.names}" />
                                 </div>
                                 <div class="col-lg-3">
-                                    <h:outputLabel value="Date Time: #{restaurantModel.newDate}" />
+                                    <h:outputLabel value="Date Time: #{cashierModel.newDate}" />
                                 </div>
                                 <div class="col-lg-3">
                                     <h:outputLabel value="Customer: Cash " />
@@ -489,7 +424,7 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <c:forEach items="#{restaurantModel.tableTransactions}" var="elements" varStatus="status">
+                                    <c:forEach items="#{cashierModel.tableTransactions}" var="elements" varStatus="status">
                                         <tr>
                                             <td>${status.index+1}</td>
                                             <td>
@@ -515,11 +450,11 @@
                                 <tfoot>
                                     <tr>
                                         <td>Beverage Amount:</td>
-                                        <td>#{restaurantModel.totalBilledBeverage}</td>                                        
+                                        <td>#{cashierModel.totalBilledBeverage}</td>                                        
                                         <td>Food Amount:</td>
-                                        <td>#{restaurantModel.totalBilledFoods}</td>
+                                        <td>#{cashierModel.totalBilledFoods}</td>
                                         <td>Net Amount:</td>
-                                        <td>#{restaurantModel.totalBilledBeverage + restaurantModel.totalBilledFoods}</td>
+                                        <td>#{cashierModel.totalBilledBeverage + cashierModel.totalBilledFoods}</td>
                                     </tr>
                                 </tfoot>
                             </table>
@@ -529,7 +464,7 @@
                                         <label class="login2 pull-right pull-right-pro">Mobile No.:</label>
                                     </div>
                                     <div class="col-lg-9 col-md-9 col-sm-9 col-xs-12">
-                                        <h:inputText value="#{restaurantModel.payment.mobileNumber}" class="form-control" />
+                                        <h:inputText value="#{cashierModel.payment.mobileNumber}" class="form-control" />
                                     </div>
                                 </div>
                             </div>
@@ -539,7 +474,7 @@
                                         <label class="login2 pull-right pull-right-pro">Payment Mode:</label>
                                     </div>
                                     <div class="col-lg-9 col-md-9 col-sm-9 col-xs-12">
-                                        <h:selectOneMenu class="form-control" value="#{restaurantModel.payment.paymentMode}">
+                                        <h:selectOneMenu class="form-control" value="#{cashierModel.payment.paymentMode}">
                                             <f:selectItem itemValue="CASH" itemLabel="CASH" />
                                             <f:selectItem itemValue="CARD" itemLabel="CARD" />
                                             <f:selectItem itemValue="CREDIT" itemLabel="CREDIT" />
@@ -556,7 +491,7 @@
                                     </div>
                                     <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
                                         <p:commandButton value="Save" oncomplete="PF('dlgpayment').show();" >
-                                            <p:ajax event="click" listener="#{restaurantModel.payTransaction()}"/> 
+                                            <p:ajax event="click" listener="#{cashierModel.payTransaction()}"/> 
                                         </p:commandButton>
                                     </div>
                                 </div>
@@ -567,19 +502,19 @@
             </p:dialog>
 
             <p:dialog header="Restaurant Invoice" id="dialogBilling" widgetVar="dlgBilling" modal="true">
-                <p:ajax update="tablelist" event="close" listener="#{restaurantModel.updateBillingTables()}" />
+                <p:ajax update="tablelist" event="close" listener="#{cashierModel.updateBillingTables()}" />
                 <h:form id="restaurantinvoice">
                     <div class="row">                        
                         <div class="col-lg-12 col-md-12 col-sm-12">
                             <div class="row">
                                 <div class="col-lg-3">
-                                    <h:outputLabel value="Table No.: #{restaurantModel.chosenTableMaster.tableNo}" />
+                                    <h:outputLabel value="Table No.: #{cashierModel.chosenTableMaster.tableNo}" />
                                 </div>
                                 <div class="col-lg-3">
-                                    <h:outputLabel value="Waiter: #{restaurantModel.chosenTableMaster.person.names}" />
+                                    <h:outputLabel value="Waiter: #{cashierModel.chosenTableMaster.person.names}" />
                                 </div>
                                 <div class="col-lg-3">
-                                    <h:outputLabel value="Date Time: #{restaurantModel.newDate}" />
+                                    <h:outputLabel value="Date Time: #{cashierModel.newDate}" />
                                 </div>
                                 <div class="col-lg-3">
                                     <h:outputLabel value="Customer: Cash " />
@@ -597,7 +532,7 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <c:forEach items="#{restaurantModel.tableTransactions}" var="elements" varStatus="status">
+                                    <c:forEach items="#{cashierModel.tableTransactions}" var="elements" varStatus="status">
                                         <tr>
                                             <td>${status.index+1}</td>
                                             <td>
@@ -623,11 +558,11 @@
                                 <tfoot>
                                     <tr>
                                         <td>Beverage Amount:</td>
-                                        <td>#{restaurantModel.totalBilledBeverage}</td>                                        
+                                        <td>#{cashierModel.totalBilledBeverage}</td>                                        
                                         <td>Food Amount:</td>
-                                        <td>#{restaurantModel.totalBilledFoods}</td>
+                                        <td>#{cashierModel.totalBilledFoods}</td>
                                         <td>Net Amount:</td>
-                                        <td>#{restaurantModel.totalBilledBeverage + restaurantModel.totalBilledFoods}</td>
+                                        <td>#{cashierModel.totalBilledBeverage + cashierModel.totalBilledFoods}</td>
                                     </tr>
                                 </tfoot>
                             </table>
@@ -637,7 +572,7 @@
                                         <label class="login2 pull-right pull-right-pro">Mobile No.:</label>
                                     </div>
                                     <div class="col-lg-9 col-md-9 col-sm-9 col-xs-12">
-                                        <h:inputText value="#{restaurantModel.payerNumber}" class="form-control" />
+                                        <h:inputText value="#{cashierModel.payerNumber}" class="form-control" />
                                     </div>
                                 </div>
                             </div>
@@ -647,7 +582,7 @@
                                         <label class="login2 pull-right pull-right-pro">Payment Mode:</label>
                                     </div>
                                     <div class="col-lg-9 col-md-9 col-sm-9 col-xs-12" >
-                                        <h:selectOneMenu class="form-control" value="#{restaurantModel.paymentMode}">
+                                        <h:selectOneMenu class="form-control" value="#{cashierModel.paymentMode}">
                                             <f:selectItem itemValue="CASH" itemLabel="CASH" />
                                             <f:selectItem itemValue="CARD" itemLabel="CARD" />
                                             <f:selectItem itemValue="CREDIT" itemLabel="CREDIT" />
@@ -664,7 +599,7 @@
                                     </div>
                                     <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
                                         <p:commandButton value="Print" oncomplete="PF('dlgBilling').hide();"  >
-                                            <p:ajax event="click" listener="#{restaurantModel.printBill()}"/> 
+                                            <p:ajax event="click" listener="#{cashierModel.printBill()}"/> 
                                         </p:commandButton>
                                     </div>
                                 </div>
@@ -677,9 +612,8 @@
             <div class="login-form-area adminpro-pd mg-tb-15">
                 <div class="container-fluid">
                     <h:form id="tablelist" style="padding-left: 50px;">
-                        <h:commandButton value="Test" action="#{restaurantModel.generateDailySalesReport()}" />
                         <div class="row">
-                            <c:forEach items="#{restaurantModel.fullTableTransactions}" var="item">
+                            <c:forEach items="#{cashierModel.fullTableTransactions}" var="item">
                                 <div class="col-sm-4">
                                     <div class="login-form-area adminpro-pd mg-tb-15">
                                         <div class="container-fluid">                            
@@ -693,7 +627,7 @@
                                                             <div class="col-lg-6">#{item.person.names}</div>
                                                             <div class="col-sm-6">
                                                                 <div class="col-sm-6">
-                                                                    <p:commandButton update=":dialog" oncomplete="PF('dlg2').show();" actionListener="#{restaurantModel.populateSentTableTransactions(item)}" class="btn btn-link" value="KOT" >
+                                                                    <p:commandButton update=":dialog" oncomplete="PF('dlg2').show();" actionListener="#{cashierModel.populateSentTableTransactions(item)}" class="btn btn-link" value="KOT" >
                                                                     </p:commandButton>
                                                                 </div>
                                                             </div>
@@ -701,7 +635,7 @@
                                                         <div class="row">
                                                             <div class="col-sm-6"></div>
                                                             <div class="col-sm-6">
-                                                                <p:commandButton update=":dialogBilling" oncomplete="PF('dlgBilling').show();" actionListener="#{restaurantModel.populateBilledTableTransactions(item)}" class="btn btn-link" value="Billing" >
+                                                                <p:commandButton update=":dialogBilling" oncomplete="PF('dlgBilling').show();" actionListener="#{cashierModel.populateBilledTableTransactions(item)}" class="btn btn-link" value="Billing" >
                                                                 </p:commandButton>
                                                             </div>
                                                         </div>
@@ -718,7 +652,7 @@
                             </c:forEach>
                         </div>
                         <div class="row">
-                            <c:forEach items="#{restaurantModel.billedTableTransactions}" var="item">
+                            <c:forEach items="#{cashierModel.billedTableTransactions}" var="item">
                                 <div class="col-sm-4">
                                     <div class="login-form-area adminpro-pd mg-tb-15">
                                         <div class="container-fluid">                            
@@ -731,21 +665,21 @@
                                                         <div class="row">
                                                             <div class="col-lg-6">#{item.person.names}</div>
                                                             <div class="col-sm-6">
-                                                                <p:commandButton update=":dialog" oncomplete="PF('dlg2').show();" actionListener="#{restaurantModel.populateSentTableTransactions(item)}" class="btn btn-link" value="KOT" >
+                                                                <p:commandButton update=":dialog" oncomplete="PF('dlg2').show();" actionListener="#{cashierModel.populateSentTableTransactions(item)}" class="btn btn-link" value="KOT" >
                                                                 </p:commandButton>
                                                             </div>
                                                         </div>
                                                         <div class="row">
                                                             <div class="col-sm-6"></div>
                                                             <div class="col-sm-6">
-                                                                <p:commandButton update=":dialogBilling" oncomplete="PF('dlgBilling').show();" actionListener="#{restaurantModel.populateBilledTableTransactions(item)}" class="btn btn-link" value="Billing" >
+                                                                <p:commandButton update=":dialogBilling" oncomplete="PF('dlgBilling').show();" actionListener="#{cashierModel.populateBilledTableTransactions(item)}" class="btn btn-link" value="Billing" >
                                                                 </p:commandButton>
                                                             </div>
                                                         </div>
                                                         <div class="row">
                                                             <div class="col-sm-6"></div>
                                                             <div class="col-sm-6">
-                                                                <p:commandButton update=":dialogPayment" oncomplete="PF('dlgpayment').show();" actionListener="#{restaurantModel.populateSentTableTransactions(item)}" class="btn btn-link" value="Payment" >
+                                                                <p:commandButton update=":dialogPayment" oncomplete="PF('dlgpayment').show();" actionListener="#{cashierModel.populateSentTableTransactions(item)}" class="btn btn-link" value="Payment" >
                                                                 </p:commandButton>
                                                             </div>
                                                         </div>
@@ -758,7 +692,7 @@
                             </c:forEach>
                         </div>
                         <div class="row">
-                            <c:forEach items="#{restaurantModel.vacantTableMasters}" var="item">
+                            <c:forEach items="#{cashierModel.vacantTableMasters}" var="item">
                                 <div class="col-sm-4">
                                     <div class="login-form-area adminpro-pd mg-tb-15">
                                         <div class="container-fluid">                            
@@ -771,7 +705,7 @@
                                                         <div class="row">
                                                             <div class="col-sm-6">Available</div>
                                                             <div class="col-sm-6">
-                                                                <p:commandButton update=":dialog" oncomplete="PF('dlg2').show();" actionListener="#{restaurantModel.populateTableTransactions(item)}" class="btn btn-link" value="KOT" >
+                                                                <p:commandButton update=":dialog" oncomplete="PF('dlg2').show();" actionListener="#{cashierModel.populateTableTransactions(item)}" class="btn btn-link" value="KOT" >
                                                                 </p:commandButton>
                                                             </div>
                                                         </div>

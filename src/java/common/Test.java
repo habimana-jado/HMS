@@ -17,6 +17,7 @@ import domain.UserDepartment;
 import enums.EStatus;
 import enums.ETableStatus;
 import java.util.List;
+import uimodel.RestaurantModel;
 
 public class Test {
     public static void main(String[] args) throws Exception {
@@ -27,20 +28,20 @@ public class Test {
 //        dep.setDepartmentName("ADMINISTRATOR");
 //        dep.setStatus(EStatus.ACTIVE);
 //        new UserDepartmentDao().register(dep);        
-//        
-//        Person u = new Person();
-//        u.setUserDepartment(dep);
-//        u.setNames("Admin");
-//        u.setPhone("0788909884");
-//        u.setStatus(EStatus.ACTIVE);
-//        new PersonDao().register(u);
-//        
-//        Account a = new Account();
-//        a.setPerson(u);
-//        a.setUsername("administrator");
-//        a.setPassword(new PassCode().encrypt("secret"));
-//        a.setStatus(EStatus.ACTIVE);
-//        new AccountDao().register(a);
+        UserDepartment dep = new UserDepartmentDao().findOne(UserDepartment.class, "6fbcc92c-30af-4f5f-8509-93f31819de07");
+        Person u = new Person();
+        u.setUserDepartment(dep);
+        u.setNames("Kalisa");
+        u.setPhone("0788909884");
+        u.setStatus(EStatus.ACTIVE);
+        new PersonDao().register(u);
+        
+        Account a = new Account();
+        a.setPerson(u);
+        a.setUsername("cashier");
+        a.setPassword(new PassCode().encrypt("cashier"));
+        a.setStatus(EStatus.ACTIVE);
+        new AccountDao().register(a);
         
 //        HotelConfig h = new HotelConfig();
 //        h.setAddressLine1("Kigali-Rwanda");
@@ -63,8 +64,10 @@ public class Test {
 //            new TableTransactionDao().update(tr);
 //        }
 
-        for(TableMaster tm: new TableTransactionDao().findByTableStatus(ETableStatus.BILLED, "Sent")){
-            System.out.println(tm.getTableNo());
-        }
+//        for(TableMaster tm: new TableTransactionDao().findByTableStatus(ETableStatus.BILLED, "Sent")){
+//            System.out.println(tm.getTableNo());
+//        }
+
+        new RestaurantModel().generateDailySalesReport();
     }
 }
