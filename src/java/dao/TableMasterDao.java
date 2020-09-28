@@ -23,6 +23,16 @@ public class TableMasterDao extends GenericDao<TableMaster> {
         s.close();
         return list;
     }
+    
+    public List<TableMaster> findByStatusAndType(ETableStatus status,String type) {
+        Session s = HibernateUtil.getSessionFactory().openSession();
+        Query q = s.createQuery("SELECT a FROM TableMaster a WHERE a.tableStatus = :x AND a.type = :type");
+        q.setParameter("x", status);
+        q.setParameter("type", type);
+        List<TableMaster> list = q.list();
+        s.close();
+        return list;
+    }
 
     public Long findTotalByStatus(ETableStatus status) {
         Session s = HibernateUtil.getSessionFactory().openSession();

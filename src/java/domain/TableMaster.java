@@ -27,6 +27,7 @@ public class TableMaster implements Serializable{
     private int chairNo;
     @Enumerated(EnumType.STRING)
     private ETableStatus tableStatus;
+    private String type;
     
     @ManyToOne
     private TableGroup tableGroup;
@@ -105,6 +106,14 @@ public class TableMaster implements Serializable{
 
     public void setPerson(Person person) {
         this.person = person;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
     }
 
     

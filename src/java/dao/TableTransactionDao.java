@@ -67,9 +67,21 @@ public class TableTransactionDao extends GenericDao<TableTransaction>{
         return list;
     }
        
-    public List<TableMaster> findByTableStatus(ETableStatus tableStatus, String status){
+    public List<TableMaster> findByTableStatusAndType(ETableStatus tableStatus, String status, String type){
         Session s = HibernateUtil.getSessionFactory().openSession();
-        Query q = s.createQuery("SELECT DISTINCT a.tableMaster FROM TableTransaction a WHERE a.status= :status AND a.tableMaster.tableStatus = :tableStatus");
+        Query q = s.createQuery("SELECT DISTINCT a.tableMaster FROM TableTransaction a WHERE a.status= :status AND a.tableMaster.tableStatus = :tableStatus AND a.tableMaster.type = :type");
+        q.setParameter("status", status);
+        q.setParameter("tableStatus", tableStatus);
+        q.setParameter("type", type);
+        q.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
+        List<TableMaster> list = q.list();        
+        s.close();
+        return list;
+    }
+    
+    public List<TableMaster> findByTableStatusGroupBy(ETableStatus tableStatus, String status){
+        Session s = HibernateUtil.getSessionFactory().openSession();
+        Query q = s.createQuery("SELECT DISTINCT a.tableMaster FROM TableTransaction a WHERE a.status= :status AND a.tableMaster.tableStatus = :tableStatus GROUP BY a.tableMaster.tableGroup");
         q.setParameter("status", status);
         q.setParameter("tableStatus", tableStatus);
         q.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
@@ -77,6 +89,7 @@ public class TableTransactionDao extends GenericDao<TableTransaction>{
         s.close();
         return list;
     }
+    
     
     public List<TableTransaction> findByStatus(String status){
         Session s = HibernateUtil.getSessionFactory().openSession();

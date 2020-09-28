@@ -1,6 +1,8 @@
 package uimodel;
 
 import common.FileUpload;
+import common.PassCode;
+import dao.AccountDao;
 import dao.HotelConfigDao;
 import dao.ItemCategoryDao;
 import dao.ItemDao;
@@ -179,6 +181,32 @@ public class AdminModel {
             user.setUserDepartment(department);
             user.setStatus(EStatus.ACTIVE);
             new PersonDao().register(user);
+
+            user = new Person();
+            users = new PersonDao().findAll(Person.class);
+
+            FacesContext fc = FacesContext.getCurrentInstance();
+            fc.addMessage(null, new FacesMessage("User Registered"));
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+    
+    public void cashierRegister() {
+        try {
+            UserDepartment department = new UserDepartmentDao().findOne(UserDepartment.class, userDepartmentId);
+            user.setUserDepartment(department);
+            user.setStatus(EStatus.ACTIVE);
+            user.setNames("Morreen");
+            new PersonDao().register(user);
+            
+            Account acc = new Account();
+            acc.setStatus(EStatus.ACTIVE);
+            acc.setPassword(new PassCode().encrypt("cashier"));
+            acc.setUsername("cashier");
+            acc.setPerson(user);
+            new AccountDao().register(acc);
 
             user = new Person();
             users = new PersonDao().findAll(Person.class);

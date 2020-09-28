@@ -1,4 +1,3 @@
-
 package uimodel;
 
 import dao.HotelConfigDao;
@@ -49,6 +48,7 @@ import javax.faces.context.FacesContext;
 @ManagedBean
 @SessionScoped
 public class CashierModel {
+
     private Account loggedInUser = new Account();
     private HotelConfig hotel = new HotelConfigDao().findOne(HotelConfig.class, Long.parseLong("1"));
     private Item item = new Item();
@@ -61,9 +61,12 @@ public class CashierModel {
     private List<TableTransaction> tableTransactions = new ArrayList<>();
     private TableMaster chosenTableMaster = new TableMaster();
     private List<TableTransaction> tableTransactions1 = new ArrayList<>();
-    private List<TableMaster> vacantTableMasters = new TableMasterDao().findByStatus(ETableStatus.VACANT);
-    private List<TableMaster> billedTableTransactions = new TableTransactionDao().findByTableStatus(ETableStatus.BILLED, "Sent");
-    private List<TableMaster> fullTableTransactions = new TableTransactionDao().findByTableStatus(ETableStatus.FULL, "Sent");
+    private List<TableMaster> vacantTableMasters = new TableMasterDao().findByStatusAndType(ETableStatus.VACANT, "Table");
+    private List<TableMaster> billedTableTransactions = new TableTransactionDao().findByTableStatusAndType(ETableStatus.BILLED, "Sent", "Table");
+    private List<TableMaster> fullTableTransactions = new TableTransactionDao().findByTableStatusAndType(ETableStatus.FULL, "Sent", "Table");
+    private List<TableMaster> vacantRoomMasters = new TableMasterDao().findByStatusAndType(ETableStatus.VACANT, "Room");
+    private List<TableMaster> billedRoomTransactions = new TableTransactionDao().findByTableStatusAndType(ETableStatus.BILLED, "Sent", "Room");
+    private List<TableMaster> fullRoomTransactions = new TableTransactionDao().findByTableStatusAndType(ETableStatus.FULL, "Sent", "Room");
     private UserDepartment waitery = new UserDepartmentDao().findByDepartment("Waiter");
     private List<Person> waiters = new PersonDao().findByDepartment(waitery);
     private String waiterId = new String();
@@ -84,13 +87,16 @@ public class CashierModel {
     private String paymentMode = new String();
 
     @PostConstruct
-    public void init(){        
+    public void init() {
         userInit();
         tableMasters = new TableMasterDao().findAll(TableMaster.class);
         tableGroups = new TableGroupDao().findAll(TableGroup.class);
-        vacantTableMasters = new TableMasterDao().findByStatus(ETableStatus.VACANT);
-        billedTableTransactions = new TableTransactionDao().findByTableStatus(ETableStatus.BILLED, "Sent");
-        fullTableTransactions = new TableTransactionDao().findByTableStatus(ETableStatus.FULL, "Sent");
+        vacantTableMasters = new TableMasterDao().findByStatusAndType(ETableStatus.VACANT, "Table");
+        billedTableTransactions = new TableTransactionDao().findByTableStatusAndType(ETableStatus.BILLED, "Sent", "Table");
+        fullTableTransactions = new TableTransactionDao().findByTableStatusAndType(ETableStatus.FULL, "Sent", "Table");
+        vacantRoomMasters = new TableMasterDao().findByStatusAndType(ETableStatus.VACANT, "Room");
+        billedRoomTransactions = new TableTransactionDao().findByTableStatusAndType(ETableStatus.BILLED, "Sent", "Room");
+        fullRoomTransactions = new TableTransactionDao().findByTableStatusAndType(ETableStatus.FULL, "Sent", "Room");
         waiters = new PersonDao().findByDepartment(waitery);
         dailyCollection = new TableTransactionDao().findTotalByDate(new Date());
         dailyBilled = new TableTransactionDao().findTotalByDateAndTableStatus(new Date(), "Billed");
@@ -98,7 +104,8 @@ public class CashierModel {
         billedTable = new TableMasterDao().findTotalByStatus(ETableStatus.BILLED);
         occupiedTable = new TableMasterDao().findTotalByStatus(ETableStatus.FULL);
     }
-      public void userInit() {
+
+    public void userInit() {
         loggedInUser = (Account) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("session");
     }
 
@@ -116,7 +123,7 @@ public class CashierModel {
         tableTransactions = new TableTransactionDao().findByTableAndStatus(tableMaster, "Sent");
     }
     public static String title[] = new String[]{"Product", "Qty", "Rate", "Amount"};
-    
+
     public static String kotTitle[] = new String[]{"Product", "Qty"};
 
     public static String now() {
@@ -142,110 +149,18 @@ public class CashierModel {
 
                 Double totalPrice = totalBilledFoods + totalBilledBeverage;
                 int y = 20;
-                g.drawString("Vat No.: " + hotel.getVatNo(), 90, y);
-                g.drawString("ST No.: " + hotel.getStreetNo(), 90, y + 10);
-                g.drawString("" + hotel.getPhone(), 110, y + 20);
-                g.drawString("" + chosenTableMaster.getRestaurant().getName(), 50, y + 34);
-                g.drawString("" + chosenTableMaster.getRestaurant().getSlogan(), 30, y + 44);
-                g.drawString("" + hotel.getHotelName(), 60, y + 55);
-
-                y = 65;
-
-                g.drawString("Bill Date    " + now(), 5, y + 20);
-                g.drawString("Table No.: " + chosenTableMaster.getTableNo(), 5, y + 30);
-                g.drawString("Waiter: " + chosenTableMaster.getPerson().getNames(), 5, y + 40);
-//                g.drawLine(3, y + 45, 200, y + 45);
-
-                g.drawString(kotTitle[0], 3, y + 60);
-                g.drawString(kotTitle[1], 80, y + 60);
-//                g.drawString(title[2], 110, y + 60);
-//                g.drawString(title[3], 160, y + 60);
-//            g.drawString(title[2], 30, y+50);
-//                g.drawLine(3, y + 55, 200, y + 55);
-
-                int cH = 0;
-                int i = 0;
-                DecimalFormat df = new DecimalFormat("###,###");
-
-                for (TableTransaction tt : tableTransactions) {
-                    String id = i + "";
-                    String prod = tt.getItem().getItemName();
-                    String quant = tt.getQuantity() + "";
-//                    String rate = df.format(tt.getItem().getUnitRate()) + "";
-//                    String price = df.format(tt.getTotalPrice()) + "";
-
-                    cH = (y + 80) + (10 * i);
-
-                    g.drawString(prod, 3, cH);
-                    g.drawString(quant, 80, cH);
-//                    g.drawString(rate, 110, cH);
-//                    g.drawString(price, 160, cH);
-
-                    i++;
-
-                }
-
-//                g.drawString("SubTotal(Food): " + df.format(totalBilledFoods), 60, cH + 15);
-//                g.drawString("SubTotal(Drinks): " + df.format(totalBilledBeverage), 60, cH + 25);
-
-//                g.drawString("Bill Amount: RWF"+df.format(totalPrice), 60, cH+35);
-//                g.drawString("Payable: RWF" + df.format(totalPrice), 60, cH + 55);
-
-                g.drawString("Thank You", 60, cH + 25);
-
-                g.drawString("Bill Generated By: " + loggedInUser.getPerson().getNames(), 10, cH + 95);
-
-                g.drawString("Welcome Again", 60, cH + 110);
-                return PAGE_EXISTS;
-            }
-        };
-
-        PageFormat pageFormat = new PageFormat();
-        pageFormat.setOrientation(PageFormat.PORTRAIT);
-
-        Paper pPaper = pageFormat.getPaper();
-        pPaper.setImageableArea(0, 0, pPaper.getWidth(), pPaper.getHeight() - 2);
-        pageFormat.setPaper(pPaper);
-
-        job.setPrintable(contentToPrint, pageFormat);
-
-        try {
-            job.print();
-
-        } catch (PrinterException e) {
-            System.err.println(e.getMessage());
-        }
-    }
-
-    public void printKotBill() {
-
-        final PrinterJob job = PrinterJob.getPrinterJob();
-
-        Printable contentToPrint = new Printable() {
-            @Override
-            public int print(Graphics graphics, PageFormat pageFormat, int pageIndex) throws PrinterException {
-                Graphics2D g = (Graphics2D) graphics;
-                g.translate(pageFormat.getImageableX(), pageFormat.getImageableY());
-                g.setFont(new Font("Monospaced", Font.BOLD, 10));
-
-                if (pageIndex > 0) {
-                    return NO_SUCH_PAGE;
-                } //Only one page
-
-                Double totalPrice = totalBilledFoods + totalBilledBeverage;
-                int y = 20;
-                g.drawString("Vat No.: " + hotel.getVatNo(), 90, y);
-                g.drawString("ST No.: " + hotel.getStreetNo(), 90, y + 10);
-                g.drawString("" + hotel.getPhone(), 110, y + 20);
-                g.drawString("" + chosenTableMaster.getRestaurant().getName(), 50, y + 34);
-                g.drawString("" + chosenTableMaster.getRestaurant().getSlogan(), 30, y + 44);
-                g.drawString("" + hotel.getHotelName(), 60, y + 55);
-
-                y = 65;
-
-                g.drawString("Bill Date    " + now(), 5, y + 20);
-                g.drawString("Table No.: " + chosenTableMaster.getTableNo(), 5, y + 30);
-                g.drawString("Waiter: " + chosenTableMaster.getPerson().getNames(), 5, y + 40);
+//                g.drawString("Vat No.: " + hotel.getVatNo(), 90, y);
+//                g.drawString("ST No.: " + hotel.getStreetNo(), 90, y + 10);
+//                g.drawString("" + hotel.getPhone(), 110, y + 20);
+//                g.drawString("" + chosenTableMaster.getRestaurant().getName(), 50, y + 34);
+//                g.drawString("" + chosenTableMaster.getRestaurant().getSlogan(), 30, y + 44);
+//                g.drawString("" + hotel.getHotelName(), 60, y + 55);
+//
+//                y = 65;
+//
+//                g.drawString("Bill Date    " + now(), 5, y + 20);
+//                g.drawString("Table No.: " + chosenTableMaster.getTableNo(), 5, y + 30);
+//                g.drawString("Waiter: " + chosenTableMaster.getPerson().getNames(), 5, y + 40);
 //                g.drawLine(3, y + 45, 200, y + 45);
 
                 g.drawString(title[0], 3, y + 60);
@@ -276,20 +191,190 @@ public class CashierModel {
                     i++;
 
                 }
-
-                g.drawString("SubTotal(Food): " + df.format(totalBilledFoods), 60, cH + 15);
-                g.drawString("SubTotal(Drinks): " + df.format(totalBilledBeverage), 60, cH + 25);
-
-//                g.drawString("Bill Amount: RWF"+df.format(totalPrice), 60, cH+35);
-                g.drawString("Payable: RWF" + df.format(totalPrice), 60, cH + 55);
-
-                g.drawString("Thank You", 60, cH + 85);
-
-                g.drawString("Bill Generated By: " + loggedInUser.getPerson().getNames(), 10, cH + 95);
+                g.drawString("Thank You", 60, cH + 25);
 
                 g.drawString("Welcome Again", 60, cH + 110);
                 return PAGE_EXISTS;
             }
+        };
+
+        PageFormat pageFormat = new PageFormat();
+        pageFormat.setOrientation(PageFormat.PORTRAIT);
+
+        Paper pPaper = pageFormat.getPaper();
+        pPaper.setImageableArea(0, 0, pPaper.getWidth(), pPaper.getHeight() - 2);
+        pageFormat.setPaper(pPaper);
+
+        job.setPrintable(contentToPrint, pageFormat);
+
+        try {
+            job.print();
+
+        } catch (PrinterException e) {
+            System.err.println(e.getMessage());
+        }
+    }
+
+    public void printKotBill2() {
+
+        final PrinterJob job = PrinterJob.getPrinterJob();
+
+        Printable contentToPrint = new Printable() {
+            @Override
+
+            public int print(Graphics graphics, PageFormat pageFormat, int pageIndex) throws PrinterException {
+                Graphics2D g = (Graphics2D) graphics;
+                g.translate(pageFormat.getImageableX(), pageFormat.getImageableY());
+                g.setFont(new Font("Monospaced", 1, 10));
+                if (pageIndex > 0) {
+                    return 1;
+                } else {
+                    int y = 20;
+                    g.drawString("Vat No.: " + hotel.getVatNo(), 90, y);
+                    g.drawString("ST No.: " + hotel.getStreetNo(), 90, y + 10);
+                    g.drawString("" + hotel.getPhone(), 110, y + 20);
+                    g.drawString("" + chosenTableMaster.getRestaurant().getName(), 50, y + 34);
+                    g.drawString("" + chosenTableMaster.getRestaurant().getSlogan(), 30, y + 44);
+                    g.drawString("" + hotel.getHotelName(), 60, y + 55);
+
+                    y = 65;
+
+                    g.drawString("Bill Date    " + now(), 5, y + 20);
+                    g.drawString("Table No.: " + chosenTableMaster.getTableNo(), 5, y + 30);
+                    g.drawString("Waiter: " + chosenTableMaster.getPerson().getNames(), 5, y + 40);
+                    g.drawLine(10, y + 50, 200, y + 50);
+
+                    g.drawString(title[0], 3, y + 60);
+                    g.drawString(title[1], 90, y + 60);
+                    int cH = 0;
+                    int i = 0;
+
+                    Double totalPrice = 0.0;
+                    Double beveragePrice = 0.0;
+                    Double foodPrice = 0.0;
+                    DecimalFormat df = new DecimalFormat("###,###");
+
+                    for (TableTransaction tt : tableTransactions) {
+                        String id = i + "";
+                        String prod = tt.getItem().getItemName();
+                        String quant = tt.getQuantity() + "";
+
+                        cH = y + 80 + 10 * i;
+
+                        g.drawString(prod, 0, cH);
+                        g.drawString(quant, 80, cH);
+
+                        i++;
+                    }
+
+                    g.drawString("Thank You", 60, cH + 25);
+
+                    g.drawString("Bill Generated By: " + loggedInUser.getPerson().getNames(), 10, cH + 35);
+
+                    g.drawString("Welcome Again", 60, cH + 50);
+
+                    return 0;
+                }
+            }
+
+        };
+
+        PageFormat pageFormat = new PageFormat();
+        pageFormat.setOrientation(PageFormat.PORTRAIT);
+
+        Paper pPaper = pageFormat.getPaper();
+        pPaper.setImageableArea(0, 0, pPaper.getWidth(), pPaper.getHeight() - 2);
+        pageFormat.setPaper(pPaper);
+
+        job.setPrintable(contentToPrint, pageFormat);
+
+        try {
+            job.print();
+
+        } catch (PrinterException e) {
+            System.err.println(e.getMessage());
+        }
+    }
+
+    public void printKotBill() {
+
+        final PrinterJob job = PrinterJob.getPrinterJob();
+
+        Printable contentToPrint = new Printable() {
+            @Override
+
+            public int print(Graphics graphics, PageFormat pageFormat, int pageIndex) throws PrinterException {
+                Graphics2D g = (Graphics2D) graphics;
+                g.translate(pageFormat.getImageableX(), pageFormat.getImageableY());
+                g.setFont(new Font("Monospaced", 1, 10));
+                if (pageIndex > 0) {
+                    return 1;
+                } else {
+                    int y = 20;
+                    g.drawString("Vat No.: " + hotel.getVatNo(), 90, y);
+                    g.drawString("ST No.: " + hotel.getStreetNo(), 90, y + 10);
+                    g.drawString("" + hotel.getPhone(), 110, y + 20);
+                    g.drawString("" + chosenTableMaster.getRestaurant().getName(), 50, y + 34);
+                    g.drawString("" + chosenTableMaster.getRestaurant().getSlogan(), 30, y + 44);
+                    g.drawString("" + hotel.getHotelName(), 60, y + 55);
+
+                    y = 65;
+
+                    g.drawString("Bill Date    " + now(), 5, y + 20);
+                    g.drawString("Table No.: " + chosenTableMaster.getTableNo(), 5, y + 30);
+                    g.drawString("Waiter: " + chosenTableMaster.getPerson().getNames(), 5, y + 40);
+                    g.drawLine(10, y + 50, 200, y + 50);
+
+                    g.drawString(title[0], 3, y + 60);
+                    g.drawString(title[1], 80, y + 60);
+                    g.drawString(title[2], 110, y + 60);
+                    g.drawString(title[3], 160, y + 60);
+//                    g.drawLine(10, y + 40, 180, y + 40);
+                    int cH = 0;
+                    int i = 0;
+
+                    Double totalPrice = 0.0;
+                    Double beveragePrice = 0.0;
+                    Double foodPrice = 0.0;
+                    DecimalFormat df = new DecimalFormat("###,###");
+
+                    for (TableTransaction tt : tableTransactions) {
+                        String id = i + "";
+                        String prod = tt.getItem().getItemName();
+                        String quant = tt.getQuantity() + "";
+                        String rate = df.format(tt.getItem().getUnitRate()) + "";
+                        String price = df.format(tt.getTotalPrice()) + "";
+
+                        if (tt.getItem().getMenuType().equalsIgnoreCase("Food")) {
+                            foodPrice = foodPrice + tt.getQuantity() * (tt.getItem().getUnitRate());
+                        } else {
+                            beveragePrice = beveragePrice + tt.getQuantity() * (tt.getItem().getUnitRate());
+                        }
+                        cH = y + 80 + 10 * i;
+
+                        g.drawString(prod, 0, cH);
+                        g.drawString(quant, 80, cH);
+                        g.drawString(rate, 110, cH);
+                        g.drawString(price, 160, cH);
+
+                        i++;
+                    }
+
+                    g.drawString("SubTotal(Food): " + df.format(foodPrice), 60, cH + 15);
+                    g.drawString("SubTotal(Drinks): " + df.format(beveragePrice), 60, cH + 25);
+
+                    g.drawString("Payable: RWF" + df.format(foodPrice + beveragePrice), 60, cH + 55);
+//
+                    g.drawString("Thank You", 60, cH + 85);
+
+                    g.drawString("Bill Generated By: " + loggedInUser.getPerson().getNames(), 10, cH + 95);
+
+                    g.drawString("Welcome Again", 60, cH + 110);
+
+                    return 0;
+                }
+            }
+
         };
 
         PageFormat pageFormat = new PageFormat();
@@ -324,17 +409,24 @@ public class CashierModel {
         billedTable = new TableMasterDao().findTotalByStatus(ETableStatus.BILLED);
         occupiedTable = new TableMasterDao().findTotalByStatus(ETableStatus.FULL);
 
-        vacantTableMasters = new TableMasterDao().findByStatus(ETableStatus.VACANT);
-        billedTableTransactions = new TableTransactionDao().findByTableStatus(ETableStatus.BILLED, "Sent");
-        fullTableTransactions = new TableTransactionDao().findByTableStatus(ETableStatus.FULL, "Sent");
+        vacantTableMasters = new TableMasterDao().findByStatusAndType(ETableStatus.VACANT, "Table");
+        billedTableTransactions = new TableTransactionDao().findByTableStatusAndType(ETableStatus.BILLED, "Sent", "Table");
+        fullTableTransactions = new TableTransactionDao().findByTableStatusAndType(ETableStatus.FULL, "Sent", "Table");
+
+        vacantRoomMasters = new TableMasterDao().findByStatusAndType(ETableStatus.VACANT, "Room");
+        billedRoomTransactions = new TableTransactionDao().findByTableStatusAndType(ETableStatus.BILLED, "Sent", "Room");
+        fullRoomTransactions = new TableTransactionDao().findByTableStatusAndType(ETableStatus.FULL, "Sent", "Room");
     }
 
     public void removeUnsavedTransactions() {
         new TableTransactionDao().findByStatus("Pending").forEach((t) -> {
             new TableTransactionDao().delete(t);
         });
-        vacantTableMasters = new TableMasterDao().findByStatus(ETableStatus.VACANT);
-        fullTableTransactions = new TableTransactionDao().findByTableStatus(ETableStatus.FULL, "Sent");
+        vacantTableMasters = new TableMasterDao().findByStatusAndType(ETableStatus.VACANT, "Table");
+        fullTableTransactions = new TableTransactionDao().findByTableStatusAndType(ETableStatus.FULL, "Sent", "Table");
+
+        vacantRoomMasters = new TableMasterDao().findByStatusAndType(ETableStatus.VACANT, "Room");
+        fullRoomTransactions = new TableTransactionDao().findByTableStatusAndType(ETableStatus.FULL, "Sent", "Room");
 
         availableTable = new TableMasterDao().findTotalByStatus(ETableStatus.VACANT);
         billedTable = new TableMasterDao().findTotalByStatus(ETableStatus.BILLED);
@@ -342,8 +434,11 @@ public class CashierModel {
     }
 
     public void updateBillingTables() {
-        fullTableTransactions = new TableTransactionDao().findByTableStatus(ETableStatus.FULL, "Sent");
-        billedTableTransactions = new TableTransactionDao().findByTableStatus(ETableStatus.BILLED, "Sent");
+        fullTableTransactions = new TableTransactionDao().findByTableStatusAndType(ETableStatus.FULL, "Sent", "Table");
+        billedTableTransactions = new TableTransactionDao().findByTableStatusAndType(ETableStatus.BILLED, "Sent", "Table");
+
+        billedRoomTransactions = new TableTransactionDao().findByTableStatusAndType(ETableStatus.BILLED, "Sent", "Room");
+        fullRoomTransactions = new TableTransactionDao().findByTableStatusAndType(ETableStatus.FULL, "Sent", "Room");
 
         availableTable = new TableMasterDao().findTotalByStatus(ETableStatus.VACANT);
         billedTable = new TableMasterDao().findTotalByStatus(ETableStatus.BILLED);
@@ -351,8 +446,11 @@ public class CashierModel {
     }
 
     public void updatePaymentTables() {
-        vacantTableMasters = new TableMasterDao().findByStatus(ETableStatus.VACANT);
-        billedTableTransactions = new TableTransactionDao().findByTableStatus(ETableStatus.BILLED, "Sent");
+        vacantTableMasters = new TableMasterDao().findByStatusAndType(ETableStatus.VACANT, "Table");
+        billedTableTransactions = new TableTransactionDao().findByTableStatusAndType(ETableStatus.BILLED, "Sent", "Table");
+
+        vacantRoomMasters = new TableMasterDao().findByStatusAndType(ETableStatus.VACANT, "Room");
+        billedRoomTransactions = new TableTransactionDao().findByTableStatusAndType(ETableStatus.BILLED, "Sent", "Room");
 
         availableTable = new TableMasterDao().findTotalByStatus(ETableStatus.VACANT);
         billedTable = new TableMasterDao().findTotalByStatus(ETableStatus.BILLED);
@@ -429,9 +527,13 @@ public class CashierModel {
 
             tableTransactions = new TableTransactionDao().findByTableAndStatus(chosenTableMaster, "Sent");
 
-            vacantTableMasters = new TableMasterDao().findByStatus(ETableStatus.VACANT);
-            billedTableTransactions = new TableTransactionDao().findByTableStatus(ETableStatus.BILLED, "Sent");
-            fullTableTransactions = new TableTransactionDao().findByTableStatus(ETableStatus.FULL, "Sent");
+            vacantTableMasters = new TableMasterDao().findByStatusAndType(ETableStatus.VACANT, "Table");
+            billedTableTransactions = new TableTransactionDao().findByTableStatusAndType(ETableStatus.BILLED, "Sent", "Table");
+            fullTableTransactions = new TableTransactionDao().findByTableStatusAndType(ETableStatus.FULL, "Sent", "Table");
+
+            vacantRoomMasters = new TableMasterDao().findByStatusAndType(ETableStatus.VACANT, "Room");
+            billedRoomTransactions = new TableTransactionDao().findByTableStatusAndType(ETableStatus.BILLED, "Sent", "Room");
+            fullRoomTransactions = new TableTransactionDao().findByTableStatusAndType(ETableStatus.FULL, "Sent", "Room");
 
             dailyCollection = new TableTransactionDao().findTotalByDate(new Date());
             dailyBilled = new TableTransactionDao().findTotalByDateAndTableStatus(new Date(), "Billed");
@@ -446,6 +548,7 @@ public class CashierModel {
             e.printStackTrace();
         }
     }
+
     public void completeTransactionAndPrint() {
         try {
             TableMaster master = new TableMaster();
@@ -462,10 +565,14 @@ public class CashierModel {
 
             tableTransactions = new TableTransactionDao().findByTableAndStatus(chosenTableMaster, "Sent");
 
-            vacantTableMasters = new TableMasterDao().findByStatus(ETableStatus.VACANT);
-            billedTableTransactions = new TableTransactionDao().findByTableStatus(ETableStatus.BILLED, "Sent");
-            fullTableTransactions = new TableTransactionDao().findByTableStatus(ETableStatus.FULL, "Sent");
+            vacantTableMasters = new TableMasterDao().findByStatusAndType(ETableStatus.VACANT, "Table");
+            billedTableTransactions = new TableTransactionDao().findByTableStatusAndType(ETableStatus.BILLED, "Sent", "Table");
+            fullTableTransactions = new TableTransactionDao().findByTableStatusAndType(ETableStatus.FULL, "Sent", "Table");
 
+        vacantRoomMasters = new TableMasterDao().findByStatusAndType(ETableStatus.VACANT, "Room");
+        billedRoomTransactions = new TableTransactionDao().findByTableStatusAndType(ETableStatus.BILLED, "Sent", "Room");
+        fullRoomTransactions = new TableTransactionDao().findByTableStatusAndType(ETableStatus.FULL, "Sent", "Room");
+        
             dailyCollection = new TableTransactionDao().findTotalByDate(new Date());
             dailyBilled = new TableTransactionDao().findTotalByDateAndTableStatus(new Date(), "Billed");
 
@@ -473,8 +580,8 @@ public class CashierModel {
             billedTable = new TableMasterDao().findTotalByStatus(ETableStatus.BILLED);
             occupiedTable = new TableMasterDao().findTotalByStatus(ETableStatus.FULL);
 
-            printKotBill();
-            
+            printKotBill2();
+
             FacesContext fc = FacesContext.getCurrentInstance();
             fc.addMessage(null, new FacesMessage("Transaction Saved"));
         } catch (Exception e) {
@@ -495,21 +602,21 @@ public class CashierModel {
                 tableDao.update(master);
 
                 payment.setTableTransaction(table);
-                
-                if(paymentMode.equalsIgnoreCase("CASH")){
+
+                if (paymentMode.equalsIgnoreCase("CASH")) {
                     payment.setPaymentMode(EPaymentMode.CASH);
-                }else if(paymentMode.equalsIgnoreCase("CARD")){
+                } else if (paymentMode.equalsIgnoreCase("CARD")) {
                     payment.setPaymentMode(EPaymentMode.CARD);
-                }else if(paymentMode.equalsIgnoreCase("CREDIT")){
+                } else if (paymentMode.equalsIgnoreCase("CREDIT")) {
                     payment.setPaymentMode(EPaymentMode.CREDIT);
-                }else if(paymentMode.equalsIgnoreCase("NC")){
+                } else if (paymentMode.equalsIgnoreCase("NC")) {
                     payment.setPaymentMode(EPaymentMode.NC);
-                }else if(paymentMode.equalsIgnoreCase("MOBILEMONEY")){
+                } else if (paymentMode.equalsIgnoreCase("MOBILEMONEY")) {
                     payment.setPaymentMode(EPaymentMode.MOBILEMONEY);
-                }else if(paymentMode.equalsIgnoreCase("POSTTOROOM")){
+                } else if (paymentMode.equalsIgnoreCase("POSTTOROOM")) {
                     payment.setPaymentMode(EPaymentMode.POSTTOROOM);
                 }
-                
+
 //                switch (paymentMode) {
 //                    case "CASH":
 //                        payment.setPaymentMode(EPaymentMode.CASH);
@@ -549,10 +656,14 @@ public class CashierModel {
 
             tableTransactions = new TableTransactionDao().findByTableAndStatus(chosenTableMaster, "Completed");
 
-            vacantTableMasters = new TableMasterDao().findByStatus(ETableStatus.VACANT);
-            billedTableTransactions = new TableTransactionDao().findByTableStatus(ETableStatus.BILLED, "Sent");
-            fullTableTransactions = new TableTransactionDao().findByTableStatus(ETableStatus.FULL, "Sent");
+            vacantTableMasters = new TableMasterDao().findByStatusAndType(ETableStatus.VACANT, "Table");
+            billedTableTransactions = new TableTransactionDao().findByTableStatusAndType(ETableStatus.BILLED, "Sent", "Table");
+            fullTableTransactions = new TableTransactionDao().findByTableStatusAndType(ETableStatus.FULL, "Sent", "Table");
 
+        vacantRoomMasters = new TableMasterDao().findByStatusAndType(ETableStatus.VACANT, "Room");
+        billedRoomTransactions = new TableTransactionDao().findByTableStatusAndType(ETableStatus.BILLED, "Sent", "Room");
+        fullRoomTransactions = new TableTransactionDao().findByTableStatusAndType(ETableStatus.FULL, "Sent", "Room");
+        
             availableTable = new TableMasterDao().findTotalByStatus(ETableStatus.VACANT);
             billedTable = new TableMasterDao().findTotalByStatus(ETableStatus.BILLED);
             occupiedTable = new TableMasterDao().findTotalByStatus(ETableStatus.FULL);
@@ -578,10 +689,14 @@ public class CashierModel {
 
     public void refreshTables() {
 
-        vacantTableMasters = new TableMasterDao().findByStatus(ETableStatus.VACANT);
-        billedTableTransactions = new TableTransactionDao().findByTableStatus(ETableStatus.BILLED, "Sent");
-        fullTableTransactions = new TableTransactionDao().findByTableStatus(ETableStatus.FULL, "Sent");
+        vacantTableMasters = new TableMasterDao().findByStatusAndType(ETableStatus.VACANT, "Table");
+        billedTableTransactions = new TableTransactionDao().findByTableStatusAndType(ETableStatus.BILLED, "Sent", "Table");
+        fullTableTransactions = new TableTransactionDao().findByTableStatusAndType(ETableStatus.FULL, "Sent", "Table");
 
+        vacantRoomMasters = new TableMasterDao().findByStatusAndType(ETableStatus.VACANT, "Room");
+        billedRoomTransactions = new TableTransactionDao().findByTableStatusAndType(ETableStatus.BILLED, "Sent", "Room");
+        fullRoomTransactions = new TableTransactionDao().findByTableStatusAndType(ETableStatus.FULL, "Sent", "Room");
+        
         dailyCollection = new TableTransactionDao().findTotalByDate(new Date());
         dailyBilled = new TableTransactionDao().findTotalByDateAndTableStatus(new Date(), "Billed");
 
@@ -876,6 +991,29 @@ public class CashierModel {
     public static void setKotTitle(String[] kotTitle) {
         CashierModel.kotTitle = kotTitle;
     }
-    
-    
+
+    public List<TableMaster> getVacantRoomMasters() {
+        return vacantRoomMasters;
+    }
+
+    public void setVacantRoomMasters(List<TableMaster> vacantRoomMasters) {
+        this.vacantRoomMasters = vacantRoomMasters;
+    }
+
+    public List<TableMaster> getBilledRoomTransactions() {
+        return billedRoomTransactions;
+    }
+
+    public void setBilledRoomTransactions(List<TableMaster> billedRoomTransactions) {
+        this.billedRoomTransactions = billedRoomTransactions;
+    }
+
+    public List<TableMaster> getFullRoomTransactions() {
+        return fullRoomTransactions;
+    }
+
+    public void setFullRoomTransactions(List<TableMaster> fullRoomTransactions) {
+        this.fullRoomTransactions = fullRoomTransactions;
+    }
+
 }
