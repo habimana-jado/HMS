@@ -274,7 +274,9 @@
                                                 </div>
                                                 <div class="col-md-2" />
                                                 <div class="col-md-2">
-                                                    <li><a href="#" data-toggle="modal" data-target="#Logout">Logout</a></li>
+                                                    <h:form>
+                                                        <h:commandLink action="#{accountModel.logout()}" value="Logout" class="btn btn-primary btn-sm"></h:commandLink>
+                                                    </h:form>
                                                 </div>
                                             </ul>
                                         </div>

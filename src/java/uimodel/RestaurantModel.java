@@ -83,6 +83,9 @@ public class RestaurantModel {
     private List<TableMaster> vacantRoomMasters = new TableMasterDao().findByStatusAndType(ETableStatus.VACANT, "Room");
     private List<TableMaster> billedRoomTransactions = new TableTransactionDao().findByTableStatusAndType(ETableStatus.BILLED, "Sent", "Room");
     private List<TableMaster> fullRoomTransactions = new TableTransactionDao().findByTableStatusAndType(ETableStatus.FULL, "Sent", "Room");
+    private List<TableMaster> vacantVipRoomMasters = new TableMasterDao().findByStatusAndType(ETableStatus.VACANT, "VipRoom");
+    private List<TableMaster> billedVipRoomTransactions = new TableTransactionDao().findByTableStatusAndType(ETableStatus.BILLED, "Sent", "VipRoom");
+    private List<TableMaster> fullVipRoomTransactions = new TableTransactionDao().findByTableStatusAndType(ETableStatus.FULL, "Sent", "VipRoom");
     private UserDepartment waitery = new UserDepartmentDao().findByDepartment("Waiter");
     private List<Person> waiters = new PersonDao().findByDepartment(waitery);
     private String waiterId = new String();
@@ -113,6 +116,9 @@ public class RestaurantModel {
         vacantRoomMasters = new TableMasterDao().findByStatusAndType(ETableStatus.VACANT, "Room");
         billedRoomTransactions = new TableTransactionDao().findByTableStatusAndType(ETableStatus.BILLED, "Sent", "Room");
         fullRoomTransactions = new TableTransactionDao().findByTableStatusAndType(ETableStatus.FULL, "Sent", "Room");
+        vacantVipRoomMasters = new TableMasterDao().findByStatusAndType(ETableStatus.VACANT, "VipRoom");
+        billedVipRoomTransactions = new TableTransactionDao().findByTableStatusAndType(ETableStatus.BILLED, "Sent", "VipRoom");
+        fullVipRoomTransactions = new TableTransactionDao().findByTableStatusAndType(ETableStatus.FULL, "Sent", "VipRoom");
         waiters = new PersonDao().findByDepartment(waitery);
         dailyCollection = new TableTransactionDao().findTotalByDate(new Date());
         dailyBilled = new TableTransactionDao().findTotalByDateAndTableStatus(new Date(), "Billed");
@@ -596,6 +602,10 @@ public class RestaurantModel {
         vacantRoomMasters = new TableMasterDao().findByStatusAndType(ETableStatus.VACANT, "Room");
         billedRoomTransactions = new TableTransactionDao().findByTableStatusAndType(ETableStatus.BILLED, "Sent", "Room");
         fullRoomTransactions = new TableTransactionDao().findByTableStatusAndType(ETableStatus.FULL, "Sent", "Room");
+        
+        vacantVipRoomMasters = new TableMasterDao().findByStatusAndType(ETableStatus.VACANT, "VipRoom");
+        billedVipRoomTransactions = new TableTransactionDao().findByTableStatusAndType(ETableStatus.BILLED, "Sent", "VipRoom");
+        fullVipRoomTransactions = new TableTransactionDao().findByTableStatusAndType(ETableStatus.FULL, "Sent", "VipRoom");
     }
 
     public void removeUnsavedTransactions() {
@@ -607,6 +617,9 @@ public class RestaurantModel {
 
         vacantRoomMasters = new TableMasterDao().findByStatusAndType(ETableStatus.VACANT, "Room");
         fullRoomTransactions = new TableTransactionDao().findByTableStatusAndType(ETableStatus.FULL, "Sent", "Room");
+                
+        vacantVipRoomMasters = new TableMasterDao().findByStatusAndType(ETableStatus.VACANT, "VipRoom");
+        fullVipRoomTransactions = new TableTransactionDao().findByTableStatusAndType(ETableStatus.FULL, "Sent", "VipRoom");
 
         availableTable = new TableMasterDao().findTotalByStatus(ETableStatus.VACANT);
         billedTable = new TableMasterDao().findTotalByStatus(ETableStatus.BILLED);
@@ -620,6 +633,9 @@ public class RestaurantModel {
         billedRoomTransactions = new TableTransactionDao().findByTableStatusAndType(ETableStatus.BILLED, "Sent", "Room");
         fullRoomTransactions = new TableTransactionDao().findByTableStatusAndType(ETableStatus.FULL, "Sent", "Room");
 
+        billedVipRoomTransactions = new TableTransactionDao().findByTableStatusAndType(ETableStatus.BILLED, "Sent", "VipRoom");
+        fullVipRoomTransactions = new TableTransactionDao().findByTableStatusAndType(ETableStatus.FULL, "Sent", "VipRoom");
+
         availableTable = new TableMasterDao().findTotalByStatus(ETableStatus.VACANT);
         billedTable = new TableMasterDao().findTotalByStatus(ETableStatus.BILLED);
         occupiedTable = new TableMasterDao().findTotalByStatus(ETableStatus.FULL);
@@ -631,6 +647,9 @@ public class RestaurantModel {
 
         vacantRoomMasters = new TableMasterDao().findByStatusAndType(ETableStatus.VACANT, "Room");
         billedRoomTransactions = new TableTransactionDao().findByTableStatusAndType(ETableStatus.BILLED, "Sent", "Room");
+
+        vacantVipRoomMasters = new TableMasterDao().findByStatusAndType(ETableStatus.VACANT, "VipRoom");
+        billedVipRoomTransactions = new TableTransactionDao().findByTableStatusAndType(ETableStatus.BILLED, "Sent", "VipRoom");
 
         availableTable = new TableMasterDao().findTotalByStatus(ETableStatus.VACANT);
         billedTable = new TableMasterDao().findTotalByStatus(ETableStatus.BILLED);
@@ -725,6 +744,10 @@ public class RestaurantModel {
             billedRoomTransactions = new TableTransactionDao().findByTableStatusAndType(ETableStatus.BILLED, "Sent", "Room");
             fullRoomTransactions = new TableTransactionDao().findByTableStatusAndType(ETableStatus.FULL, "Sent", "Room");
 
+            vacantVipRoomMasters = new TableMasterDao().findByStatusAndType(ETableStatus.VACANT, "VipRoom");
+            billedVipRoomTransactions = new TableTransactionDao().findByTableStatusAndType(ETableStatus.BILLED, "Sent", "VipRoom");
+            fullVipRoomTransactions = new TableTransactionDao().findByTableStatusAndType(ETableStatus.FULL, "Sent", "VipRoom");
+
             dailyCollection = new TableTransactionDao().findTotalByDate(new Date());
             dailyBilled = new TableTransactionDao().findTotalByDateAndTableStatus(new Date(), "Billed");
 
@@ -762,6 +785,10 @@ public class RestaurantModel {
             vacantRoomMasters = new TableMasterDao().findByStatusAndType(ETableStatus.VACANT, "Room");
             billedRoomTransactions = new TableTransactionDao().findByTableStatusAndType(ETableStatus.BILLED, "Sent", "Room");
             fullRoomTransactions = new TableTransactionDao().findByTableStatusAndType(ETableStatus.FULL, "Sent", "Room");
+
+            vacantVipRoomMasters = new TableMasterDao().findByStatusAndType(ETableStatus.VACANT, "VipRoom");
+            billedVipRoomTransactions = new TableTransactionDao().findByTableStatusAndType(ETableStatus.BILLED, "Sent", "VipRoom");
+            fullVipRoomTransactions = new TableTransactionDao().findByTableStatusAndType(ETableStatus.FULL, "Sent", "VipRoom");
 
             dailyCollection = new TableTransactionDao().findTotalByDate(new Date());
             dailyBilled = new TableTransactionDao().findTotalByDateAndTableStatus(new Date(), "Billed");
@@ -854,6 +881,10 @@ public class RestaurantModel {
             billedRoomTransactions = new TableTransactionDao().findByTableStatusAndType(ETableStatus.BILLED, "Sent", "Room");
             fullRoomTransactions = new TableTransactionDao().findByTableStatusAndType(ETableStatus.FULL, "Sent", "Room");
 
+            vacantVipRoomMasters = new TableMasterDao().findByStatusAndType(ETableStatus.VACANT, "VipRoom");
+            billedVipRoomTransactions = new TableTransactionDao().findByTableStatusAndType(ETableStatus.BILLED, "Sent", "VipRoom");
+            fullVipRoomTransactions = new TableTransactionDao().findByTableStatusAndType(ETableStatus.FULL, "Sent", "VipRoom");
+
             availableTable = new TableMasterDao().findTotalByStatus(ETableStatus.VACANT);
             billedTable = new TableMasterDao().findTotalByStatus(ETableStatus.BILLED);
             occupiedTable = new TableMasterDao().findTotalByStatus(ETableStatus.FULL);
@@ -887,6 +918,10 @@ public class RestaurantModel {
         billedRoomTransactions = new TableTransactionDao().findByTableStatusAndType(ETableStatus.BILLED, "Sent","Room");
         fullRoomTransactions = new TableTransactionDao().findByTableStatusAndType(ETableStatus.FULL, "Sent","Room");
         
+            vacantVipRoomMasters = new TableMasterDao().findByStatusAndType(ETableStatus.VACANT, "VipRoom");
+            billedVipRoomTransactions = new TableTransactionDao().findByTableStatusAndType(ETableStatus.BILLED, "Sent", "VipRoom");
+            fullVipRoomTransactions = new TableTransactionDao().findByTableStatusAndType(ETableStatus.FULL, "Sent", "VipRoom");
+
         dailyCollection = new TableTransactionDao().findTotalByDate(new Date());
         dailyBilled = new TableTransactionDao().findTotalByDateAndTableStatus(new Date(), "Billed");
 
