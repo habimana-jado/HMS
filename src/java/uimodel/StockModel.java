@@ -4,10 +4,10 @@ import dao.ItemDao;
 import dao.ItemDescriptionDao;
 import dao.PurchaseDao;
 import dao.VendorDao;
-import domain.Account;
 import domain.Item;
 import domain.ItemDescription;
 import domain.ItemUnit;
+import domain.Person;
 import domain.Purchase;
 import domain.Vendor;
 import java.util.ArrayList;
@@ -27,7 +27,7 @@ import javax.faces.context.FacesContext;
 @SessionScoped
 public class StockModel {
 
-    private Account loggedInUser = new Account();
+    private Person loggedInUser = new Person();
     private Vendor vendor = new Vendor();
     private List<Vendor> vendors = new VendorDao().findAll(Vendor.class);
     private List<Purchase> purchases = new PurchaseDao().findAll(Purchase.class);
@@ -56,7 +56,7 @@ public class StockModel {
     }
 
     public void userInit() {
-        loggedInUser = (Account) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("session");
+        loggedInUser = (Person) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("session");
     }
 
     public void searchItems() {
@@ -169,14 +169,15 @@ public class StockModel {
         return list;
     }
 
-    public Account getLoggedInUser() {
+    public Person getLoggedInUser() {
         return loggedInUser;
     }
 
-    public void setLoggedInUser(Account loggedInUser) {
+    public void setLoggedInUser(Person loggedInUser) {
         this.loggedInUser = loggedInUser;
     }
 
+   
     public Vendor getVendor() {
         return vendor;
     }

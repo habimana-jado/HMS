@@ -1,7 +1,6 @@
 
 package common;
 
-import dao.AccountDao;
 import dao.HibernateUtil;
 import dao.HotelConfigDao;
 import dao.PersonDao;
@@ -9,7 +8,6 @@ import dao.TableGroupDao;
 import dao.TableMasterDao;
 import dao.TableTransactionDao;
 import dao.UserDepartmentDao;
-import domain.Account;
 import domain.HotelConfig;
 import domain.Person;
 import domain.TableGroup;
@@ -19,24 +17,26 @@ import domain.UserDepartment;
 import enums.EStatus;
 import enums.ETableStatus;
 import java.util.List;
-import uimodel.RestaurantModel;
+import uimodel.RestaurantModel1;
 
 public class Test {
     public static void main(String[] args) throws Exception {
         
 //        HibernateUtil.getSessionFactory().openSession();
 //        HibernateUtil.getSessionFactory().close();
-//        UserDepartment dep = new UserDepartment();
-//        dep.setDepartmentName("ADMINISTRATOR");
-//        dep.setStatus(EStatus.ACTIVE);
-//        new UserDepartmentDao().register(dep);        
+        UserDepartment dep = new UserDepartment();
+        dep.setDepartmentName("ADMINISTRATOR");
+        dep.setStatus(EStatus.ACTIVE);
+        new UserDepartmentDao().register(dep);        
 //        UserDepartment dep = new UserDepartmentDao().findOne(UserDepartment.class, "6fbcc92c-30af-4f5f-8509-93f31819de07");
-//        Person u = new Person();
-//        u.setUserDepartment(dep);
-//        u.setNames("Kalisa");
-//        u.setPhone("0788909884");
-//        u.setStatus(EStatus.ACTIVE);
-//        new PersonDao().register(u);
+        Person u = new Person();
+        u.setUserDepartment(dep);
+        u.setNames("Kalisa");
+        u.setPhone("0788909884");
+        u.setUsername("admin");
+        u.setPassword(new PassCode().encrypt("admin"));
+        u.setStatus(EStatus.ACTIVE);
+        new PersonDao().register(u);
 //        
 //        Account a = new Account();
 //        a.setPerson(u);

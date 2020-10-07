@@ -1,8 +1,6 @@
 package uimodel;
 
-import dao.AccountDao;
 import dao.PersonDao;
-import domain.Account;
 import enums.EStatus;
 import domain.Person;
 import java.io.IOException;
@@ -17,7 +15,7 @@ import javax.faces.context.FacesContext;
 @SessionScoped
 public class AccountModel {
 
-    private Account account = new Account();
+    private Person account = new Person();
 
     private Person userDetails = new Person();
 
@@ -43,7 +41,7 @@ public class AccountModel {
         ExternalContext ec = FacesContext.getCurrentInstance().getExternalContext();
         if (account != null && account.getStatus().equals(EStatus.ACTIVE)) {
 
-            switch (account.getPerson().getUserDepartment().getDepartmentName()) {
+            switch (account.getUserDepartment().getDepartmentName()) {
                 case "ADMINISTRATOR":
                     FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("session", account);
                     ec.redirect(ec.getRequestContextPath() + "/Admin/employee.xhtml");
@@ -91,10 +89,10 @@ public class AccountModel {
     }
 
     public void findUser() throws Exception {
-        List<Account> accountsLogin = new AccountDao().loginencrypt(username, password);
+        List<Person> accountsLogin = new PersonDao().loginencrypt(username, password);
 
         if (!accountsLogin.isEmpty()) {
-            for (Account u : accountsLogin) {
+            for (Person u : accountsLogin) {
                 account = u;
             }
         } else {
@@ -107,14 +105,6 @@ public class AccountModel {
         account = null;
         ExternalContext ec = FacesContext.getCurrentInstance().getExternalContext();
         ec.redirect(ec.getRequestContextPath() + "/index.xhtml");
-    }
-
-    public Account getAccount() {
-        return account;
-    }
-
-    public void setAccount(Account account) {
-        this.account = account;
     }
 
     public Person getUserDetails() {

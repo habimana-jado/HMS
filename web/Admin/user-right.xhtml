@@ -97,7 +97,7 @@
                                 </ul>
                             </li>
                             <li>
-                                <a class="has-arrow" href="employee.xhtml" aria-expanded="false"><i class="fa big-icon fa-envelope icon-wrap"></i> <span class="mini-click-non">User Configuration </span></a>
+                                <a class="has-arrow" href="#" aria-expanded="false"><i class="fa big-icon fa-envelope icon-wrap"></i> <span class="mini-click-non">User Configuration </span></a>
                                 <ul class="submenu-angle" aria-expanded="false">
                                     <li><a title="Department" href="department.xhtml"><i class="fa fa-inbox sub-icon-mg" aria-hidden="true"></i> <span class="mini-sub-pro">Department</span></a></li>
                                     <li><a title="New User" href="employee.xhtml"><i class="fa fa-television sub-icon-mg" aria-hidden="true"></i> <span class="mini-sub-pro">New User</span></a></li>
@@ -138,7 +138,7 @@
                                     <li><a title="Restaurant Setting" href="restaurant.xhtml"><i class="fa fa-line-chart sub-icon-mg" aria-hidden="true"></i> <span class="mini-sub-pro">Restaurant Setting</span></a></li>
                                     <li><a title="Restaurant Menu Rate" href="#"><i class="fa fa-area-chart sub-icon-mg" aria-hidden="true"></i> <span class="mini-sub-pro">Restaurant Menu Rate</span></a></li>
                                     <li><a title="Table Group Master" href="tablegroup.xhtml"><i class="fa fa-pie-chart sub-icon-mg" aria-hidden="true"></i> <span class="mini-sub-pro">Table Group Master</span></a></li>
-                                    <li><a title="Table Master" href="#"><i class="fa fa-signal sub-icon-mg" aria-hidden="true"></i> <span class="mini-sub-pro">Table Master</span></a></li>
+                                    <li><a title="Table Master" href="table.xhtml"><i class="fa fa-signal sub-icon-mg" aria-hidden="true"></i> <span class="mini-sub-pro">Table Master</span></a></li>
 
                                 </ul>
                             </li>
@@ -290,10 +290,8 @@
                 <div class="container-fluid">
                     <div class="row" style="padding-left: 50px;">
                         <div class="col-lg-4">
-                            <h5>Table Configuration</h5>
-                            <div class="modal-area-button">
-                                <a class="Primary mg-b-10" href="#" data-toggle="modal" data-target="#PrimaryModalalert">New Table</a>
-                            </div>
+                            <h5>User Configuration</h5>
+                            
                         </div>
                         <div class="col-lg-8"></div>
                     </div>
@@ -301,212 +299,46 @@
                         <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                             <div class="tab-content-details shadow-reset">
 
-                                <div id="PrimaryModalalert" class="modal modal-adminpro-general default-popup-PrimaryModal fade" role="dialog">
-                                    <div class="modal-dialog">
-                                        <div class="modal-content">
-                                            <div class="modal-close-area modal-close-df">
-                                                <a class="close" data-dismiss="modal" href="#"><i class="fa fa-close"></i></a>
-                                            </div>
-                                            <div class="modal-body">
-                                                <h:form>
-                                                    <div class="form-group-inner">
-                                                        <div class="row">
-                                                            <div class="col-lg-3 col-md-3 col-sm-3 col-xs-12">
-                                                                <label class="login2 pull-right pull-right-pro">Table No.:</label>
-                                                            </div>
-                                                            <div class="col-lg-9 col-md-9 col-sm-9 col-xs-12">
-                                                                <h:inputText value="#{adminModel.tableMaster.tableNo}" class="form-control" required="true" requiredMessage="Please Fill Table No"/>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <div class="form-group-inner">
-                                                        <div class="row">
-                                                            <div class="col-lg-3 col-md-3 col-sm-3 col-xs-12">
-                                                                <label class="login2 pull-right pull-right-pro">Restaurant Name:</label>
-                                                            </div>
-                                                            <div class="col-lg-9 col-md-9 col-sm-9 col-xs-12">
-                                                                <h:selectOneMenu class="form-control" value="#{adminModel.restaurantId}" >
-                                                                    <f:selectItems value="#{adminModel.restaurants}" var="dep" itemLabel="#{dep.name}" itemValue="#{dep.restaurantId}" />
-                                                                </h:selectOneMenu>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <div class="form-group-inner">
-                                                        <div class="row">
-                                                            <div class="col-lg-3 col-md-3 col-sm-3 col-xs-12">
-                                                                <label class="login2 pull-right pull-right-pro">Group Name:</label>
-                                                            </div>
-                                                            <div class="col-lg-9 col-md-9 col-sm-9 col-xs-12">
-                                                                <h:selectOneMenu class="form-control" value="#{adminModel.tableGroupId}" >
-                                                                    <f:selectItems value="#{adminModel.tableGroups}" var="dep" itemLabel="#{dep.groupName}" itemValue="#{dep.tableGroupId}" />
-                                                                </h:selectOneMenu>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-
-                                                    <div class="form-group-inner">
-                                                        <div class="row">
-                                                            <div class="col-lg-3 col-md-3 col-sm-3 col-xs-12">
-                                                                <label class="login2 pull-right pull-right-pro">No. of Chairs</label>
-                                                            </div>
-                                                            <div class="col-lg-9 col-md-9 col-sm-9 col-xs-12">
-                                                                <h:inputText value="#{adminModel.tableMaster.chairNo}" class="form-control" />
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    
-                                                    <div class="form-group-inner">
-                                                        <div class="row">
-                                                            <div class="col-lg-3 col-md-3 col-sm-3 col-xs-12">
-                                                                <label class="login2 pull-right pull-right-pro">Type:</label>
-                                                            </div>
-                                                            <div class="col-lg-9 col-md-9 col-sm-9 col-xs-12">
-                                                                <h:selectOneMenu class="form-control" value="#{adminModel.tableMaster.type}">
-                                                                    <f:selectItem itemLabel="Table" itemValue="Table" />
-                                                                    <f:selectItem itemLabel="Room" itemValue="Room" />
-                                                                    <f:selectItem itemLabel="VIP Room" itemValue="VipRoom" />
-                                                                </h:selectOneMenu>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                                                                                                                            
-                                                    <div class="form-group-inner">
-                                                        <div class="row">
-                                                            <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
-                                                            </div>
-                                                            <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
-                                                                <h:commandButton class="btn btn-primary btn-sm" action="#{adminModel.registerTableMaster()}" value="Register"></h:commandButton>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </h:form>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-
-
-
-                                <!--Edit A User-->
-                                <div id="PrimaryModalalert2" class="modal modal-adminpro-general default-popup-PrimaryModal fade" role="dialog">
-                                    <div class="modal-dialog">
-                                        <div class="modal-content">
-                                            <div class="modal-close-area modal-close-df">
-                                                <a class="close" data-dismiss="modal" href="#"><i class="fa fa-close"></i></a>
-                                            </div>
-                                            <div class="modal-body">
-                                                <h:form>
-                                                    <div class="form-group-inner">
-                                                        <div class="row">
-                                                            <div class="col-lg-3 col-md-3 col-sm-3 col-xs-12">
-                                                                <label class="login2 pull-right pull-right-pro">User ID:</label>
-                                                            </div>
-                                                            <div class="col-lg-9 col-md-9 col-sm-9 col-xs-12">                                                            
-                                                                <p:inputMask mask="9999999999999" class="form-control" requiredMessage="Please Fill User ID"/>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <div class="form-group-inner">
-                                                        <div class="row">
-                                                            <div class="col-lg-3 col-md-3 col-sm-3 col-xs-12">
-                                                                <label class="login2 pull-right pull-right-pro">Full Name:</label>
-                                                            </div>
-                                                            <div class="col-lg-9 col-md-9 col-sm-9 col-xs-12">
-                                                                <h:inputText value="#{adminModel.editPerson.names}" class="form-control" required="true" requiredMessage="Please Fill Full Name"/>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-
-                                                    <div class="form-group-inner">
-                                                        <div class="row">
-                                                            <div class="col-lg-3 col-md-3 col-sm-3 col-xs-12">
-                                                                <label class="login2 pull-right pull-right-pro">Address:</label>
-                                                            </div>
-                                                            <div class="col-lg-9 col-md-9 col-sm-9 col-xs-12">
-                                                                <h:inputText value="#{adminModel.editPerson.address}" class="form-control" required="true" requiredMessage="Please Fill Address"/>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <div class="form-group-inner">
-                                                        <div class="row">
-                                                            <div class="col-lg-3 col-md-3 col-sm-3 col-xs-12">
-                                                                <label class="login2 pull-right pull-right-pro">Phone:</label>
-                                                            </div>
-                                                            <div class="col-lg-9 col-md-9 col-sm-9 col-xs-12">
-                                                                <p:inputMask mask="999 999 9999" value="#{adminModel.editPerson.phone}" class="form-control" required="true" requiredMessage="Please Fill Phone Number"/>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <div class="form-group-inner">
-                                                        <div class="row">
-                                                            <div class="col-lg-3 col-md-3 col-sm-3 col-xs-12">
-                                                                <label class="login2 pull-right pull-right-pro">Designation:</label>
-                                                            </div>
-                                                            <div class="col-lg-9 col-md-9 col-sm-9 col-xs-12">
-                                                                <h:inputText value="#{adminModel.editPerson.designation}" class="form-control" required="true" requiredMessage="Please Fill Salary"/>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <div class="form-group-inner">
-                                                        <div class="row">
-                                                            <div class="col-lg-3 col-md-3 col-sm-3 col-xs-12">
-                                                                <label class="login2 pull-right pull-right-pro">Department:</label>
-                                                            </div>
-                                                            <div class="col-lg-9 col-md-9 col-sm-9 col-xs-12">
-                                                                <h:selectOneMenu class="form-control" value="#{adminModel.userDepartmentId}" >
-                                                                    <f:selectItems value="#{adminModel.userDepartments}" var="dep" itemLabel="#{dep.departmentName}" itemValue="#{dep.departmentId}" />
-                                                                </h:selectOneMenu>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-
-                                                    <div class="form-group-inner">
-                                                        <div class="row">
-                                                            <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
-                                                            </div>
-                                                            <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
-                                                                <h:commandButton class="btn btn-primary btn-sm" action="#{adminModel.userRegister()}" value="Register"></h:commandButton>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </h:form>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <!--List Restaurant-->
+                                <!--List Users-->
                                 <h:form>
                                     <p:growl />
                                     <table class="table table-striped table-hover">
                                         <thead class="bg-light">
                                             <tr class="border-0">
                                                 <th class="border-0">#</th>
-                                                <th class="border-0">Table No</th>
-                                                <th class="border-0">Restaurant Name</th>
-                                                <th class="border-0">Group Name</th>
-                                                <th class="border-0">No. Chair</th>
+                                                <th class="border-0">Names</th>
+                                                <th class="border-0">Department</th>
+                                                <th class="border-0">Mobile</th>
+                                                <th class="border-0">Username</th>
+                                                <th class="border-0">Password</th>
+                                                <th class="border-0">Right</th>
                                                 <th class="border-0">Status</th>
-                                                <th class="border-0">Edit</th>
+                                                <th class="border-0">Submit</th>
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            <c:forEach items="#{adminModel.tableMasters}" var="elements" varStatus="status">
+                                            <c:forEach items="#{adminModel.users}" var="elements" varStatus="status">
                                                 <tr>
                                                     <td>${status.index+1}</td>
                                                     <td>
-                                                        #{elements.tableNo}
+                                                        #{elements.names}
+                                                    </td>
+                                                    <td>#{elements.userDepartment.departmentName}</td>
+                                                    <td>#{elements.phone}</td>
+                                                    <td>
+                                                        <h:inputText class="form-control" value="#{elements.username}" />
                                                     </td>
                                                     <td>
-                                                        #{elements.restaurant.name}
+                                                        <h:inputSecret class="form-control" value="#{elements.password}" />
                                                     </td>
-                                                    <td>#{elements.tableGroup.groupName}</td>
-                                                    <td>#{elements.chairNo}</td>
-                                                    <td>#{elements.tableStatus}</td>
                                                     <td>
-                                                        <h:commandLink action="#{adminModel.navigateEditEmployee(elements)}">
-                                                            <a class="btn btn-warning" href="#" data-toggle="modal" data-target="#PrimaryModalalert2">Edit</a>
-                                                        </h:commandLink>
+                                                        <h:selectOneMenu class="form-control" value="#{adminModel.userDepartmentId}" >
+                                                            <f:selectItems value="#{adminModel.userDepartments}" var="dep" itemLabel="#{dep.departmentName}" itemValue="#{dep.departmentId}" />
+                                                        </h:selectOneMenu>
+                                                    </td>
+                                                    <td>#{elements.status}</td>
+                                                    <td>
+                                                        <h:commandLink class="btn btn-sm btn-success" value="Submit" action="#{adminModel.updateAccount(elements)}"></h:commandLink>
                                                     </td>
                                                 </tr>
                                             </c:forEach>

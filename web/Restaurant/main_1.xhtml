@@ -8,7 +8,7 @@
     <h:head>
         <meta charset="utf-8"/>
         <meta http-equiv="x-ua-compatible" content="ie=edge"/>
-        <title>Restaurant</title>
+        <title>Employee</title>
         <meta name="description" content=""/>
         <meta name="viewport" content="width=device-width, initial-scale=1"/>
         <!-- favicon
@@ -92,21 +92,21 @@
                             <li>
                                 <a class="has-arrow">
                                     <span class="mini-click-non">
-                                        <h:outputLabel value="Date as on: #{restaurantModel.newDate}" />
+                                        <h:outputLabel value="Date as on: #{restaurantModel2.newDate}" />
                                     </span>
                                 </a>
                             </li>
                             <li style="padding-top: 20px;">
                                 <a class="has-arrow">
                                     <span class="mini-click-non">
-                                        <h:outputLabel value="Your Collection: #{restaurantModel.dailyCollection}" />
+                                        <h:outputLabel value="Your Collection: #{restaurantModel2.dailyCollection}" />
                                     </span>
                                 </a>
                             </li>
                             <li style="padding-top: 20px;">
                                 <a class="has-arrow">
                                     <span class="mini-click-non">
-                                        <h:outputLabel value="Table Billed: #{restaurantModel.dailyBilled}" />
+                                        <h:outputLabel value="Table Billed: #{restaurantModel2.dailyBilled}" />
                                     </span>
                                 </a>
                             </li>
@@ -122,28 +122,28 @@
                             <li style="padding-top: 10px;">
                                 <a class="has-arrow">
                                     <span class="mini-click-non">
-                                        <h:outputLabel class="btn btn-block btn-success font-weight-bold text-body" value="Available: #{restaurantModel.availableTable}" />
+                                        <h:outputLabel class="btn btn-block btn-success font-weight-bold text-body" value="Available: #{restaurantModel2.availableTable}" />
                                     </span>
                                 </a>
                             </li>
                             <li style="padding-top: 3px;">
                                 <a class="has-arrow">
                                     <span class="mini-click-non">
-                                        <h:outputLabel class="btn btn-block btn-danger font-weight-bold text-body" value="Occupied : #{restaurantModel.occupiedTable}" />
+                                        <h:outputLabel class="btn btn-block btn-danger font-weight-bold text-body" value="Occupied : #{restaurantModel2.occupiedTable}" />
                                     </span>
                                 </a>
                             </li>
                             <li style="padding-top: 3px;">
                                 <a class="has-arrow">
                                     <span class="mini-click-non">
-                                        <h:outputLabel class="btn btn-block font-weight-bold text-body"  style="background-color: #007ee5" value="Billed : #{restaurantModel.billedTable}" />
+                                        <h:outputLabel class="btn btn-block font-weight-bold text-body"  style="background-color: #007ee5" value="Billed : #{restaurantModel2.billedTable}" />
                                     </span>
                                 </a>
                             </li>
                             <li style="padding-top: 3px;">
                                 <a class="has-arrow">
                                     <span class="mini-click-non">
-                                        <h:outputLabel class="btn btn-block font-weight-bold text-white bg-dark" style="background-color: #000" value="Total : #{restaurantModel.occupiedTable + restaurantModel.billedTable + restaurantModel.availableTable}" />
+                                        <h:outputLabel class="btn btn-block font-weight-bold text-white bg-dark" style="background-color: #000" value="Total : #{restaurantModel2.occupiedTable + restaurantModel2.billedTable + restaurantModel2.availableTable}" />
                                     </span>
                                 </a>
                             </li>
@@ -361,7 +361,7 @@
 
             <!-- Modals Start-->
             <p:dialog header="Restaurant KOT" id="dialog" widgetVar="dlg2" modal="true">
-                <p:ajax update="tablelist, viproomlist, roomlist" event="close" listener="#{restaurantModel.removeUnsavedTransactions()}" />
+                <p:ajax update="tablelist" event="close" listener="#{restaurantModel2.removeUnsavedTransactions()}" />
                 <p:growl id="msg" />
                 <h:form>
                     <div class="row">
@@ -373,14 +373,14 @@
                                         <label class="login2 pull-right pull-right-pro">Item Name:</label>
                                     </div>
                                     <div class="col-lg-9 col-md-9 col-sm-9 col-xs-12">
-                                        <p:inputText id="itemId" value="#{restaurantModel.itemSearchKeyWord}" class="form-control" >
-                                            <p:ajax event="keyup" listener="#{restaurantModel.searchItems()}" update="suggestionsTable"/>           
+                                        <p:inputText id="itemId" value="#{restaurantModel2.itemSearchKeyWord}" class="form-control" >
+                                            <p:ajax event="keyup" listener="#{restaurantModel2.searchItems()}" update="suggestionsTable"/>           
                                         </p:inputText>
 
-                                        <h:dataTable id="suggestionsTable" value="#{restaurantModel.suggestedItems}" var="item">
+                                        <h:dataTable id="suggestionsTable" value="#{restaurantModel2.suggestedItems}" var="item">
                                             <h:column>
                                                 <p:commandLink value="#{item.itemName}" oncomplete="PF('dlg2').show();" class="btn btn-link">
-                                                    <p:ajax event="click" listener="#{restaurantModel.chooseItem(item)}" update="@form"/> 
+                                                    <p:ajax event="click" listener="#{restaurantModel2.chooseItem(item)}" update="@form"/> 
                                                 </p:commandLink>
                                             </h:column>
                                         </h:dataTable>
@@ -393,7 +393,7 @@
                                         <label class="login2 pull-right pull-right-pro">Quantity:</label>
                                     </div>
                                     <div class="col-lg-9 col-md-9 col-sm-9 col-xs-12">
-                                        <h:inputText value="#{restaurantModel.tableTransaction.quantity}" class="form-control" required="true" requiredMessage="Please Fill Quantity"/>
+                                        <h:inputText value="#{restaurantModel2.tableTransaction.quantity}" class="form-control" required="true" requiredMessage="Please Fill Quantity"/>
                                     </div>
                                 </div>
                             </div>
@@ -403,7 +403,7 @@
                                         <label class="login2 pull-right pull-right-pro">KOT Remarks:</label>
                                     </div>
                                     <div class="col-lg-9 col-md-9 col-sm-9 col-xs-12">
-                                        <h:inputText value="#{restaurantModel.tableTransaction.kotRemarks}" class="form-control"/>
+                                        <h:inputText value="#{restaurantModel2.tableTransaction.kotRemarks}" class="form-control"/>
                                     </div>
                                 </div>
                             </div>
@@ -413,9 +413,9 @@
                                         <label class="login2 pull-right pull-right-pro">Waiter Name:</label>
                                     </div>
                                     <div class="col-lg-9 col-md-9 col-sm-9 col-xs-12">
-                                        <h:selectOneMenu value="#{restaurantModel.waiterId}" class="form-control">
+                                        <h:selectOneMenu value="#{restaurantModel2.waiterId}" class="form-control">
                                             <f:selectItem itemValue="" itemLabel="--Select Waiter--" noSelectionOption="true" />
-                                            <f:selectItems value="#{restaurantModel.waiters}" var="waiter" itemValue="#{waiter.userId}" itemLabel="#{waiter.names}" />
+                                            <f:selectItems value="#{restaurantModel2.waiters}" var="waiter" itemValue="#{waiter.userId}" itemLabel="#{waiter.names}" />
                                         </h:selectOneMenu>
                                     </div>
                                 </div>
@@ -425,7 +425,7 @@
                                     <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
                                     </div>
                                     <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
-                                        <p:commandButton class="btn btn-primary btn-sm" action="#{restaurantModel.registerTransaction()}" value="Register" update="@form :msg" oncomplete="PF('dlg2').show();" ></p:commandButton>
+                                        <p:commandButton class="btn btn-primary btn-sm" action="#{restaurantModel2.registerTransaction()}" value="Register" update="@form :msg" oncomplete="PF('dlg2').show();" ></p:commandButton>
                                     </div>
                                 </div>
                             </div>
@@ -444,10 +444,10 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <c:forEach items="#{restaurantModel.tableTransactions}" var="elements" varStatus="status">
+                                    <c:forEach items="#{restaurantModel2.tableTransactions}" var="elements" varStatus="status">
                                         <tr>
                                             <td>
-                                                <p:commandLink update="@form" actionListener="#{restaurantModel.deleteTransaction(elements)}" process="@this" value="Delete" class="btn btn-link" />
+                                                <p:commandLink update="@form" actionListener="#{restaurantModel2.deleteTransaction(elements)}" process="@this" value="Delete" class="btn btn-link" />
                                             </td>
                                             <td>${status.index+1}</td>
                                             <td>
@@ -476,12 +476,12 @@
                                     <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
                                         <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
                                             <p:commandButton value="Save" update="@form" oncomplete="PF('dlg2').show();" icon="pi pi-save">
-                                                <p:ajax event="click" listener="#{restaurantModel.completeTransaction()}"/> 
+                                                <p:ajax event="click" listener="#{restaurantModel2.completeTransaction()}"/> 
                                             </p:commandButton>
                                         </div>
                                         <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
                                             <p:commandButton value="Save + Print" update="@form" oncomplete="PF('dlg2').show();" >
-                                                <p:ajax event="click" listener="#{restaurantModel.completeTransactionAndPrint()}"/> 
+                                                <p:ajax event="click" listener="#{restaurantModel2.completeTransactionAndPrint()}"/> 
                                             </p:commandButton>
                                         </div>
                                     </div>
@@ -493,19 +493,19 @@
             </p:dialog>
 
             <p:dialog header="Restaurant Payment" id="dialogPayment" widgetVar="dlgpayment" modal="true">
-                <p:ajax update="tablelist, viproomlist, roomlist" event="close" listener="#{restaurantModel.updatePaymentTables()}" />
+                <p:ajax update="tablelist" event="close" listener="#{restaurantModel2.updatePaymentTables()}" />
                 <h:form id="restaurantpayment">
                     <div class="row">                        
                         <div class="col-lg-12 col-md-12 col-sm-12">
                             <div class="row">
                                 <div class="col-lg-3">
-                                    <h:outputLabel value="Table No.: #{restaurantModel.chosenTableMaster.tableNo}" />
+                                    <h:outputLabel value="Table No.: #{restaurantModel2.chosenTableMaster.tableNo}" />
                                 </div>
                                 <div class="col-lg-3">
-                                    <h:outputLabel value="Waiter: #{restaurantModel.chosenTableMaster.person.names}" />
+                                    <h:outputLabel value="Waiter: #{restaurantModel2.chosenTableMaster.person.names}" />
                                 </div>
                                 <div class="col-lg-3">
-                                    <h:outputLabel value="Date Time: #{restaurantModel.newDate}" />
+                                    <h:outputLabel value="Date Time: #{restaurantModel2.newDate}" />
                                 </div>
                                 <div class="col-lg-3">
                                     <h:outputLabel value="Customer: Cash " />
@@ -523,7 +523,7 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <c:forEach items="#{restaurantModel.tableTransactions}" var="elements" varStatus="status">
+                                    <c:forEach items="#{restaurantModel2.tableTransactions}" var="elements" varStatus="status">
                                         <tr>
                                             <td>${status.index+1}</td>
                                             <td>
@@ -549,11 +549,11 @@
                                 <tfoot>
                                     <tr>
                                         <td>Beverage Amount:</td>
-                                        <td>#{restaurantModel.totalBilledBeverage}</td>                                        
+                                        <td>#{restaurantModel2.totalBilledBeverage}</td>                                        
                                         <td>Food Amount:</td>
-                                        <td>#{restaurantModel.totalBilledFoods}</td>
+                                        <td>#{restaurantModel2.totalBilledFoods}</td>
                                         <td>Net Amount:</td>
-                                        <td>#{restaurantModel.totalBilledBeverage + restaurantModel.totalBilledFoods}</td>
+                                        <td>#{restaurantModel2.totalBilledBeverage + restaurantModel2.totalBilledFoods}</td>
                                     </tr>
                                 </tfoot>
                             </table>
@@ -563,7 +563,7 @@
                                         <label class="login2 pull-right pull-right-pro">Mobile No.:</label>
                                     </div>
                                     <div class="col-lg-9 col-md-9 col-sm-9 col-xs-12">
-                                        <h:inputText value="#{restaurantModel.payment.mobileNumber}" class="form-control" />
+                                        <h:inputText value="#{restaurantModel2.payment.mobileNumber}" class="form-control" />
                                     </div>
                                 </div>
                             </div>
@@ -573,7 +573,7 @@
                                         <label class="login2 pull-right pull-right-pro">Payment Mode:</label>
                                     </div>
                                     <div class="col-lg-9 col-md-9 col-sm-9 col-xs-12">
-                                        <h:selectOneMenu class="form-control" value="#{restaurantModel.payment.paymentMode}">
+                                        <h:selectOneMenu class="form-control" value="#{restaurantModel2.payment.paymentMode}">
                                             <f:selectItem itemValue="CASH" itemLabel="CASH" />
                                             <f:selectItem itemValue="CARD" itemLabel="CARD" />
                                             <f:selectItem itemValue="CREDIT" itemLabel="CREDIT" />
@@ -590,7 +590,7 @@
                                     </div>
                                     <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
                                         <p:commandButton value="Save" oncomplete="PF('dlgpayment').show();" >
-                                            <p:ajax event="click" listener="#{restaurantModel.payTransaction()}"/> 
+                                            <p:ajax event="click" listener="#{restaurantModel2.payTransaction()}"/> 
                                         </p:commandButton>
                                     </div>
                                 </div>
@@ -601,19 +601,19 @@
             </p:dialog>
 
             <p:dialog header="Restaurant Invoice" id="dialogBilling" widgetVar="dlgBilling" modal="true">
-                <p:ajax update="tablelist, viproomlist, roomlist" event="close" listener="#{restaurantModel.updateBillingTables()}" />
+                <p:ajax update="tablelist" event="close" listener="#{restaurantModel2.updateBillingTables()}" />
                 <h:form id="restaurantinvoice">
                     <div class="row">                        
                         <div class="col-lg-12 col-md-12 col-sm-12">
                             <div class="row">
                                 <div class="col-lg-3">
-                                    <h:outputLabel value="Table No.: #{restaurantModel.chosenTableMaster.tableNo}" />
+                                    <h:outputLabel value="Table No.: #{restaurantModel2.chosenTableMaster.tableNo}" />
                                 </div>
                                 <div class="col-lg-3">
-                                    <h:outputLabel value="Waiter: #{restaurantModel.chosenTableMaster.person.names}" />
+                                    <h:outputLabel value="Waiter: #{restaurantModel2.chosenTableMaster.person.names}" />
                                 </div>
                                 <div class="col-lg-3">
-                                    <h:outputLabel value="Date Time: #{restaurantModel.newDate}" />
+                                    <h:outputLabel value="Date Time: #{restaurantModel2.newDate}" />
                                 </div>
                                 <div class="col-lg-3">
                                     <h:outputLabel value="Customer: Cash " />
@@ -631,7 +631,7 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <c:forEach items="#{restaurantModel.tableTransactions}" var="elements" varStatus="status">
+                                    <c:forEach items="#{restaurantModel2.tableTransactions}" var="elements" varStatus="status">
                                         <tr>
                                             <td>${status.index+1}</td>
                                             <td>
@@ -657,11 +657,11 @@
                                 <tfoot>
                                     <tr>
                                         <td>Beverage Amount:</td>
-                                        <td>#{restaurantModel.totalBilledBeverage}</td>                                        
+                                        <td>#{restaurantModel2.totalBilledBeverage}</td>                                        
                                         <td>Food Amount:</td>
-                                        <td>#{restaurantModel.totalBilledFoods}</td>
+                                        <td>#{restaurantModel2.totalBilledFoods}</td>
                                         <td>Net Amount:</td>
-                                        <td>#{restaurantModel.totalBilledBeverage + restaurantModel.totalBilledFoods}</td>
+                                        <td>#{restaurantModel2.totalBilledBeverage + restaurantModel2.totalBilledFoods}</td>
                                     </tr>
                                 </tfoot>
                             </table>
@@ -671,7 +671,7 @@
                                         <label class="login2 pull-right pull-right-pro">Mobile No.:</label>
                                     </div>
                                     <div class="col-lg-9 col-md-9 col-sm-9 col-xs-12">
-                                        <h:inputText value="#{restaurantModel.payerNumber}" class="form-control" />
+                                        <h:inputText value="#{restaurantModel2.payerNumber}" class="form-control" />
                                     </div>
                                 </div>
                             </div>
@@ -681,7 +681,7 @@
                                         <label class="login2 pull-right pull-right-pro">Payment Mode:</label>
                                     </div>
                                     <div class="col-lg-9 col-md-9 col-sm-9 col-xs-12" >
-                                        <h:selectOneMenu class="form-control" value="#{restaurantModel.paymentMode}">
+                                        <h:selectOneMenu class="form-control" value="#{restaurantModel2.paymentMode}">
                                             <f:selectItem itemValue="CASH" itemLabel="CASH" />
                                             <f:selectItem itemValue="CARD" itemLabel="CARD" />
                                             <f:selectItem itemValue="CREDIT" itemLabel="CREDIT" />
@@ -698,7 +698,7 @@
                                     </div>
                                     <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
                                         <p:commandButton value="Print" oncomplete="PF('dlgBilling').hide();"  >
-                                            <p:ajax event="click" listener="#{restaurantModel.printKotBill()}"/> 
+                                            <p:ajax event="click" listener="#{restaurantModel2.printKotBill()}"/> 
                                         </p:commandButton>
                                     </div>
                                 </div>
@@ -714,7 +714,7 @@
 
                         <div class="row">
                             <center><h3>Rooms</h3></center>
-                            <c:forEach items="#{restaurantModel.roomMasters}" var="item">
+                            <c:forEach items="#{restaurantModel2.fullRoomTransactions}" var="item">
                                 <div class="col-sm-4">
                                     <div class="login-form-area adminpro-pd mg-tb-15">
                                         <div class="container-fluid">                            
@@ -722,35 +722,13 @@
                                                 <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                                                     <div class="tab-content-details shadow-reset">
                                                         <div class="row">
-                                                            <c:choose>
-                                                                <c:when test="#{item.tableStatus eq 'FULL'}">
-                                                                    <h:outputLabel value="#{item.tableNo}" class="btn btn-block btn-danger" />                                                                       
-                                                                </c:when>
-                                                                <c:when test="#{item.tableStatus eq 'BILLED'}">
-                                                                    <h:outputLabel value="#{item.tableNo}" class="btn btn-block" style="background-color: #007ee5" />                                                                       
-                                                                </c:when>
-                                                                <c:when test="#{item.tableStatus eq 'VACANT'}">
-                                                                    <h:outputLabel value="#{item.tableNo}" class="btn btn-block btn-success" />                                                                       
-                                                                </c:when>
-                                                            </c:choose> 
+                                                            <h:outputLabel value="#{item.tableNo}" class="btn btn-block btn-danger" />    
                                                         </div>
                                                         <div class="row">
-                                                            <div class="col-lg-6">
-                                                                <c:choose>
-                                                                    <c:when test="#{item.tableStatus eq 'FULL'}">
-                                                                        <h:outputLabel value="#{item.person.names}" />                                                                       
-                                                                    </c:when>
-                                                                    <c:when test="#{item.tableStatus eq 'BILLED'}">
-                                                                        <h:outputLabel value="#{item.person.names}" />                                                                       
-                                                                    </c:when>
-                                                                    <c:when test="#{item.tableStatus eq 'VACANT'}">
-                                                                        <h:outputLabel value="Available" />                                                                       
-                                                                    </c:when>
-                                                                </c:choose>                                                                 
-                                                            </div>
+                                                            <div class="col-lg-6">#{item.person.names}</div>
                                                             <div class="col-sm-6">
                                                                 <div class="col-sm-6">
-                                                                    <p:commandButton update=":dialog" oncomplete="PF('dlg2').show();" actionListener="#{restaurantModel.populateSentTableTransactions(item)}" class="btn btn-link" value="KOT" >
+                                                                    <p:commandButton update=":dialog" oncomplete="PF('dlg2').show();" actionListener="#{restaurantModel2.populateSentTableTransactions(item)}" class="btn btn-link" value="KOT" >
                                                                     </p:commandButton>
                                                                 </div>
                                                             </div>
@@ -758,37 +736,13 @@
                                                         <div class="row">
                                                             <div class="col-sm-6"></div>
                                                             <div class="col-sm-6">
-                                                                <c:choose>
-                                                                    <c:when test="#{item.tableStatus eq 'FULL'}">
-                                                                        <p:commandButton update=":dialogBilling" oncomplete="PF('dlgBilling').show();" actionListener="#{restaurantModel.populateBilledTableTransactions(item)}" class="btn btn-link" value="Billing" >
-                                                                        </p:commandButton>                                                                   
-                                                                    </c:when>
-                                                                    <c:when test="#{item.tableStatus eq 'BILLED'}">
-                                                                        <p:commandButton update=":dialogBilling" oncomplete="PF('dlgBilling').show();" actionListener="#{restaurantModel.populateBilledTableTransactions(item)}" class="btn btn-link" value="Billing" >
-                                                                        </p:commandButton>                                                                    
-                                                                    </c:when>
-                                                                    <c:when test="#{item.tableStatus eq 'VACANT'}">
-                                                                        <h:outputLabel value="History" />                                                                       
-                                                                    </c:when>
-                                                                </c:choose>                                                                 
+                                                                <p:commandButton update=":dialogBilling" oncomplete="PF('dlgBilling').show();" actionListener="#{restaurantModel2.populateBilledTableTransactions(item)}" class="btn btn-link" value="Billing" >
+                                                                </p:commandButton>
                                                             </div>
                                                         </div>
                                                         <div class="row">
                                                             <div class="col-sm-6"></div>
-                                                            <div class="col-sm-6">
-                                                                <c:choose>
-                                                                    <c:when test="#{item.tableStatus eq 'FULL'}">
-                                                                        <h:commandButton class="btn btn-link" value="At Glance" />                                                
-                                                                    </c:when>
-                                                                    <c:when test="#{item.tableStatus eq 'BILLED'}">
-                                                                        <p:commandButton update=":dialogPayment" oncomplete="PF('dlgpayment').show();" actionListener="#{restaurantModel.populateSentTableTransactions(item)}" class="btn btn-link" value="Payment" >
-                                                                        </p:commandButton>                                                                 
-                                                                    </c:when>
-                                                                    <c:when test="#{item.tableStatus eq 'VACANT'}">
-                                                                        <h:commandButton class="btn btn-link" value="At Glance" />                                                           
-                                                                    </c:when>
-                                                                </c:choose>  
-                                                            </div>
+                                                            <div class="col-sm-6"><h:commandButton class="btn btn-link" value="At Glance" /></div>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -798,14 +752,86 @@
                                 </div>  
                             </c:forEach>
                         </div>
-                        
-                        
+                        <div class="row">
+                            <c:forEach items="#{restaurantModel2.billedRoomTransactions}" var="item">
+                                <div class="col-sm-4">
+                                    <div class="login-form-area adminpro-pd mg-tb-15">
+                                        <div class="container-fluid">                            
+                                            <div class="row">
+                                                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                                    <div class="tab-content-details shadow-reset">
+                                                        <div class="row">
+                                                            <h:outputLabel value="#{item.tableNo}" class="btn btn-block" style="background-color: #007ee5" />    
+                                                        </div>
+                                                        <div class="row">
+                                                            <div class="col-lg-6">#{item.person.names}</div>
+                                                            <div class="col-sm-6">
+                                                                <p:commandButton update=":dialog" oncomplete="PF('dlg2').show();" actionListener="#{restaurantModel2.populateSentTableTransactions(item)}" class="btn btn-link" value="KOT" >
+                                                                </p:commandButton>
+                                                            </div>
+                                                        </div>
+                                                        <div class="row">
+                                                            <div class="col-sm-6"></div>
+                                                            <div class="col-sm-6">
+                                                                <p:commandButton update=":dialogBilling" oncomplete="PF('dlgBilling').show();" actionListener="#{restaurantModel2.populateBilledTableTransactions(item)}" class="btn btn-link" value="Billing" >
+                                                                </p:commandButton>
+                                                            </div>
+                                                        </div>
+                                                        <div class="row">
+                                                            <div class="col-sm-6"></div>
+                                                            <div class="col-sm-6">
+                                                                <p:commandButton update=":dialogPayment" oncomplete="PF('dlgpayment').show();" actionListener="#{restaurantModel2.populateSentTableTransactions(item)}" class="btn btn-link" value="Payment" >
+                                                                </p:commandButton>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>                    
+                            </c:forEach>
+                        </div>
+                        <div class="row">
+                            <c:forEach items="#{restaurantModel2.vacantRoomMasters}" var="item">
+                                <div class="col-sm-4">
+                                    <div class="login-form-area adminpro-pd mg-tb-15">
+                                        <div class="container-fluid">                            
+                                            <div class="row">
+                                                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                                    <div class="tab-content-details shadow-reset">
+                                                        <div class="row">
+                                                            <h:outputLabel value="#{item.tableNo}" class="btn btn-block btn-success"  />    
+                                                        </div>
+                                                        <div class="row">
+                                                            <div class="col-sm-6">Available</div>
+                                                            <div class="col-sm-6">
+                                                                <p:commandButton update=":dialog" oncomplete="PF('dlg2').show();" actionListener="#{restaurantModel2.populateTableTransactions(item)}" class="btn btn-link" value="KOT" >
+                                                                </p:commandButton>
+                                                            </div>
+                                                        </div>
+                                                        <div class="row">
+                                                            <div class="col-sm-6"></div>
+                                                            <div class="col-sm-6"><h:commandButton class="btn btn-link" value="History" /></div>
+                                                        </div>
+                                                        <div class="row">
+                                                            <div class="col-sm-6"></div>
+                                                            <div class="col-sm-6"><h:commandButton class="btn btn-link" value="At Glance" /></div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>                    
+                            </c:forEach>
+                        </div>
                     </h:form>
                     <h:form id="viproomlist" style="padding-left: 50px;">
 
                         <div class="row">
                             <center><h3>VIP Rooms</h3></center>
-                            <c:forEach items="#{restaurantModel.vipRoomMasters}" var="item">
+                            <c:forEach items="#{restaurantModel2.fullVipRoomTransactions}" var="item">
                                 <div class="col-sm-4">
                                     <div class="login-form-area adminpro-pd mg-tb-15">
                                         <div class="container-fluid">                            
@@ -813,35 +839,13 @@
                                                 <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                                                     <div class="tab-content-details shadow-reset">
                                                         <div class="row">
-                                                            <c:choose>
-                                                                <c:when test="#{item.tableStatus eq 'FULL'}">
-                                                                    <h:outputLabel value="#{item.tableNo}" class="btn btn-block btn-danger" />                                                                       
-                                                                </c:when>
-                                                                <c:when test="#{item.tableStatus eq 'BILLED'}">
-                                                                    <h:outputLabel value="#{item.tableNo}" class="btn btn-block" style="background-color: #007ee5" />                                                                       
-                                                                </c:when>
-                                                                <c:when test="#{item.tableStatus eq 'VACANT'}">
-                                                                    <h:outputLabel value="#{item.tableNo}" class="btn btn-block btn-success" />                                                                       
-                                                                </c:when>
-                                                            </c:choose> 
+                                                            <h:outputLabel value="#{item.tableNo}" class="btn btn-block btn-danger" />    
                                                         </div>
                                                         <div class="row">
-                                                            <div class="col-lg-6">
-                                                                <c:choose>
-                                                                    <c:when test="#{item.tableStatus eq 'FULL'}">
-                                                                        <h:outputLabel value="#{item.person.names}" />                                                                       
-                                                                    </c:when>
-                                                                    <c:when test="#{item.tableStatus eq 'BILLED'}">
-                                                                        <h:outputLabel value="#{item.person.names}" />                                                                       
-                                                                    </c:when>
-                                                                    <c:when test="#{item.tableStatus eq 'VACANT'}">
-                                                                        <h:outputLabel value="Available" />                                                                       
-                                                                    </c:when>
-                                                                </c:choose>                                                                 
-                                                            </div>
+                                                            <div class="col-lg-6">#{item.person.names}</div>
                                                             <div class="col-sm-6">
                                                                 <div class="col-sm-6">
-                                                                    <p:commandButton update=":dialog" oncomplete="PF('dlg2').show();" actionListener="#{restaurantModel.populateSentTableTransactions(item)}" class="btn btn-link" value="KOT" >
+                                                                    <p:commandButton update=":dialog" oncomplete="PF('dlg2').show();" actionListener="#{restaurantModel2.populateSentTableTransactions(item)}" class="btn btn-link" value="KOT" >
                                                                     </p:commandButton>
                                                                 </div>
                                                             </div>
@@ -849,37 +853,13 @@
                                                         <div class="row">
                                                             <div class="col-sm-6"></div>
                                                             <div class="col-sm-6">
-                                                                <c:choose>
-                                                                    <c:when test="#{item.tableStatus eq 'FULL'}">
-                                                                        <p:commandButton update=":dialogBilling" oncomplete="PF('dlgBilling').show();" actionListener="#{restaurantModel.populateBilledTableTransactions(item)}" class="btn btn-link" value="Billing" >
-                                                                        </p:commandButton>                                                                   
-                                                                    </c:when>
-                                                                    <c:when test="#{item.tableStatus eq 'BILLED'}">
-                                                                        <p:commandButton update=":dialogBilling" oncomplete="PF('dlgBilling').show();" actionListener="#{restaurantModel.populateBilledTableTransactions(item)}" class="btn btn-link" value="Billing" >
-                                                                        </p:commandButton>                                                                    
-                                                                    </c:when>
-                                                                    <c:when test="#{item.tableStatus eq 'VACANT'}">
-                                                                        <h:outputLabel value="History" />                                                                       
-                                                                    </c:when>
-                                                                </c:choose>                                                                 
+                                                                <p:commandButton update=":dialogBilling" oncomplete="PF('dlgBilling').show();" actionListener="#{restaurantModel2.populateBilledTableTransactions(item)}" class="btn btn-link" value="Billing" >
+                                                                </p:commandButton>
                                                             </div>
                                                         </div>
                                                         <div class="row">
                                                             <div class="col-sm-6"></div>
-                                                            <div class="col-sm-6">
-                                                                <c:choose>
-                                                                    <c:when test="#{item.tableStatus eq 'FULL'}">
-                                                                        <h:commandButton class="btn btn-link" value="At Glance" />                                                
-                                                                    </c:when>
-                                                                    <c:when test="#{item.tableStatus eq 'BILLED'}">
-                                                                        <p:commandButton update=":dialogPayment" oncomplete="PF('dlgpayment').show();" actionListener="#{restaurantModel.populateSentTableTransactions(item)}" class="btn btn-link" value="Payment" >
-                                                                        </p:commandButton>                                                                 
-                                                                    </c:when>
-                                                                    <c:when test="#{item.tableStatus eq 'VACANT'}">
-                                                                        <h:commandButton class="btn btn-link" value="At Glance" />                                                           
-                                                                    </c:when>
-                                                                </c:choose>  
-                                                            </div>
+                                                            <div class="col-sm-6"><h:commandButton class="btn btn-link" value="At Glance" /></div>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -889,13 +869,86 @@
                                 </div>  
                             </c:forEach>
                         </div>
-                        
+                        <div class="row">
+                            <c:forEach items="#{restaurantModel2.billedVipRoomTransactions}" var="item">
+                                <div class="col-sm-4">
+                                    <div class="login-form-area adminpro-pd mg-tb-15">
+                                        <div class="container-fluid">                            
+                                            <div class="row">
+                                                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                                    <div class="tab-content-details shadow-reset">
+                                                        <div class="row">
+                                                            <h:outputLabel value="#{item.tableNo}" class="btn btn-block" style="background-color: #007ee5" />    
+                                                        </div>
+                                                        <div class="row">
+                                                            <div class="col-lg-6">#{item.person.names}</div>
+                                                            <div class="col-sm-6">
+                                                                <p:commandButton update=":dialog" oncomplete="PF('dlg2').show();" actionListener="#{restaurantModel2.populateSentTableTransactions(item)}" class="btn btn-link" value="KOT" >
+                                                                </p:commandButton>
+                                                            </div>
+                                                        </div>
+                                                        <div class="row">
+                                                            <div class="col-sm-6"></div>
+                                                            <div class="col-sm-6">
+                                                                <p:commandButton update=":dialogBilling" oncomplete="PF('dlgBilling').show();" actionListener="#{restaurantModel2.populateBilledTableTransactions(item)}" class="btn btn-link" value="Billing" >
+                                                                </p:commandButton>
+                                                            </div>
+                                                        </div>
+                                                        <div class="row">
+                                                            <div class="col-sm-6"></div>
+                                                            <div class="col-sm-6">
+                                                                <p:commandButton update=":dialogPayment" oncomplete="PF('dlgpayment').show();" actionListener="#{restaurantModel2.populateSentTableTransactions(item)}" class="btn btn-link" value="Payment" >
+                                                                </p:commandButton>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>                    
+                            </c:forEach>
+                        </div>
+                        <div class="row">
+                            <c:forEach items="#{restaurantModel2.vacantVipRoomMasters}" var="item">
+                                <div class="col-sm-4">
+                                    <div class="login-form-area adminpro-pd mg-tb-15">
+                                        <div class="container-fluid">                            
+                                            <div class="row">
+                                                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                                    <div class="tab-content-details shadow-reset">
+                                                        <div class="row">
+                                                            <h:outputLabel value="#{item.tableNo}" class="btn btn-block btn-success"  />    
+                                                        </div>
+                                                        <div class="row">
+                                                            <div class="col-sm-6">Available</div>
+                                                            <div class="col-sm-6">
+                                                                <p:commandButton update=":dialog" oncomplete="PF('dlg2').show();" actionListener="#{restaurantModel2.populateTableTransactions(item)}" class="btn btn-link" value="KOT" >
+                                                                </p:commandButton>
+                                                            </div>
+                                                        </div>
+                                                        <div class="row">
+                                                            <div class="col-sm-6"></div>
+                                                            <div class="col-sm-6"><h:commandButton class="btn btn-link" value="History" /></div>
+                                                        </div>
+                                                        <div class="row">
+                                                            <div class="col-sm-6"></div>
+                                                            <div class="col-sm-6"><h:commandButton class="btn btn-link" value="At Glance" /></div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>                    
+                            </c:forEach>
+                        </div>
                     </h:form>
                     <h:form id="tablelist" style="padding-left: 50px;">
 
                         <div class="row">
                             <center><h3>Tables</h3></center>
-                            <c:forEach items="#{restaurantModel.tableMasters}" var="item">
+                            <c:forEach items="#{restaurantModel2.fullTableTransactions}" var="item">
                                 <div class="col-sm-4">
                                     <div class="login-form-area adminpro-pd mg-tb-15">
                                         <div class="container-fluid">                            
@@ -903,35 +956,13 @@
                                                 <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                                                     <div class="tab-content-details shadow-reset">
                                                         <div class="row">
-                                                            <c:choose>
-                                                                <c:when test="#{item.tableStatus eq 'FULL'}">
-                                                                    <h:outputLabel value="#{item.tableNo}" class="btn btn-block btn-danger" />                                                                       
-                                                                </c:when>
-                                                                <c:when test="#{item.tableStatus eq 'BILLED'}">
-                                                                    <h:outputLabel value="#{item.tableNo}" class="btn btn-block" style="background-color: #007ee5" />                                                                       
-                                                                </c:when>
-                                                                <c:when test="#{item.tableStatus eq 'VACANT'}">
-                                                                    <h:outputLabel value="#{item.tableNo}" class="btn btn-block btn-success" />                                                                       
-                                                                </c:when>
-                                                            </c:choose> 
+                                                            <h:outputLabel value="#{item.tableNo}" class="btn btn-block btn-danger" />    
                                                         </div>
                                                         <div class="row">
-                                                            <div class="col-lg-6">
-                                                                <c:choose>
-                                                                    <c:when test="#{item.tableStatus eq 'FULL'}">
-                                                                        <h:outputLabel value="#{item.person.names}" />                                                                       
-                                                                    </c:when>
-                                                                    <c:when test="#{item.tableStatus eq 'BILLED'}">
-                                                                        <h:outputLabel value="#{item.person.names}" />                                                                       
-                                                                    </c:when>
-                                                                    <c:when test="#{item.tableStatus eq 'VACANT'}">
-                                                                        <h:outputLabel value="Available" />                                                                       
-                                                                    </c:when>
-                                                                </c:choose>                                                                 
-                                                            </div>
+                                                            <div class="col-lg-6">#{item.person.names}</div>
                                                             <div class="col-sm-6">
                                                                 <div class="col-sm-6">
-                                                                    <p:commandButton update=":dialog" oncomplete="PF('dlg2').show();" actionListener="#{restaurantModel.populateSentTableTransactions(item)}" class="btn btn-link" value="KOT" >
+                                                                    <p:commandButton update=":dialog" oncomplete="PF('dlg2').show();" actionListener="#{restaurantModel2.populateSentTableTransactions(item)}" class="btn btn-link" value="KOT" >
                                                                     </p:commandButton>
                                                                 </div>
                                                             </div>
@@ -939,37 +970,13 @@
                                                         <div class="row">
                                                             <div class="col-sm-6"></div>
                                                             <div class="col-sm-6">
-                                                                <c:choose>
-                                                                    <c:when test="#{item.tableStatus eq 'FULL'}">
-                                                                        <p:commandButton update=":dialogBilling" oncomplete="PF('dlgBilling').show();" actionListener="#{restaurantModel.populateBilledTableTransactions(item)}" class="btn btn-link" value="Billing" >
-                                                                        </p:commandButton>                                                                   
-                                                                    </c:when>
-                                                                    <c:when test="#{item.tableStatus eq 'BILLED'}">
-                                                                        <p:commandButton update=":dialogBilling" oncomplete="PF('dlgBilling').show();" actionListener="#{restaurantModel.populateBilledTableTransactions(item)}" class="btn btn-link" value="Billing" >
-                                                                        </p:commandButton>                                                                    
-                                                                    </c:when>
-                                                                    <c:when test="#{item.tableStatus eq 'VACANT'}">
-                                                                        <h:outputLabel value="History" />                                                                       
-                                                                    </c:when>
-                                                                </c:choose>                                                                 
+                                                                <p:commandButton update=":dialogBilling" oncomplete="PF('dlgBilling').show();" actionListener="#{restaurantModel2.populateBilledTableTransactions(item)}" class="btn btn-link" value="Billing" >
+                                                                </p:commandButton>
                                                             </div>
                                                         </div>
                                                         <div class="row">
                                                             <div class="col-sm-6"></div>
-                                                            <div class="col-sm-6">
-                                                                <c:choose>
-                                                                    <c:when test="#{item.tableStatus eq 'FULL'}">
-                                                                        <h:commandButton class="btn btn-link" value="At Glance" />                                                
-                                                                    </c:when>
-                                                                    <c:when test="#{item.tableStatus eq 'BILLED'}">
-                                                                        <p:commandButton update=":dialogPayment" oncomplete="PF('dlgpayment').show();" actionListener="#{restaurantModel.populateSentTableTransactions(item)}" class="btn btn-link" value="Payment" >
-                                                                        </p:commandButton>                                                                 
-                                                                    </c:when>
-                                                                    <c:when test="#{item.tableStatus eq 'VACANT'}">
-                                                                        <h:commandButton class="btn btn-link" value="At Glance" />                                                           
-                                                                    </c:when>
-                                                                </c:choose>  
-                                                            </div>
+                                                            <div class="col-sm-6"><h:commandButton class="btn btn-link" value="At Glance" /></div>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -979,10 +986,83 @@
                                 </div>  
                             </c:forEach>
                         </div>
-
+                        <div class="row">
+                            <c:forEach items="#{restaurantModel2.billedTableTransactions}" var="item">
+                                <div class="col-sm-4">
+                                    <div class="login-form-area adminpro-pd mg-tb-15">
+                                        <div class="container-fluid">                            
+                                            <div class="row">
+                                                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                                    <div class="tab-content-details shadow-reset">
+                                                        <div class="row">
+                                                            <h:outputLabel value="#{item.tableNo}" class="btn btn-block" style="background-color: #007ee5" />    
+                                                        </div>
+                                                        <div class="row">
+                                                            <div class="col-lg-6">#{item.person.names}</div>
+                                                            <div class="col-sm-6">
+                                                                <p:commandButton update=":dialog" oncomplete="PF('dlg2').show();" actionListener="#{restaurantModel2.populateSentTableTransactions(item)}" class="btn btn-link" value="KOT" >
+                                                                </p:commandButton>
+                                                            </div>
+                                                        </div>
+                                                        <div class="row">
+                                                            <div class="col-sm-6"></div>
+                                                            <div class="col-sm-6">
+                                                                <p:commandButton update=":dialogBilling" oncomplete="PF('dlgBilling').show();" actionListener="#{restaurantModel2.populateBilledTableTransactions(item)}" class="btn btn-link" value="Billing" >
+                                                                </p:commandButton>
+                                                            </div>
+                                                        </div>
+                                                        <div class="row">
+                                                            <div class="col-sm-6"></div>
+                                                            <div class="col-sm-6">
+                                                                <p:commandButton update=":dialogPayment" oncomplete="PF('dlgpayment').show();" actionListener="#{restaurantModel2.populateSentTableTransactions(item)}" class="btn btn-link" value="Payment" >
+                                                                </p:commandButton>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>                    
+                            </c:forEach>
+                        </div>
+                        <div class="row">
+                            <c:forEach items="#{restaurantModel2.vacantTableMasters}" var="item">
+                                <div class="col-sm-4">
+                                    <div class="login-form-area adminpro-pd mg-tb-15">
+                                        <div class="container-fluid">                            
+                                            <div class="row">
+                                                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                                    <div class="tab-content-details shadow-reset">
+                                                        <div class="row">
+                                                            <h:outputLabel value="#{item.tableNo}" class="btn btn-block btn-success"  />    
+                                                        </div>
+                                                        <div class="row">
+                                                            <div class="col-sm-6">Available</div>
+                                                            <div class="col-sm-6">
+                                                                <p:commandButton update=":dialog" oncomplete="PF('dlg2').show();" actionListener="#{restaurantModel2.populateTableTransactions(item)}" class="btn btn-link" value="KOT" >
+                                                                </p:commandButton>
+                                                            </div>
+                                                        </div>
+                                                        <div class="row">
+                                                            <div class="col-sm-6"></div>
+                                                            <div class="col-sm-6"><h:commandButton class="btn btn-link" value="History" /></div>
+                                                        </div>
+                                                        <div class="row">
+                                                            <div class="col-sm-6"></div>
+                                                            <div class="col-sm-6"><h:commandButton class="btn btn-link" value="At Glance" /></div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>                    
+                            </c:forEach>
+                        </div>
                     </h:form>
-
-
+                    
+                    
                 </div>
             </div>
             <!-- Modals End-->

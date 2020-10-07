@@ -31,13 +31,12 @@ public class Person implements Serializable{
     private String phone;
     @Enumerated(EnumType.STRING)
     private EStatus status;
+    private String username;
+    private String password;
     
     @ManyToOne
     private UserDepartment userDepartment;
     
-    @OneToOne(mappedBy = "person")
-    private Account account;
-
     @OneToMany(mappedBy = "person", fetch = FetchType.EAGER)
     @Fetch(FetchMode.SUBSELECT)
     private List<Transfer> transfer;
@@ -102,14 +101,6 @@ public class Person implements Serializable{
         this.userDepartment = userDepartment;
     }
 
-    public Account getAccount() {
-        return account;
-    }
-
-    public void setAccount(Account account) {
-        this.account = account;
-    }
-
     public List<Transfer> getTransfer() {
         return transfer;
     }
@@ -124,6 +115,22 @@ public class Person implements Serializable{
 
     public void setTableMaster(List<TableMaster> tableMaster) {
         this.tableMaster = tableMaster;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
     }
 
 }

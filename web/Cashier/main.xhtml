@@ -300,19 +300,7 @@
                 <h:form>
                     <div class="row">
                         <div class="col-lg-5">
-                            <div class="form-group-inner">
-                                <div class="row">
-                                    <div class="col-lg-3 col-md-3 col-sm-3 col-xs-12">
-                                        <label class="login2 pull-right pull-right-pro">Waiter Name:</label>
-                                    </div>
-                                    <div class="col-lg-9 col-md-9 col-sm-9 col-xs-12">
-                                        <h:selectOneMenu value="#{cashierModel.waiterId}" class="form-control" >
-                                            <f:selectItems value="#{cashierModel.waiters}" var="waiter" itemValue="#{waiter.userId}" itemLabel="#{waiter.names}" />
-                                        </h:selectOneMenu>
-                                    </div>
-                                </div>
-                            </div>
-
+                            
                             <div class="form-group-inner">
                                 <div class="row">
                                     <div class="col-lg-3 col-md-3 col-sm-3 col-xs-12">
@@ -350,6 +338,18 @@
                                     </div>
                                     <div class="col-lg-9 col-md-9 col-sm-9 col-xs-12">
                                         <h:inputText value="#{cashierModel.tableTransaction.kotRemarks}" class="form-control"/>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group-inner">
+                                <div class="row">
+                                    <div class="col-lg-3 col-md-3 col-sm-3 col-xs-12">
+                                        <label class="login2 pull-right pull-right-pro">Waiter Name:</label>
+                                    </div>
+                                    <div class="col-lg-9 col-md-9 col-sm-9 col-xs-12">
+                                        <h:selectOneMenu value="#{cashierModel.waiterId}" class="form-control" >
+                                            <f:selectItems value="#{cashierModel.waiters}" var="waiter" itemValue="#{waiter.userId}" itemLabel="#{waiter.names}" />
+                                        </h:selectOneMenu>
                                     </div>
                                 </div>
                             </div>
@@ -631,7 +631,7 @@
                                     </div>
                                     <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
                                         <p:commandButton value="Print" oncomplete="PF('dlgBilling').hide();"  >
-                                            <p:ajax event="click" listener="#{cashierModel.printBill()}"/> 
+                                            <p:ajax event="click" listener="#{cashierModel.printKotBill()}"/> 
                                         </p:commandButton>
                                     </div>
                                 </div>
