@@ -199,6 +199,8 @@ public class AdminModel {
             UserDepartment department = new UserDepartmentDao().findOne(UserDepartment.class, userDepartmentId);
             user.setUserDepartment(department);
             user.setStatus(EStatus.ACTIVE);
+            user.setUsername(user.getNames());
+            user.setPassword(new PassCode().encrypt("1234"));
             new PersonDao().register(user);
 
             user = new Person();

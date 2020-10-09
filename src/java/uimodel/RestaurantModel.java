@@ -105,6 +105,7 @@ public class RestaurantModel {
     private Date chosenDate = new Date();
     private String payerNumber = new String();
     private String paymentMode = new String();
+    private String nowDate = now();
 
     @PostConstruct
     public void init() {
@@ -145,6 +146,10 @@ public class RestaurantModel {
 
         chosenTableMaster = tableMaster;
         tableTransactions = new TableTransactionDao().findByTableAndStatus(tableMaster, "Sent");
+    }
+
+    public String redirectHome() {
+        return "main.xhtml?faces-redirect=true";
     }
 
     public static String title[] = new String[]{"Product", "Qty", "Rate", "Amount"};
@@ -654,6 +659,11 @@ public class RestaurantModel {
         availableTable = new TableMasterDao().findTotalByStatus(ETableStatus.VACANT);
         billedTable = new TableMasterDao().findTotalByStatus(ETableStatus.BILLED);
         occupiedTable = new TableMasterDao().findTotalByStatus(ETableStatus.FULL);
+
+        tableTransactions = new TableTransactionDao().findByTableAndStatus(chosenTableMaster, "Sent");
+        for (TableTransaction t : tableTransactions) {
+            System.out.println(t.getItem().getItemName());
+        }
     }
 
     public void updatePaymentTables() {
@@ -740,12 +750,22 @@ public class RestaurantModel {
         System.out.println(trans.getItem().getItemName() + "----" + trans.getQuantity());
     }
 
+    public void testPrint() {
+        System.out.println("Here Here Here");
+    }
+
+    public String updateTableTransactions() {
+        tableTransactions = new TableTransactionDao().findByTableAndStatus(chosenTableMaster, "Sent");
+        System.out.println("Here Here Here");
+        return "print-bill.xhtml?faces-redirect=true";
+    }
+
     public void completeTransaction() {
+        System.out.println("Here Here Here");
         try {
             TableMaster master = new TableMaster();
 
             for (TableTransaction table : tableTransactions) {
-                System.out.println("KOT: " + table.getKotRemarks());
                 table.setStatus("Sent");
                 new TableTransactionDao().update(table);
 
@@ -782,6 +802,51 @@ public class RestaurantModel {
             fc.addMessage(null, new FacesMessage("Transaction Saved"));
         } catch (Exception e) {
             e.printStackTrace();
+        }
+    }
+
+    public String redirectKotPrint() {
+        System.out.println("Here Here Here");
+        try {
+            TableMaster master = new TableMaster();
+
+            for (TableTransaction table : tableTransactions) {
+                table.setStatus("Sent");
+                new TableTransactionDao().update(table);
+
+                master = table.getTableMaster();
+                master.setTableStatus(ETableStatus.FULL);
+                tableDao.update(master);
+            }
+
+            tableTransactions = new TableTransactionDao().findByTableAndStatus(chosenTableMaster, "Sent");
+            tableMasters = new TableMasterDao().findByType("Table");
+
+            roomMasters = new TableMasterDao().findByType("Room");
+            vipRoomMasters = new TableMasterDao().findByType("VipRoom");
+
+//            vacantTableMasters = new TableMasterDao().findByStatusAndType(ETableStatus.VACANT, "Table");
+//            billedTableTransactions = new TableTransactionDao().findByTableStatusAndType(ETableStatus.BILLED, "Sent", "Table");
+//            fullTableTransactions = new TableTransactionDao().findByTableStatusAndType(ETableStatus.FULL, "Sent", "Table");
+//
+//            vacantRoomMasters = new TableMasterDao().findByStatusAndType(ETableStatus.VACANT, "Room");
+//            billedRoomTransactions = new TableTransactionDao().findByTableStatusAndType(ETableStatus.BILLED, "Sent", "Room");
+//            fullRoomTransactions = new TableTransactionDao().findByTableStatusAndType(ETableStatus.FULL, "Sent", "Room");
+//
+//            vacantVipRoomMasters = new TableMasterDao().findByStatusAndType(ETableStatus.VACANT, "VipRoom");
+//            billedVipRoomTransactions = new TableTransactionDao().findByTableStatusAndType(ETableStatus.BILLED, "Sent", "VipRoom");
+//            fullVipRoomTransactions = new TableTransactionDao().findByTableStatusAndType(ETableStatus.FULL, "Sent", "VipRoom");
+            dailyCollection = new TableTransactionDao().findTotalByDate(new Date());
+            dailyBilled = new TableTransactionDao().findTotalByDateAndTableStatus(new Date(), "Billed");
+
+            availableTable = new TableMasterDao().findTotalByStatus(ETableStatus.VACANT);
+            billedTable = new TableMasterDao().findTotalByStatus(ETableStatus.BILLED);
+            occupiedTable = new TableMasterDao().findTotalByStatus(ETableStatus.FULL);
+
+            return "print-kot.xhtml?faces-redirect=true";
+        } catch (Exception e) {
+            e.printStackTrace();
+            return "print-kot.xhtml?faces-redirect=true";
         }
     }
 
@@ -1547,6 +1612,14 @@ public class RestaurantModel {
 
     public void setVipRoomMasters(List<TableMaster> vipRoomMasters) {
         this.vipRoomMasters = vipRoomMasters;
+    }
+
+    public String getNowDate() {
+        return nowDate;
+    }
+
+    public void setNowDate(String nowDate) {
+        this.nowDate = nowDate;
     }
 
 }
