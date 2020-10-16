@@ -29,6 +29,7 @@ public class TableTransaction implements Serializable {
     private String kotRemarks;
     private String status;
     private Double totalPrice;
+    private String printStatus;
     
     @ManyToOne
     private TableMaster tableMaster;
@@ -110,6 +111,14 @@ public class TableTransaction implements Serializable {
 
     public void setTotalPrice(Double totalPrice) {
         this.totalPrice = totalPrice;
+    }
+
+    public String getPrintStatus() {
+        return printStatus;
+    }
+
+    public void setPrintStatus(String printStatus) {
+        this.printStatus = printStatus;
     }
     
 }

@@ -422,7 +422,7 @@
                                         <label class="login2 pull-right pull-right-pro">Quantity:</label>
                                     </div>
                                     <div class="col-lg-9 col-md-9 col-sm-9 col-xs-12">
-                                        <h:inputText value="#{cashierModel.tableTransaction.quantity}" class="form-control" required="true" requiredMessage="Please Fill Quantity"/>
+                                        <h:inputText value="#{cashierModel.tableTransaction.quantity}" class="form-control" />
                                     </div>
                                 </div>
                             </div>
@@ -504,13 +504,12 @@
                                     </div>
                                     <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
                                         <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
-                                            <p:commandButton value="Save" update="@form" oncomplete="PF('dlg2').show();" icon="pi pi-save">
+                                            <p:commandButton value="Save" update="@form" oncomplete="PF('dlg2').hide();" icon="pi pi-save">
                                                 <p:ajax event="click" listener="#{cashierModel.completeTransaction()}"/> 
                                             </p:commandButton>
                                         </div>
-                                        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
-                                            <p:commandButton value="Save + Print" update="@form" oncomplete="PF('dlg2').hide(); PF('printkotdlg').show();" >
-                                                <p:ajax event="click" listener="#{cashierModel.completeTransaction()}"/> 
+                                        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">                                            
+                                            <p:commandButton value="Save-Print" action="#{cashierModel.redirectKotPrint()}" >
                                             </p:commandButton>
                                         </div>
                                     </div>
@@ -618,7 +617,7 @@
                                     <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
                                     </div>
                                     <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
-                                        <p:commandButton value="Save" oncomplete="PF('dlgpayment').show();" >
+                                        <p:commandButton value="Save" oncomplete="PF('dlgpayment').hide();" >
                                             <p:ajax event="click" listener="#{cashierModel.payTransaction()}"/> 
                                         </p:commandButton>
                                     </div>
@@ -697,16 +696,6 @@
                             <div class="form-group-inner">
                                 <div class="row">
                                     <div class="col-lg-3 col-md-3 col-sm-3 col-xs-12">
-                                        <label class="login2 pull-right pull-right-pro">Mobile No.:</label>
-                                    </div>
-                                    <div class="col-lg-9 col-md-9 col-sm-9 col-xs-12">
-                                        <h:inputText value="#{cashierModel.payerNumber}" class="form-control" />
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="form-group-inner">
-                                <div class="row">
-                                    <div class="col-lg-3 col-md-3 col-sm-3 col-xs-12">
                                         <label class="login2 pull-right pull-right-pro">Payment Mode:</label>
                                     </div>
                                     <div class="col-lg-9 col-md-9 col-sm-9 col-xs-12" >
@@ -724,10 +713,11 @@
                             <div class="form-group-inner">
                                 <div class="row">
                                     <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                                        <p:commandButton value="Save" oncomplete="PF('dlgBilling').hide();" action="#{cashierModel.updateTableBilledTransactions()}">
+                                        </p:commandButton>
                                     </div>
                                     <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
-                                        <p:commandButton value="Print" oncomplete="PF('dlgBilling').hide(); PF('printdlg').show()"  >
-
+                                        <p:commandButton value="Save-Print" oncomplete="PF('dlgBilling').hide();" action="#{cashierModel.updateTableTransactions()}">
                                         </p:commandButton>
                                     </div>
                                 </div>
@@ -779,7 +769,7 @@
                                                             </div>
                                                             <div class="col-sm-6">
                                                                 <div class="col-sm-6">
-                                                                    <p:commandButton update=":dialog" oncomplete="PF('dlg2').show();" actionListener="#{cashierModel.populateSentTableTransactions(item)}" class="btn btn-link" value="KOT" >
+                                                                    <p:commandButton update=":dialog" oncomplete="PF('dlg2').show();" action="#{cashierModel.populateSentTableTransactions(item)}" class="btn btn-link" value="KOT" >
                                                                     </p:commandButton>
                                                                 </div>
                                                             </div>
@@ -789,12 +779,14 @@
                                                             <div class="col-sm-6">
                                                                 <c:choose>
                                                                     <c:when test="#{item.tableStatus eq 'FULL'}">
-                                                                        <p:commandButton update=":dialogBilling" oncomplete="PF('dlgBilling').show();" actionListener="#{cashierModel.populateBilledTableTransactions(item)}" class="btn btn-link" value="Billing" >
-                                                                        </p:commandButton>                                                                   
+                                                                        <p:commandButton oncomplete="PF('dlgBilling').show();" class="btn btn-link" value="Billing" >
+                                                                            <p:ajax oncomplete="PF('dlgBilling').show();" listener="#{cashierModel.populateBilledTableTransactions(item)}" update=":dialogBilling" />
+                                                                        </p:commandButton>                                                                    
                                                                     </c:when>
                                                                     <c:when test="#{item.tableStatus eq 'BILLED'}">
-                                                                        <p:commandButton update=":dialogBilling" oncomplete="PF('dlgBilling').show();" actionListener="#{cashierModel.populateBilledTableTransactions(item)}" class="btn btn-link" value="Billing" >
-                                                                        </p:commandButton>                                                                    
+                                                                        <p:commandButton oncomplete="PF('dlgBilling').show();" class="btn btn-link" value="Billing" >
+                                                                            <p:ajax oncomplete="PF('dlgBilling').show();" listener="#{cashierModel.populateBilledTableTransactions(item)}" update=":dialogBilling" />
+                                                                        </p:commandButton>                                                                   
                                                                     </c:when>
                                                                     <c:when test="#{item.tableStatus eq 'VACANT'}">
                                                                         <h:outputLabel value="History" />                                                                       
@@ -810,8 +802,9 @@
                                                                         <h:commandButton class="btn btn-link" value="At Glance" />                                                
                                                                     </c:when>
                                                                     <c:when test="#{item.tableStatus eq 'BILLED'}">
-                                                                        <p:commandButton update=":dialogPayment" oncomplete="PF('dlgpayment').show();" actionListener="#{cashierModel.populateSentTableTransactions(item)}" class="btn btn-link" value="Payment" >
-                                                                        </p:commandButton>                                                                 
+                                                                        <p:commandButton oncomplete="PF('dlgpayment').show();" class="btn btn-link" value="Payment" >
+                                                                            <p:ajax oncomplete="PF('dlgpayment').show();" listener="#{cashierModel.populateSentTableTransactions(item)}" update=":dialogPayment" />
+                                                                        </p:commandButton>                                         
                                                                     </c:when>
                                                                     <c:when test="#{item.tableStatus eq 'VACANT'}">
                                                                         <h:commandButton class="btn btn-link" value="At Glance" />                                                           
@@ -870,7 +863,7 @@
                                                             </div>
                                                             <div class="col-sm-6">
                                                                 <div class="col-sm-6">
-                                                                    <p:commandButton update=":dialog" oncomplete="PF('dlg2').show();" actionListener="#{cashierModel.populateSentTableTransactions(item)}" class="btn btn-link" value="KOT" >
+                                                                    <p:commandButton update=":dialog" oncomplete="PF('dlg2').show();" action="#{cashierModel.populateSentTableTransactions(item)}" class="btn btn-link" value="KOT" >
                                                                     </p:commandButton>
                                                                 </div>
                                                             </div>
@@ -880,12 +873,14 @@
                                                             <div class="col-sm-6">
                                                                 <c:choose>
                                                                     <c:when test="#{item.tableStatus eq 'FULL'}">
-                                                                        <p:commandButton update=":dialogBilling" oncomplete="PF('dlgBilling').show();" actionListener="#{cashierModel.populateBilledTableTransactions(item)}" class="btn btn-link" value="Billing" >
-                                                                        </p:commandButton>                                                                   
+                                                                        <p:commandButton oncomplete="PF('dlgBilling').show();" class="btn btn-link" value="Billing" >
+                                                                            <p:ajax oncomplete="PF('dlgBilling').show();" listener="#{cashierModel.populateBilledTableTransactions(item)}" update=":dialogBilling" />
+                                                                        </p:commandButton>                                                    
                                                                     </c:when>
                                                                     <c:when test="#{item.tableStatus eq 'BILLED'}">
-                                                                        <p:commandButton update=":dialogBilling" oncomplete="PF('dlgBilling').show();" actionListener="#{cashierModel.populateBilledTableTransactions(item)}" class="btn btn-link" value="Billing" >
-                                                                        </p:commandButton>                                                                    
+                                                                        <p:commandButton oncomplete="PF('dlgBilling').show();" class="btn btn-link" value="Billing" >
+                                                                            <p:ajax oncomplete="PF('dlgBilling').show();" listener="#{cashierModel.populateBilledTableTransactions(item)}" update=":dialogBilling" />
+                                                                        </p:commandButton>                                                              
                                                                     </c:when>
                                                                     <c:when test="#{item.tableStatus eq 'VACANT'}">
                                                                         <h:outputLabel value="History" />                                                                       
@@ -901,8 +896,9 @@
                                                                         <h:commandButton class="btn btn-link" value="At Glance" />                                                
                                                                     </c:when>
                                                                     <c:when test="#{item.tableStatus eq 'BILLED'}">
-                                                                        <p:commandButton update=":dialogPayment" oncomplete="PF('dlgpayment').show();" actionListener="#{cashierModel.populateSentTableTransactions(item)}" class="btn btn-link" value="Payment" >
-                                                                        </p:commandButton>                                                                 
+                                                                        <p:commandButton oncomplete="PF('dlgpayment').show();" class="btn btn-link" value="Payment" >
+                                                                            <p:ajax oncomplete="PF('dlgpayment').show();" listener="#{cashierModel.populateSentTableTransactions(item)}" update=":dialogPayment" />
+                                                                        </p:commandButton>                                        
                                                                     </c:when>
                                                                     <c:when test="#{item.tableStatus eq 'VACANT'}">
                                                                         <h:commandButton class="btn btn-link" value="At Glance" />                                                           
@@ -960,7 +956,7 @@
                                                             </div>
                                                             <div class="col-sm-6">
                                                                 <div class="col-sm-6">
-                                                                    <p:commandButton update=":dialog" oncomplete="PF('dlg2').show();" actionListener="#{cashierModel.populateSentTableTransactions(item)}" class="btn btn-link" value="KOT" >
+                                                                    <p:commandButton update=":dialog" oncomplete="PF('dlg2').show();" action="#{cashierModel.populateSentTableTransactions(item)}" class="btn btn-link" value="KOT" >
                                                                     </p:commandButton>
                                                                 </div>
                                                             </div>
@@ -970,12 +966,14 @@
                                                             <div class="col-sm-6">
                                                                 <c:choose>
                                                                     <c:when test="#{item.tableStatus eq 'FULL'}">
-                                                                        <p:commandButton update=":dialogBilling" oncomplete="PF('dlgBilling').show();" actionListener="#{cashierModel.populateBilledTableTransactions(item)}" class="btn btn-link" value="Billing" >
+                                                                        <p:commandButton oncomplete="PF('dlgBilling').show();" class="btn btn-link" value="Billing" >
+                                                                            <p:ajax oncomplete="PF('dlgBilling').show();" listener="#{cashierModel.populateBilledTableTransactions(item)}" update=":dialogBilling" />
                                                                         </p:commandButton>                                                                   
                                                                     </c:when>
                                                                     <c:when test="#{item.tableStatus eq 'BILLED'}">
-                                                                        <p:commandButton update=":dialogBilling" oncomplete="PF('dlgBilling').show();" actionListener="#{cashierModel.populateBilledTableTransactions(item)}" class="btn btn-link" value="Billing" >
-                                                                        </p:commandButton>                                                                    
+                                                                        <p:commandButton oncomplete="PF('dlgBilling').show();" class="btn btn-link" value="Billing" >
+                                                                            <p:ajax oncomplete="PF('dlgBilling').show();" listener="#{cashierModel.populateBilledTableTransactions(item)}" update=":dialogBilling" />
+                                                                        </p:commandButton>                                                                     
                                                                     </c:when>
                                                                     <c:when test="#{item.tableStatus eq 'VACANT'}">
                                                                         <h:outputLabel value="History" />                                                                       
@@ -991,7 +989,8 @@
                                                                         <h:commandButton class="btn btn-link" value="At Glance" />                                                
                                                                     </c:when>
                                                                     <c:when test="#{item.tableStatus eq 'BILLED'}">
-                                                                        <p:commandButton update=":dialogPayment" oncomplete="PF('dlgpayment').show();" actionListener="#{cashierModel.populateSentTableTransactions(item)}" class="btn btn-link" value="Payment" >
+                                                                        <p:commandButton oncomplete="PF('dlgpayment').show();" class="btn btn-link" value="Payment" >
+                                                                            <p:ajax oncomplete="PF('dlgpayment').show();" listener="#{cashierModel.populateSentTableTransactions(item)}" update=":dialogPayment" />
                                                                         </p:commandButton>                                                                 
                                                                     </c:when>
                                                                     <c:when test="#{item.tableStatus eq 'VACANT'}">

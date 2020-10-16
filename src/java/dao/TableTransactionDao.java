@@ -24,7 +24,18 @@ public class TableTransactionDao extends GenericDao<TableTransaction>{
         List<TableTransaction> list = q.list();
         s.close();
         return list;
-    }       
+    }     
+    
+    public List<TableTransaction> findByTableAndStatusAndPrintStatus(TableMaster table, String status, String print){
+        Session s = HibernateUtil.getSessionFactory().openSession();
+        Query q = s.createQuery("SELECT a FROM TableTransaction a WHERE a.status = :status AND a.tableMaster = :table AND a.printStatus = :st");
+        q.setParameter("status", status);
+        q.setParameter("table", table);
+        q.setParameter("st", print);
+        List<TableTransaction> list = q.list();
+        s.close();
+        return list;
+    }     
     
     public List<TableTransaction> findByTableAndOrStatus(TableMaster table, String status, String stat){
         Session s = HibernateUtil.getSessionFactory().openSession();

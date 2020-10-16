@@ -81,7 +81,6 @@
 
         <div class="left-sidebar-pro">
             <nav id="sidebar" class="">
-
                 <div class="sidebar-header">
                     <a href="index.html"><img class="main-logo" src="img/logo/logo.png" alt="" /></a>
                     <strong><img src="img/logo/logosn.png" alt="" /></strong>
@@ -92,21 +91,21 @@
                             <li>
                                 <a class="has-arrow">
                                     <span class="mini-click-non">
-                                        <h:outputLabel value="Date as on: #{restaurantModel.newDate}" />
+                                        <h:outputLabel value="Date as on: #{cashierModel.newDate}" />
                                     </span>
                                 </a>
                             </li>
                             <li style="padding-top: 20px;">
                                 <a class="has-arrow">
                                     <span class="mini-click-non">
-                                        <h:outputLabel value="Your Collection: #{restaurantModel.dailyCollection}" />
+                                        <h:outputLabel value="Your Collection: #{cashierModel.dailyCollection}" />
                                     </span>
                                 </a>
                             </li>
                             <li style="padding-top: 20px;">
                                 <a class="has-arrow">
                                     <span class="mini-click-non">
-                                        <h:outputLabel value="Table Billed: #{restaurantModel.dailyBilled}" />
+                                        <h:outputLabel value="Table Billed: #{cashierModel.dailyBilled}" />
                                     </span>
                                 </a>
                             </li>
@@ -122,89 +121,51 @@
                             <li style="padding-top: 10px;">
                                 <a class="has-arrow">
                                     <span class="mini-click-non">
-                                        <h:outputLabel class="btn btn-block btn-success font-weight-bold text-body" value="Available: #{restaurantModel.availableTable}" />
+                                        <h:outputLabel class="btn btn-block btn-success font-weight-bold text-body" value="Available: #{cashierModel.availableTable}" />
                                     </span>
                                 </a>
                             </li>
                             <li style="padding-top: 3px;">
                                 <a class="has-arrow">
                                     <span class="mini-click-non">
-                                        <h:outputLabel class="btn btn-block btn-danger font-weight-bold text-body" value="Occupied : #{restaurantModel.occupiedTable}" />
+                                        <h:outputLabel class="btn btn-block btn-danger font-weight-bold text-body" value="Occupied : #{cashierModel.occupiedTable}" />
                                     </span>
                                 </a>
                             </li>
                             <li style="padding-top: 3px;">
                                 <a class="has-arrow">
                                     <span class="mini-click-non">
-                                        <h:outputLabel class="btn btn-block font-weight-bold text-body"  style="background-color: #007ee5" value="Billed : #{restaurantModel.billedTable}" />
+                                        <h:outputLabel class="btn btn-block font-weight-bold text-body"  style="background-color: #007ee5" value="Billed : #{cashierModel.billedTable}" />
                                     </span>
                                 </a>
                             </li>
                             <li style="padding-top: 3px;">
                                 <a class="has-arrow">
                                     <span class="mini-click-non">
-                                        <h:outputLabel class="btn btn-block font-weight-bold text-white bg-dark" style="background-color: #000" value="Total : #{restaurantModel.occupiedTable + restaurantModel.billedTable + restaurantModel.availableTable}" />
+                                        <h:outputLabel class="btn btn-block font-weight-bold text-white bg-dark" style="background-color: #000" value="Total : #{cashierModel.occupiedTable + cashierModel.billedTable + cashierModel.availableTable}" />
                                     </span>
                                 </a>
                             </li>
                         </ul>
                         <ul class="metismenu" id="menu1" style="padding-top: 20px;">
+                            
                             <li>
-                                <a class="has-arrow" href="index.html">
-                                    <i class="fa big-icon fa-home"></i>
-                                    <span class="mini-click-non">Frontoffice Configuration</span>
-                                </a>
-                                <ul class="submenu-angle" aria-expanded="true">
-                                    <li><a title="Room Category" href="#"><i class="fa fa-bullseye sub-icon-mg" aria-hidden="true"></i> <span class="mini-sub-pro">Room Category</span></a></li>
-                                    <li><a title="Floor Master" href="#"><i class="fa fa-circle-o sub-icon-mg" aria-hidden="true"></i> <span class="mini-sub-pro">Floor Master</span></a></li>
-                                    <li><a title="Room Master" href="#"><i class="fa fa-cube sub-icon-mg" aria-hidden="true"></i> <span class="mini-sub-pro">Room Master</span></a></li>
-
+                                <a class="has-arrow" href="menu-item.xhtml" aria-expanded="false"><i class="fa big-icon fa-pie-chart icon-wrap"></i> <span class="mini-click-non">Menu Configuration</span></a>
+                                <ul class="submenu-angle" aria-expanded="false">
+                                    <li><a title="Menu Master" href="menu-item.xhtml"><i class="fa fa-square sub-icon-mg" aria-hidden="true"></i> <span class="mini-sub-pro">Menu Master</span></a></li>
                                 </ul>
                             </li>
                             <li>
-                                <a class="has-arrow" href="mailbox.html" aria-expanded="false"><i class="fa big-icon fa-envelope icon-wrap"></i> <span class="mini-click-non">User Configuration </span></a>
+                                <a class="has-arrow" href="main.xhtml" aria-expanded="false"><i class="fa big-icon fa-bar-chart-o icon-wrap"></i> <span class="mini-click-non">Restaurant Configuration</span></a>
                                 <ul class="submenu-angle" aria-expanded="false">
-                                    <li><a title="Department" href="./../Admin/department.xhtml"><i class="fa fa-inbox sub-icon-mg" aria-hidden="true"></i> <span class="mini-sub-pro">Department</span></a></li>
-                                    <li><a title="New User" href="./../Admin/employee.xhtml"><i class="fa fa-television sub-icon-mg" aria-hidden="true"></i> <span class="mini-sub-pro">New User</span></a></li>
-                                    <li><a title="User Rights" href="./../Admin/user-right.xhtml"><i class="fa fa-paper-plane sub-icon-mg" aria-hidden="true"></i> <span class="mini-sub-pro">User Rights</span></a></li>
+                                    <li><a title="Restaurant KOT" href="main.xhtml"><i class="fa fa-signal sub-icon-mg" aria-hidden="true"></i> <span class="mini-sub-pro">Restaurant KOT</span></a></li>
+                                    <li><a title="Table Master" href="#"><i class="fa fa-signal sub-icon-mg" aria-hidden="true"></i> <span class="mini-sub-pro">Table Master</span></a></li>
                                 </ul>
                             </li>
                             <li>
-                                <a class="has-arrow" href="#" aria-expanded="false"><i class="fa big-icon fa-flask icon-wrap"></i> <span class="mini-click-non">Room Service Configuration</span></a>
+                                <a class="has-arrow" href="#" aria-expanded="false"><i class="fa big-icon fa-flask icon-wrap"></i> <span class="mini-click-non">Sales Report</span></a>
                                 <ul class="submenu-angle" aria-expanded="false">
-                                    <li><a title="Room Service Category" href="#"><i class="fa fa-map-marker sub-icon-mg" aria-hidden="true"></i> <span class="mini-sub-pro">Room Service Category</span></a></li>
-                                    <li><a title="Room Service" href="#"><i class="fa fa-map-o sub-icon-mg" aria-hidden="true"></i> <span class="mini-sub-pro">Room Service </span></a></li>
-                                    <li><a title="Housekeeping Config" href="#"><i class="fa fa-file-pdf-o sub-icon-mg" aria-hidden="true"></i> <span class="mini-sub-pro">Housekeeping Config</span></a></li>
-
-                                </ul>
-                            </li>
-                            <li>
-                                <a class="has-arrow" href="./../Admin/menu-item.xhtml" aria-expanded="false"><i class="fa big-icon fa-pie-chart icon-wrap"></i> <span class="mini-click-non">Menu Configuration</span></a>
-                                <ul class="submenu-angle" aria-expanded="false">
-                                    <li><a title="Menu Category" href="../Admin/itemcategory.xhtml"><i class="fa fa-folder sub-icon-mg" aria-hidden="true"></i> <span class="mini-sub-pro">Menu Category</span></a></li>
-                                    <li><a title="Menu Master" href="../Admin/menu-item.xhtml"><i class="fa fa-square sub-icon-mg" aria-hidden="true"></i> <span class="mini-sub-pro">Menu Master</span></a></li>
-                                    <li><a title="Unit Master" href="../Admin/itemunit.xhtml"><i class="fa fa-square sub-icon-mg" aria-hidden="true"></i> <span class="mini-sub-pro">Unit Master</span></a></li>
-                                    <li><a title="Move Items To Inventory" href="#"><i class="fa fa-tags sub-icon-mg" aria-hidden="true"></i> <span class="mini-sub-pro">Move Items To Inventory</span></a></li>
-                                    <li><a title="Side Menu" href="#"><i class="fa fa-tint sub-icon-mg" aria-hidden="true"></i> <span class="mini-sub-pro">Side Menu</span></a></li>
-                                    <li><a title="Food And Beverage Costing" href="#"><i class="fa fa-tree sub-icon-mg" aria-hidden="true"></i> <span class="mini-sub-pro">Food And Beverage Costing</span></a></li>
-                                </ul>
-                            </li>
-                            <li>
-                                <a class="has-arrow" href="item-purchase.xhtml" aria-expanded="false"><i class="fa big-icon fa-flask icon-wrap"></i> <span class="mini-click-non">Inventory Configuration</span></a>
-                                <ul class="submenu-angle" aria-expanded="false">
-                                    <li><a title="Item Purchase" href="../Stock/item-purchase.xhtml"><i class="fa fa-map-marker sub-icon-mg" aria-hidden="true"></i> <span class="mini-sub-pro">Purchase</span></a></li>
-                                    <li><a title="Vendor" href="../Stock/vendor.xhtml"><i class="fa fa-map-o sub-icon-mg" aria-hidden="true"></i> <span class="mini-sub-pro">Vendor </span></a></li>
-                                </ul>
-                            </li>
-                            <li>
-                                <a class="has-arrow" href="#" aria-expanded="false"><i class="fa big-icon fa-bar-chart-o icon-wrap"></i> <span class="mini-click-non">Restaurant Configuration</span></a>
-                                <ul class="submenu-angle" aria-expanded="false">
-                                    <li><a title="Restaurant KOT" href="#"><i class="fa fa-signal sub-icon-mg" aria-hidden="true"></i> <span class="mini-sub-pro">Restaurant KOT</span></a></li>
-                                    <li><a title="Restaurant Setting" href="../Admin/restaurant.xhtml"><i class="fa fa-line-chart sub-icon-mg" aria-hidden="true"></i> <span class="mini-sub-pro">Restaurant Setting</span></a></li>
-                                    <li><a title="Restaurant Menu Rate" href="#"><i class="fa fa-area-chart sub-icon-mg" aria-hidden="true"></i> <span class="mini-sub-pro">Restaurant Menu Rate</span></a></li>
-                                    <li><a title="Table Group Master" href="../Admin/tablegroup.xhtml"><i class="fa fa-pie-chart sub-icon-mg" aria-hidden="true"></i> <span class="mini-sub-pro">Table Group Master</span></a></li>
-                                    <li><a title="Table Master" href="../Admin/table.xhtml"><i class="fa fa-signal sub-icon-mg" aria-hidden="true"></i> <span class="mini-sub-pro">Table Master</span></a></li>
-
+                                    <li><a title="Daily Report" href="#"><i class="fa fa-map-marker sub-icon-mg" aria-hidden="true"></i> <span class="mini-sub-pro">Daily Sales Report</span></a></li>
                                 </ul>
                             </li>
                         </ul>
@@ -365,100 +326,75 @@
                         <div class="col-lg-3"></div>
                         <div class="col-lg-6 col-md-6 col-sm-6">
                             <h:form>
-                                <h:commandLink class="text-left" value="Close" action="#{restaurantModel.redirectHome()}" />
+                                <h:commandLink class="text-left" value="Close" action="#{cashierModel.redirectHome()}" />
                             </h:form>
                         </div>
                         <div class="col-lg-3"></div>
                     </div>
-                    <h:panelGroup rendered="#{restaurantModel.foodKotType}" >
+                    <h:form id="billPrint">
                         <div class="row">
-                            <h:form id="foodKotPrint">
-                                <div class="col-lg-4"></div>
-                                <div class="col-lg-4 col-md-4 col-sm-4">
-                                    <p class="text-center font-weight-bold">KOT Receipt</p>
-                                    <p class="text-left">KOT Date: #{restaurantModel.nowDate}</p>
-                                    <p class="text-left">Table No.: #{restaurantModel.chosenTableMaster.tableNo}</p>
-                                    <p class="text-left font-weight-light">Waiter: #{restaurantModel.chosenTableMaster.person.names}</p>
+                            <div class="col-lg-3"></div>
+                            <div class="col-lg-6 col-md-6 col-sm-6">
+                                <p class="text-right">VAT No.: xxxx-xxx-xx</p>
+                                <p class="text-right">ST No.: Kg 345 St</p>
+                                <p class="text-right">#{cashierModel.hotel.phone}</p>
+                                <p class="text-center font-weight-bold">#{cashierModel.chosenTableMaster.restaurant.name}</p>
+                                <p class="text-center">#{cashierModel.chosenTableMaster.restaurant.slogan}</p>
+                                <p class="text-center">#{cashierModel.hotel.hotelName}</p>
+                                <p class="text-left">Bill Date: #{cashierModel.nowDate}</p>
+                                <p class="text-left">Table No.: #{cashierModel.chosenTableMaster.tableNo}</p>
+                                <p class="text-left font-weight-light">Waiter: #{cashierModel.chosenTableMaster.person.names}</p>
 
-                                    <table class="table table-bordered">
-                                        <thead>
-                                            <tr>
-                                                <th scope="col">Particulars</th>
-                                                <th scope="col">Qty</th>
+                                <table class="table table-bordered">
+                                    <thead>
+                                        <tr>
+                                            <th scope="col">Particulars</th>
+                                            <th scope="col">Qty</th>
+                                            <th scope="col">Rate</th>
+                                            <th scope="col">Amount</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <c:forEach items="#{cashierModel.tableTransactions}" var="elements" >
+                                            <tr><td>
+                                                    #{elements.item.itemName}
+                                                </td>
+                                                <td>
+                                                    #{elements.quantity}
+                                                </td>
+                                                <td>
+                                                    #{elements.item.unitRate}
+                                                </td>
+                                                <td>
+                                                    #{elements.item.unitRate * elements.quantity}
+                                                </td>
                                             </tr>
-                                        </thead>
-                                        <tbody>
-                                            <c:forEach items="#{restaurantModel.foodTableTransactions}" var="it">
-                                                <tr>
-                                                    <th>#{it.item.itemName}</th>
-                                                    <td>#{it.quantity}</td>
-                                                </tr>                                        
-                                            </c:forEach>                                    
-                                        </tbody>
-                                    </table>
-                                    <hr></hr>
-                                    <p class="text-left">Bill Generated By: #{restaurantModel.loggedInUser.names}</p>                            
+                                        </c:forEach>                               
+                                    </tbody>
+                                </table>
 
-                                </div>
-                                <div class="col-lg-4" />
-                            </h:form>
+                                <p class="text-right">Sub Total(Food): RWF #{cashierModel.totalBilledFoods}</p>
+                                <p class="text-right">Sub Total(Drinks): RWF #{cashierModel.totalBilledBeverage}</p>
+                                <p class="text-right">Bill Amount: RWF #{cashierModel.totalBilledBeverage + cashierModel.totalBilledFoods}</p>
+                                <hr></hr>
+                                <p class="text-left">Bill Generated By: #{cashierModel.loggedInUser.names}</p>                            
+
+                            </div>
+                            <div class="col-lg-3" />
                         </div>
-                        <h:form>
-                            <div class="col-lg-4" />
-                            <div class="col-lg-4">
-                                <p:commandButton value="Print" type="button" icon="pi pi-print" style="display:block;margin-bottom: 20px">
-                                    <p:printer target="foodKotPrint" />
-                                </p:commandButton>     
-                            </div>
-                            <div class="col-lg-4" />
-                        </h:form>
-                    </h:panelGroup>
+                    </h:form>
+                    <h:form>
+                        <div class="col-lg-4" />
+                        <div class="col-lg-4">
+                            <p:commandButton class="btn btn-primary" value="Print" type="button" icon="pi pi-print" style="display:block;margin-bottom: 20px">
+                                <p:printer target="billPrint" />
+                            </p:commandButton>
+                        </div>
 
-                    <div style="padding-left: 300px; padding-top: 20px;">
-                        <h:panelGroup rendered="#{restaurantModel.beverageKotType}" >
-                            <div class="row">
-                                <h:form id="beverageKotPrint">
-                                    <div class="col-lg-3"></div>
-                                    <div class="col-lg-6 col-md-6 col-sm-6">
-                                        <p class="text-center font-weight-bold">KOT Receipt</p>
-                                        <p class="text-left">KOT Date: #{restaurantModel.nowDate}</p>
-                                        <p class="text-left">Table No.: #{restaurantModel.chosenTableMaster.tableNo}</p>
-                                        <p class="text-left font-weight-light">Waiter: #{restaurantModel.chosenTableMaster.person.names}</p>
+                        <div class="col-lg-4" />
+                    </h:form>
 
-                                        <table class="table table-bordered">
-                                            <thead>
-                                                <tr>
-                                                    <th scope="col">Particulars</th>
-                                                    <th scope="col">Qty</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                <c:forEach items="#{restaurantModel.beverageTableTransactions}" var="it">
-                                                    <tr>
-                                                        <th>#{it.item.itemName}</th>
-                                                        <td>#{it.quantity}</td>
-                                                    </tr>                                        
-                                                </c:forEach>                                    
-                                            </tbody>
-                                        </table>
-                                        <hr></hr>
-                                        <p class="text-left">Bill Generated By: #{restaurantModel.loggedInUser.names}</p>                            
 
-                                    </div>
-                                    <div class="col-lg-3" />
-                                </h:form>
-                            </div>
-                            <h:form>
-                                <div class="col-lg-2" />
-                                <div class="col-lg-8">
-                                    <p:commandButton value="Print" type="button" icon="pi pi-print" style="display:block;margin-bottom: 20px">
-                                        <p:printer target="beverageKotPrint" />
-                                    </p:commandButton>     
-                                </div>
-                                <div class="col-lg-2" />
-                            </h:form>
-                        </h:panelGroup>
-                    </div>
                 </div>
             </div>
             <!-- Modals End-->

@@ -36,7 +36,7 @@ public class TableMasterDao extends GenericDao<TableMaster> {
     
     public List<TableMaster> findByType(String type) {
         Session s = HibernateUtil.getSessionFactory().openSession();
-        Query q = s.createQuery("SELECT a FROM TableMaster a WHERE a.type = :type");
+        Query q = s.createQuery("SELECT a FROM TableMaster a WHERE a.type = :type ORDER BY a.tableNo ASC");
         q.setParameter("type", type);
         List<TableMaster> list = q.list();
         s.close();

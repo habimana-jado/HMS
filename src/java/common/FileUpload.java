@@ -7,8 +7,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.UUID;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import org.primefaces.event.FileUploadEvent;
 
 public class FileUpload {
@@ -27,8 +25,6 @@ public class FileUpload {
         }
     }
     
-    
-
     private void copyFile(String fileName, InputStream in,String concatinationPath) {
         try {
             // write the inputStream to a FileOutputStream
