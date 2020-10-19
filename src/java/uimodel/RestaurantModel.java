@@ -1,6 +1,7 @@
 package uimodel;
 
 import com.lowagie.text.BadElementException;
+import com.lowagie.text.Chunk;
 import com.lowagie.text.Document;
 import com.lowagie.text.DocumentException;
 import com.lowagie.text.Element;
@@ -705,7 +706,7 @@ public class RestaurantModel {
 //                        break;
 //
 //                }
-//                payment.setMobileNumber(payerNumber);
+                payment.setMobileNumber(payerNumber);
                 payment.setPaymentDate(new Date());
                 new PaymentDao().register(payment);
                 payment = new Payment();
@@ -787,15 +788,15 @@ public class RestaurantModel {
         com.lowagie.text.Font font5 = new com.lowagie.text.Font(com.lowagie.text.Font.TIMES_ROMAN, 10, com.lowagie.text.Font.ITALIC, new Color(0, 0, 0));
         com.lowagie.text.Font colorFont = new com.lowagie.text.Font(com.lowagie.text.Font.TIMES_ROMAN, 10, com.lowagie.text.Font.BOLD, new Color(0, 0, 0));
         com.lowagie.text.Font font6 = new com.lowagie.text.Font(com.lowagie.text.Font.TIMES_ROMAN, 9, com.lowagie.text.Font.NORMAL);
-        document.add(new Paragraph("Student Success Prediction App\n"));
+        document.add(new Paragraph("Rebero Resort\n"));
         document.add(new Paragraph("KG 625 ST 4\n", font0));
         document.add(new Paragraph("P.O.BOX 131 \n", font0));
         document.add(new Paragraph("KIGALI-RWANDA\n\n", font0));
-        Paragraph p = new Paragraph("All Predictions Report ", colorFont);
+        Paragraph p = new Paragraph("Daily Sales Report ", colorFont);
         p.setAlignment(Element.ALIGN_CENTER);
         document.add(p);
         document.add(new Paragraph("\n"));
-        PdfPTable tables = new PdfPTable(10);
+        PdfPTable tables = new PdfPTable(7);
         tables.setWidthPercentage(100);
 
         PdfPCell cell1 = new PdfPCell(new Phrase("No", font2));
@@ -810,17 +811,17 @@ public class RestaurantModel {
         c3.setBorder(Rectangle.BOX);
         tables.addCell(c3);
 
-        PdfPCell c4 = new PdfPCell(new Phrase("Food", font2));
-        c4.setBorder(Rectangle.BOX);
-        tables.addCell(c4);
-
-        PdfPCell c5 = new PdfPCell(new Phrase("Beverage", font2));
-        c5.setBorder(Rectangle.BOX);
-        tables.addCell(c5);
-
-        PdfPCell c6 = new PdfPCell(new Phrase("Cigarette", font2));
-        c6.setBorder(Rectangle.BOX);
-        tables.addCell(c6);
+//        PdfPCell c4 = new PdfPCell(new Phrase("Food", font2));
+//        c4.setBorder(Rectangle.BOX);
+//        tables.addCell(c4);
+//
+//        PdfPCell c5 = new PdfPCell(new Phrase("Beverage", font2));
+//        c5.setBorder(Rectangle.BOX);
+//        tables.addCell(c5);
+//
+//        PdfPCell c6 = new PdfPCell(new Phrase("Cigarette", font2));
+//        c6.setBorder(Rectangle.BOX);
+//        tables.addCell(c6);
 
         PdfPCell c7 = new PdfPCell(new Phrase("Food", font2));
         c7.setBorder(Rectangle.BOX);
@@ -852,7 +853,17 @@ public class RestaurantModel {
         int i = 1;
         DecimalFormat dcf = new DecimalFormat("###,###,###");
         SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
+        Double cash = 0.0;
+        Double card = 0.0;
+        Double momo = 0.0;
+        Double credit = 0.0;
+        Double postToRoom = 0.0;
+        Double nc = 0.0;
+        Double totalFood = 0.0;
+        Double totalBeverage = 0.0;
+        
         for (Payment x : new PaymentDao().findByTransactionDate(chosenDate)) {
+            
             pdfc5 = new PdfPCell(new Phrase(i + "", font6));
             pdfc5.setBorder(Rectangle.BOX);
             tables.addCell(pdfc5);
@@ -865,95 +876,103 @@ public class RestaurantModel {
             pdfc3.setBorder(Rectangle.BOX);
             tables.addCell(pdfc3);
 
-            if (!x.getPaymentMode().equals(EPaymentMode.CREDIT)) {
-
-                pdfc7 = new PdfPCell(new Phrase(0 + "", font6));
-                pdfc7.setBorder(Rectangle.BOX);
-                tables.addCell(pdfc7);
-
-                pdfc8 = new PdfPCell(new Phrase(0 + "", font6));
-                pdfc8.setBorder(Rectangle.BOX);
-                tables.addCell(pdfc8);
-
-                pdfc9 = new PdfPCell(new Phrase(0 + "", font6));
-                pdfc9.setBorder(Rectangle.BOX);
-                tables.addCell(pdfc9);
+//            if (x.getPaymentMode().toString().equalsIgnoreCase("CREDIT")) {
+//                System.out.println("True");
+//
+//                pdfc7 = new PdfPCell(new Phrase(0 + "", font6));
+//                pdfc7.setBorder(Rectangle.BOX);
+//                tables.addCell(pdfc7);
+//
+//                pdfc8 = new PdfPCell(new Phrase(0 + "", font6));
+//                pdfc8.setBorder(Rectangle.BOX);
+//                tables.addCell(pdfc8);
+//
+//                pdfc9 = new PdfPCell(new Phrase(0 + "", font6));
+//                pdfc9.setBorder(Rectangle.BOX);
+//                tables.addCell(pdfc9);
+//
+//                if (x.getTableTransaction().getItem().getMenuType().equalsIgnoreCase("Food")) {
+//                    pdfc2 = new PdfPCell(new Phrase(x.getTableTransaction().getItem().getUnitRate() * x.getTableTransaction().getQuantity() + "", font6));
+//                    pdfc2.setBorder(Rectangle.BOX);
+//                    tables.addCell(pdfc2);
+//
+//                    pdfc1 = new PdfPCell(new Phrase(0 + "", font6));
+//                    pdfc1.setBorder(Rectangle.BOX);
+//                    tables.addCell(pdfc1);
+//
+//                    pdfc6 = new PdfPCell(new Phrase(0 + "", font6));
+//                    pdfc6.setBorder(Rectangle.BOX);
+//                    tables.addCell(pdfc6);
+//
+//                } else if (x.getTableTransaction().getItem().getMenuType().equalsIgnoreCase("Beverage")) {
+//                    pdfc1 = new PdfPCell(new Phrase(x.getTableTransaction().getItem().getUnitRate() * x.getTableTransaction().getQuantity() + "", font6));
+//                    pdfc1.setBorder(Rectangle.BOX);
+//                    tables.addCell(pdfc1);
+//
+//                    pdfc2 = new PdfPCell(new Phrase(0 + "", font6));
+//                    pdfc2.setBorder(Rectangle.BOX);
+//                    tables.addCell(pdfc2);
+//
+//                    pdfc6 = new PdfPCell(new Phrase(0 + "", font6));
+//                    pdfc6.setBorder(Rectangle.BOX);
+//                    tables.addCell(pdfc6);
+//
+////                } else {
+//                    pdfc1 = new PdfPCell(new Phrase(0 + "", font6));
+//                    pdfc1.setBorder(Rectangle.BOX);
+//                    tables.addCell(pdfc1);
+//
+//                    pdfc2 = new PdfPCell(new Phrase(0 + "", font6));
+//                    pdfc2.setBorder(Rectangle.BOX);
+//                    tables.addCell(pdfc2);
+//
+//                    pdfc6 = new PdfPCell(new Phrase(x.getTableTransaction().getItem().getUnitRate() * x.getTableTransaction().getQuantity() + "", font6));
+//                    pdfc6.setBorder(Rectangle.BOX);
+//                    tables.addCell(pdfc6);
+////                }
+//
+////            } else {
+                System.out.println("False");
+//                pdfc2 = new PdfPCell(new Phrase(0 + "", font6));
+//                pdfc2.setBorder(Rectangle.BOX);
+//                tables.addCell(pdfc2);
+//
+//                pdfc1 = new PdfPCell(new Phrase(0 + "", font6));
+//                pdfc1.setBorder(Rectangle.BOX);
+//                tables.addCell(pdfc1);
+//
+//                pdfc6 = new PdfPCell(new Phrase(0 + "", font6));
+//                pdfc6.setBorder(Rectangle.BOX);
+//                tables.addCell(pdfc6);
 
                 if (x.getTableTransaction().getItem().getMenuType().equalsIgnoreCase("Food")) {
-                    pdfc2 = new PdfPCell(new Phrase(x.getTableTransaction().getItem().getUnitRate() * x.getTableTransaction().getQuantity() + "", font6));
-                    pdfc2.setBorder(Rectangle.BOX);
-                    tables.addCell(pdfc2);
-
-                    pdfc1 = new PdfPCell(new Phrase(0 + "", font6));
-                    pdfc1.setBorder(Rectangle.BOX);
-                    tables.addCell(pdfc1);
-
-                    pdfc6 = new PdfPCell(new Phrase(0 + "", font6));
-                    pdfc6.setBorder(Rectangle.BOX);
-                    tables.addCell(pdfc6);
-
-                } else if (x.getTableTransaction().getItem().getMenuType().equalsIgnoreCase("Beverage")) {
-                    pdfc1 = new PdfPCell(new Phrase(x.getTableTransaction().getItem().getUnitRate() * x.getTableTransaction().getQuantity() + "", font6));
-                    pdfc1.setBorder(Rectangle.BOX);
-                    tables.addCell(pdfc1);
-
-                    pdfc2 = new PdfPCell(new Phrase(0 + "", font6));
-                    pdfc2.setBorder(Rectangle.BOX);
-                    tables.addCell(pdfc2);
-
-                    pdfc6 = new PdfPCell(new Phrase(0 + "", font6));
-                    pdfc6.setBorder(Rectangle.BOX);
-                    tables.addCell(pdfc6);
-
-                } else {
-                    pdfc1 = new PdfPCell(new Phrase(0 + "", font6));
-                    pdfc1.setBorder(Rectangle.BOX);
-                    tables.addCell(pdfc1);
-
-                    pdfc2 = new PdfPCell(new Phrase(0 + "", font6));
-                    pdfc2.setBorder(Rectangle.BOX);
-                    tables.addCell(pdfc2);
-
-                    pdfc6 = new PdfPCell(new Phrase(x.getTableTransaction().getItem().getUnitRate() * x.getTableTransaction().getQuantity() + "", font6));
-                    pdfc6.setBorder(Rectangle.BOX);
-                    tables.addCell(pdfc6);
-                }
-
-            } else {
-                pdfc2 = new PdfPCell(new Phrase(0 + "", font6));
-                pdfc2.setBorder(Rectangle.BOX);
-                tables.addCell(pdfc2);
-
-                pdfc1 = new PdfPCell(new Phrase(0 + "", font6));
-                pdfc1.setBorder(Rectangle.BOX);
-                tables.addCell(pdfc1);
-
-                pdfc6 = new PdfPCell(new Phrase(0 + "", font6));
-                pdfc6.setBorder(Rectangle.BOX);
-                tables.addCell(pdfc6);
-
-                if (x.getTableTransaction().getItem().getMenuType().equalsIgnoreCase("Food")) {
+                    System.out.println("Menu Type----"+x.getTableTransaction().getItem().getMenuType());
+                    
+                    
                     pdfc7 = new PdfPCell(new Phrase(x.getTableTransaction().getItem().getUnitRate() * x.getTableTransaction().getQuantity() + "", font6));
                     pdfc7.setBorder(Rectangle.BOX);
                     tables.addCell(pdfc7);
 
-                    pdfc8 = new PdfPCell(new Phrase(0 + "", font6));
+                    pdfc8 = new PdfPCell(new Phrase(0+"", font6));
                     pdfc8.setBorder(Rectangle.BOX);
                     tables.addCell(pdfc8);
 
-                    pdfc9 = new PdfPCell(new Phrase(0 + "", font6));
+                    pdfc9 = new PdfPCell(new Phrase(0+"", font6));
                     pdfc9.setBorder(Rectangle.BOX);
                     tables.addCell(pdfc9);
                 } else if (x.getTableTransaction().getItem().getMenuType().equalsIgnoreCase("Beverage")) {
+                    System.out.println("Menu Type----"+x.getTableTransaction().getItem().getMenuType()+x.getTableTransaction().getTotalPrice());
+                    
+                    pdfc7 = new PdfPCell(new Phrase(0+"", font6));
+                    pdfc7.setBorder(Rectangle.BOX);
+                    tables.addCell(pdfc7);
+                    
                     pdfc8 = new PdfPCell(new Phrase(x.getTableTransaction().getItem().getUnitRate() * x.getTableTransaction().getQuantity() + "", font6));
                     pdfc8.setBorder(Rectangle.BOX);
                     tables.addCell(pdfc8);
 
-                    pdfc7 = new PdfPCell(new Phrase(0 + "", font6));
-                    pdfc7.setBorder(Rectangle.BOX);
-                    tables.addCell(pdfc7);
 
-                    pdfc9 = new PdfPCell(new Phrase(0 + "", font6));
+                    pdfc9 = new PdfPCell(new Phrase(0+"", font6));
                     pdfc9.setBorder(Rectangle.BOX);
                     tables.addCell(pdfc9);
 
@@ -970,14 +989,165 @@ public class RestaurantModel {
                     pdfc9.setBorder(Rectangle.BOX);
                     tables.addCell(pdfc9);
                 }
-            }
+//            }
             pdfc10 = new PdfPCell(new Phrase(x.getTableTransaction().getKotRemarks() + "", font6));
             pdfc10.setBorder(Rectangle.BOX);
             tables.addCell(pdfc10);
 
+            if(x.getPaymentMode().toString().equalsIgnoreCase("CASH")){
+                cash = cash + x.getTableTransaction().getTotalPrice();
+            }else if(x.getPaymentMode().toString().equalsIgnoreCase("CARD")){
+                card = card + x.getTableTransaction().getTotalPrice();
+            }else if(x.getPaymentMode().toString().equalsIgnoreCase("MOBILEMONEY")){
+                momo = momo + x.getTableTransaction().getTotalPrice();
+            }else if(x.getPaymentMode().toString().equalsIgnoreCase("CREDIT")){
+                credit = credit + x.getTableTransaction().getTotalPrice();
+            }else if(x.getPaymentMode().toString().equalsIgnoreCase("POST TO ROOM")){
+                postToRoom = postToRoom + x.getTableTransaction().getTotalPrice();
+            }else if(x.getPaymentMode().toString().equalsIgnoreCase("NC")){
+                nc = nc + x.getTableTransaction().getTotalPrice();
+            }
+            
+            if(x.getPaymentMode().toString().equalsIgnoreCase("CASH") && x.getTableTransaction().getItem().getMenuType().equalsIgnoreCase("Food")){
+                totalFood = totalFood + x.getTableTransaction().getTotalPrice();
+            }else if(x.getPaymentMode().toString().equalsIgnoreCase("CARD") && x.getTableTransaction().getItem().getMenuType().equalsIgnoreCase("Food")){
+                totalFood = totalFood + x.getTableTransaction().getTotalPrice();
+            }else if(x.getPaymentMode().toString().equalsIgnoreCase("MOBILEMONEY") && x.getTableTransaction().getItem().getMenuType().equalsIgnoreCase("Food")){
+                totalFood = totalFood + x.getTableTransaction().getTotalPrice();
+            }
+            
+            if(x.getPaymentMode().toString().equalsIgnoreCase("CASH") && x.getTableTransaction().getItem().getMenuType().equalsIgnoreCase("Beverage")){
+                totalBeverage = totalBeverage + x.getTableTransaction().getTotalPrice();
+            }else if(x.getPaymentMode().toString().equalsIgnoreCase("CARD") && x.getTableTransaction().getItem().getMenuType().equalsIgnoreCase("Beverage")){
+                totalBeverage = totalBeverage + x.getTableTransaction().getTotalPrice();
+            }else if(x.getPaymentMode().toString().equalsIgnoreCase("MOBILEMONEY") && x.getTableTransaction().getItem().getMenuType().equalsIgnoreCase("Beverage")){
+                totalBeverage = totalBeverage + x.getTableTransaction().getTotalPrice();
+            }
+            
             i++;
         }
+        
+        
+        PdfPTable tables1 = new PdfPTable(4);
+        tables1.setWidthPercentage(100);
+        
+        PdfPCell ce1 = new PdfPCell(new Phrase("CASH", font2));
+        ce1.setBorder(Rectangle.BOX);
+        tables1.addCell(ce1);
+
+        PdfPCell ce2 = new PdfPCell(new Phrase(cash+"", font2));
+        ce2.setBorder(Rectangle.BOX);
+        tables1.addCell(ce2);
+
+        PdfPCell cee1 = new PdfPCell(new Phrase("TOTAL FOOD(CASH + CARD + MOBILE)", font2));
+        cee1.setBorder(Rectangle.BOX);
+        tables1.addCell(cee1);
+        
+        PdfPCell cee2 = new PdfPCell(new Phrase(totalFood+"", font2));
+        cee2.setBorder(Rectangle.BOX);
+        tables1.addCell(cee2);
+        
+        PdfPCell ce3 = new PdfPCell(new Phrase("CARD", font2));
+        ce3.setBorder(Rectangle.BOX);
+        tables1.addCell(ce3);
+
+        PdfPCell ce4 = new PdfPCell(new Phrase(card+"", font2));
+        ce4.setBorder(Rectangle.BOX);
+        tables1.addCell(ce4);
+
+        PdfPCell ce5 = new PdfPCell(new Phrase("TOTAL BEVERAGE(CASH + CARD + MOBILE)", font2));
+        ce5.setBorder(Rectangle.BOX);
+        tables1.addCell(ce5);
+        
+        PdfPCell ce6 = new PdfPCell(new Phrase(totalBeverage+"", font2));
+        ce6.setBorder(Rectangle.BOX);
+        tables1.addCell(ce6);
+
+        PdfPCell ce7 = new PdfPCell(new Phrase("MOBILE MONEY", font2));
+        ce7.setBorder(Rectangle.BOX);
+        tables1.addCell(ce7);
+
+        PdfPCell ce8 = new PdfPCell(new Phrase(momo+"", font2));
+        ce8.setBorder(Rectangle.BOX);
+        tables1.addCell(ce8);
+
+        PdfPCell ce9 = new PdfPCell(new Phrase("TOTAL CIGARETTE(CASH + CARD + MOBILE)", font2));
+        ce9.setBorder(Rectangle.BOX);
+        tables1.addCell(ce9);
+        
+        PdfPCell ce10 = new PdfPCell(new Phrase(0+"", font2));
+        ce10.setBorder(Rectangle.BOX);
+        tables1.addCell(ce10);
+        
+        PdfPCell ce11 = new PdfPCell(new Phrase("CREDIT", font2));
+        ce11.setBorder(Rectangle.BOX);
+        tables1.addCell(ce11);
+
+        PdfPCell ce12 = new PdfPCell(new Phrase(credit+"", font2));
+        ce12.setBorder(Rectangle.BOX);
+        tables1.addCell(ce12);
+
+        PdfPCell ce13 = new PdfPCell(new Phrase("", font2));
+        ce13.setBorder(Rectangle.BOX);
+        tables1.addCell(ce13);
+        
+        PdfPCell ce14 = new PdfPCell(new Phrase("", font2));
+        ce14.setBorder(Rectangle.BOX);
+        tables1.addCell(ce14);
+
+        
+        PdfPCell ce15 = new PdfPCell(new Phrase("POST TO ROOM", font2));
+        ce15.setBorder(Rectangle.BOX);
+        tables1.addCell(ce15);
+
+        PdfPCell ce16 = new PdfPCell(new Phrase(postToRoom+"", font2));
+        ce16.setBorder(Rectangle.BOX);
+        tables1.addCell(ce16);
+
+        PdfPCell ce17 = new PdfPCell(new Phrase("", font2));
+        ce17.setBorder(Rectangle.BOX);
+        tables1.addCell(ce17);
+        
+        PdfPCell ce18 = new PdfPCell(new Phrase("", font2));
+        ce18.setBorder(Rectangle.BOX);
+        tables1.addCell(ce18);
+        
+        PdfPCell ce19 = new PdfPCell(new Phrase("NC", font2));
+        ce19.setBorder(Rectangle.BOX);
+        tables1.addCell(ce19);
+
+        PdfPCell ce20 = new PdfPCell(new Phrase(nc+"", font2));
+        ce20.setBorder(Rectangle.BOX);
+        tables1.addCell(ce20);
+
+        PdfPCell ce26 = new PdfPCell(new Phrase("", font2));
+        ce26.setBorder(Rectangle.BOX);
+        tables1.addCell(ce26);
+        
+        PdfPCell ce21 = new PdfPCell(new Phrase("", font2));
+        ce21.setBorder(Rectangle.BOX);
+        tables1.addCell(ce21);
+        
+        PdfPCell ce27 = new PdfPCell(new Phrase("Total", font2));
+        ce27.setBorder(Rectangle.BOX);
+        tables1.addCell(ce27);
+        
+        PdfPCell ce22 = new PdfPCell(new Phrase((cash+credit+momo+nc+postToRoom+card)+"", font2));
+        ce22.setBorder(Rectangle.BOX);
+        tables1.addCell(ce22);
+        
+        
+        PdfPCell ce23 = new PdfPCell(new Phrase("TOTAL (CASH + CARD + MOBILE)", font2));
+        ce23.setBorder(Rectangle.BOX);
+        tables1.addCell(ce23);
+        
+        PdfPCell ce24 = new PdfPCell(new Phrase((totalFood+totalBeverage)+"", font2));
+        ce24.setBorder(Rectangle.BOX);
+        tables1.addCell(ce24);
+
         document.add(tables);
+        document.add(Chunk.NEWLINE);
+        document.add(tables1);
         Paragraph par = new Paragraph("\n\nPrinted On: " + sdf.format(new Date()) + ". By: " + loggedInUser.getNames(), font1);
         par.setAlignment(Element.ALIGN_RIGHT);
         document.add(par);

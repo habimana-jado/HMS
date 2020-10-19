@@ -24,19 +24,19 @@ public class Test {
         
 //        HibernateUtil.getSessionFactory().openSession();
 //        HibernateUtil.getSessionFactory().close();
-        UserDepartment dep = new UserDepartment();
-        dep.setDepartmentName("ADMINISTRATOR");
-        dep.setStatus(EStatus.ACTIVE);
-        new UserDepartmentDao().register(dep);        
+//        UserDepartment dep = new UserDepartment();
+//        dep.setDepartmentName("ADMINISTRATOR");
+//        dep.setStatus(EStatus.ACTIVE);
+//        new UserDepartmentDao().register(dep);        
 //        UserDepartment dep = new UserDepartmentDao().findOne(UserDepartment.class, "6fbcc92c-30af-4f5f-8509-93f31819de07");
-        Person u = new Person();
-        u.setUserDepartment(dep);
-        u.setNames("Kalisa");
-        u.setPhone("0788909884");
-        u.setUsername("admin");
-        u.setPassword(new PassCode().encrypt("admin"));
-        u.setStatus(EStatus.ACTIVE);
-        new PersonDao().register(u);
+//        Person u = new Person();
+//        u.setUserDepartment(dep);
+//        u.setNames("Kalisa");
+//        u.setPhone("0788909884");
+//        u.setUsername("admin");
+//        u.setPassword(new PassCode().encrypt("admin"));
+//        u.setStatus(EStatus.ACTIVE);
+//        new PersonDao().register(u);
 //        
 //        Account a = new Account();
 //        a.setPerson(u);
@@ -74,9 +74,10 @@ public class Test {
 
 //        List<TableGroup> tg = new TableGroupDao().findAll(TableGroup.class);
 
-        for(TableMaster t: new TableMasterDao().findAll(TableMaster.class)){
-            t.setType("Table");
-            new TableMasterDao().update(t);
-        }
+//        for(TableMaster t: new TableMasterDao().findAll(TableMaster.class)){
+//            t.setType("Table");
+//            new TableMasterDao().update(t);
+//        }
+        new RestaurantModel1().generateDailySalesReport();
     }
 }

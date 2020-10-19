@@ -8,7 +8,7 @@
     <h:head>
         <meta charset="utf-8"/>
         <meta http-equiv="x-ua-compatible" content="ie=edge"/>
-        <title>Employee</title>
+        <title>Restaurant</title>
         <meta name="description" content=""/>
         <meta name="viewport" content="width=device-width, initial-scale=1"/>
         <!-- favicon
@@ -69,8 +69,12 @@
         <!-- modernizr JS
                     ============================================ -->
         <script src="./../resources/js/vendor/modernizr-2.8.3.min.js"></script>
+
+        <h:outputScript library="primefaces" name="jquery/jquery.js" />
+
     </h:head>
     <h:body>
+
         <!--[if lt IE 8]>
             <p class="browserupgrade">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
         <![endif]-->
@@ -144,11 +148,11 @@
                             </li>
                         </ul>
                         <ul class="metismenu" id="menu1" style="padding-top: 20px;">
-                            
+
                             <li>
-                                <a class="has-arrow" href="#" aria-expanded="false"><i class="fa big-icon fa-pie-chart icon-wrap"></i> <span class="mini-click-non">Menu Configuration</span></a>
+                                <a class="has-arrow" href="menu-item.xhtml" aria-expanded="false"><i class="fa big-icon fa-pie-chart icon-wrap"></i> <span class="mini-click-non">Menu Configuration</span></a>
                                 <ul class="submenu-angle" aria-expanded="false">
-                                    <li><a title="Menu Master" href="#"><i class="fa fa-square sub-icon-mg" aria-hidden="true"></i> <span class="mini-sub-pro">Menu Master</span></a></li>
+                                    <li><a title="Menu Master" href="menu-item.xhtml"><i class="fa fa-square sub-icon-mg" aria-hidden="true"></i> <span class="mini-sub-pro">Menu Master</span></a></li>
                                 </ul>
                             </li>
                             <li>
@@ -159,7 +163,7 @@
                                 </ul>
                             </li>
                             <li>
-                                <a class="has-arrow" href="sale-report.xhtml" aria-expanded="false"><i class="fa big-icon fa-flask icon-wrap"></i> <span class="mini-click-non">Sales Report</span></a>
+                                <a class="has-arrow" href="#" aria-expanded="false"><i class="fa big-icon fa-flask icon-wrap"></i> <span class="mini-click-non">Sales Report</span></a>
                                 <ul class="submenu-angle" aria-expanded="false">
                                     <li><a title="Daily Report" href="sale-report.xhtml"><i class="fa fa-map-marker sub-icon-mg" aria-hidden="true"></i> <span class="mini-sub-pro">Daily Sales Report</span></a></li>
                                 </ul>
@@ -294,6 +298,7 @@
                 </div>
             </div>
 
+
             <div class="row">
                 <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
 
@@ -315,48 +320,119 @@
                 </div>
             </div>
 
-            <!-- Modals Start-->
             <div class="login-form-area adminpro-pd mg-tb-15">
                 <div class="container-fluid">
                     <div class="row">
-                        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                            <div class="tab-content-details shadow-reset">
+                        <div class="col-lg-3"></div>
+                        <div class="col-lg-6 col-md-6 col-sm-6">
+                            <h:form>
+                                <div class="form-group-inner">
+                                    <div class="row">
+                                        <div class="col-lg-3 col-md-3 col-sm-3 col-xs-12">
+                                            <label class="login2 pull-right pull-right-pro">From Date:</label>
+                                        </div>
+                                        <div class="col-lg-9 col-md-9 col-sm-9 col-xs-12">
+                                            <h:inputText value="#{cashierModel.chosenDate}" class="form-control" required="true" requiredMessage="Please Choose Date">
+                                                <f:convertDateTime pattern="dd/MM/yyyy" />
+                                            </h:inputText>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group-inner">
+                                    <div class="row">
+                                        <div class="col-lg-3 col-md-3 col-sm-3 col-xs-12">
 
-                                <!--List Users-->
-                                <h:form>
-                                    <p:growl />
-                                    <table class="table table-striped table-hover">
-                                        <thead class="bg-light">
-                                            <tr class="border-0">
-                                                <th class="border-0">#</th>
-                                                <th class="border-0">Item Name</th>
-                                                <th class="border-0">Category Name</th>
-                                                <th class="border-0">Unit Name</th>
-                                                <th class="border-0">Menu Type</th>
-                                                <th class="border-0">Rate</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            <c:forEach items="#{adminModel.items}" var="elements" varStatus="status">
-                                                <tr>
-                                                    <td>${status.index+1}</td>
-                                                    <td>
-                                                        #{elements.itemName}
-                                                    </td>
-                                                    <td>
-                                                        #{elements.itemCategory.categoryName}
-                                                    </td>
-                                                    <td>#{elements.itemUnit.unitName}</td>
-                                                    <td>#{elements.menuType}</td>
-                                                    <td>#{elements.unitRate}</td>
-                                                </tr>
-                                            </c:forEach>
-                                        </tbody>
-                                    </table>
-                                </h:form>
-                            </div>
+                                        </div>
+                                        <div class="col-lg-9 col-md-9 col-sm-9 col-xs-12">
+                                            <h:commandButton value="Search" action="#{cashierModel.retrievePaymentReport()}" />
+                                        </div>
+                                    </div>
+                                </div>
+                            </h:form>
                         </div>
+                        <div class="col-lg-3"></div>
                     </div>
+                    <h:form id="reportPrint">
+                        <div class="row">
+                            <div class="col-lg-3"></div>
+                            <div class="col-lg-6">
+                                <h:commandButton value="Detailed Report" class="btn btn-danger" action="#{cashierModel.generateDailySalesReport()}" />
+                                <table class="table table-bordered">
+                                    <thead>
+                                        <tr>
+                                            <th scope="col">No</th>
+                                            <th scope="col">Table No.</th>
+                                            <th scope="col">Payment Mode</th>
+                                            <th scope="col">Food</th>
+                                            <th scope="col">Beverage</th>
+                                            <th scope="col">Cigarette</th>
+                                            <th scope="col">Kot Remarks</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <c:forEach items="#{cashierModel.payments}" var="elements" varStatus="status" >
+                                            <tr>
+                                                <td>
+                                                    ${status.index+1}
+                                                </td>
+                                                <td>
+                                                    #{elements.tableTransaction.tableMaster.tableNo}
+                                                </td>
+                                                <td>
+                                                    #{elements.paymentMode}
+                                                </td>
+                                                <td>
+                                                    <c:choose>
+                                                        <c:when test="#{elements.tableTransaction.item.menuType eq 'Food'}">
+                                                            #{elements.tableTransaction.totalPrice}
+                                                        </c:when>
+                                                        <c:otherwise>
+                                                            0
+                                                        </c:otherwise>
+                                                    </c:choose>
+                                                </td>
+                                                <td>                                                    
+                                                    <c:choose>
+                                                        <c:when test="#{elements.tableTransaction.item.menuType eq 'Beverage'}">
+                                                            #{elements.tableTransaction.totalPrice}
+                                                        </c:when>
+                                                        <c:otherwise>
+                                                            0
+                                                        </c:otherwise>
+                                                    </c:choose>
+                                                </td>
+                                                <td>
+                                                    <c:choose>
+                                                        <c:when test="#{elements.tableTransaction.item.menuType eq 'Cigarette'}">
+                                                            #{elements.tableTransaction.totalPrice}
+                                                        </c:when>
+                                                        <c:otherwise>
+                                                            0
+                                                        </c:otherwise>
+                                                    </c:choose>
+                                                </td>
+                                                <td>
+                                                    #{elements.tableTransaction.kotRemarks}
+                                                </td>
+                                            </tr>
+                                        </c:forEach>                               
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div class="col-lg-3"></div>
+                        </div>
+                    </h:form>
+                    <h:form>
+                        <div class="col-lg-4" />
+                        <div class="col-lg-4">
+                            <p:commandButton class="btn btn-primary" value="Print" type="button" icon="pi pi-print" style="display:block;margin-bottom: 20px">
+                                <p:printer target="reportPrint" />
+                            </p:commandButton>
+                        </div>
+
+                        <div class="col-lg-4" />
+                    </h:form>
+
 
                 </div>
             </div>
@@ -374,40 +450,40 @@
             </div>
         </div>
 
-        <!-- jquery
-                    ============================================ -->
-        <script src="./../resources/js/vendor/jquery-1.11.3.min.js"></script>
-        <!-- bootstrap JS
-                    ============================================ -->
+        <!--jquery-->
+        <!--============================================--> 
+        <!--<script src="./../resources/js/vendor/jquery-1.11.3.min.js"></script>-->
+        <!--bootstrap JS-->
+        <!--============================================--> 
         <script src="./../resources/js/bootstrap.min.js"></script>
-        <!-- wow JS
-                    ============================================ -->
+        <!--wow JS-->
+        <!--============================================--> 
         <script src="./../resources/js/wow.min.js"></script>
-        <!-- price-slider JS
-                    ============================================ -->
-        <script src="./../resources/js/jquery-price-slider.js"></script>
-        <!-- meanmenu JS
-                    ============================================ -->
+        <!--price-slider JS-->
+        <!--============================================--> 
+        <!--<script src="./../resources/js/jquery-price-slider.js"></script>-->
+        <!--meanmenu JS-->
+        <!--============================================--> 
         <script src="./../resources/js/jquery.meanmenu.js"></script>
-        <!-- owl.carousel JS
-                    ============================================ -->
+        <!--owl.carousel JS-->
+        <!--============================================--> 
         <script src="./../resources/js/owl.carousel.min.js"></script>
-        <!-- sticky JS
-                    ============================================ -->
-        <script src="./../resources/js/jquery.sticky.js"></script>
-        <!-- scrollUp JS
-                    ============================================ -->
+        <!--sticky JS-->
+        <!--============================================--> 
+        <!--<script src="./../resources/js/jquery.sticky.js"></script>-->
+        <!--scrollUp JS-->
+        <!--============================================--> 
         <script src="./../resources/js/jquery.scrollUp.min.js"></script>
-        <!-- mCustomScrollbar JS
-                    ============================================ -->
+        <!--mCustomScrollbar JS-->
+        <!--============================================--> 
         <script src="./../resources/js/scrollbar/jquery.mCustomScrollbar.concat.min.js"></script>
         <script src="./../resources/js/scrollbar/mCustomScrollbar-active.js"></script>
-        <!-- metisMenu JS
-                    ============================================ -->
+        <!--metisMenu JS-->
+        <!--============================================--> 
         <script src="./../resources/js/metisMenu/metisMenu.min.js"></script>
         <script src="./../resources/js/metisMenu/metisMenu-active.js"></script>
-        <!-- data table JS
-                    ============================================ -->
+        <!--data table JS-->
+        <!--============================================--> 
         <script src="./../resources/js/data-table/bootstrap-table.js"></script>
         <script src="./../resources/js/data-table/tableExport.js"></script>
         <script src="./../resources/js/data-table/data-table-active.js"></script>
@@ -416,27 +492,27 @@
         <script src="./../resources/js/data-table/bootstrap-table-resizable.js"></script>
         <script src="./../resources/js/data-table/colResizable-1.5.source.js"></script>
         <script src="./../resources/js/data-table/bootstrap-table-export.js"></script>
-        <!--  editable JS
-                    ============================================ -->
-        <script src="./../resources/js/editable/jquery.mockjax.js"></script>
+        <!--editable JS-->
+        <!--============================================--> 
+        <!--<script src="./../resources/js/editable/jquery.mockjax.js"></script>-->
         <script src="./../resources/js/editable/mock-active.js"></script>
         <script src="./../resources/js/editable/select2.js"></script>
         <script src="./../resources/js/editable/moment.min.js"></script>
         <script src="./../resources/js/editable/bootstrap-datetimepicker.js"></script>
         <script src="./../resources/js/editable/bootstrap-editable.js"></script>
         <script src="./../resources/js/editable/xediable-active.js"></script>
-        <!-- Chart JS
-                    ============================================ -->
-        <script src="./../resources/js/chart/jquery.peity.min.js"></script>
+        <!--Chart JS-->
+        <!--============================================--> 
+        <!--<script src="./../resources/js/chart/jquery.peity.min.js"></script>-->
         <script src="./../resources/js/peity/peity-active.js"></script>
-        <!-- tab JS
-                    ============================================ -->
+        <!--tab JS-->
+        <!--============================================--> 
         <script src="./../resources/js/tab.js"></script>
-        <!-- plugins JS
-                    ============================================ -->
+        <!--plugins JS-->
+        <!--============================================--> 
         <script src="./../resources/js/plugins.js"></script>
-        <!-- main JS
-                    ============================================ -->
+        <!--main JS-->
+        <!--============================================--> 
         <script src="./../resources/js/main.js"></script>
 
     </h:body>
