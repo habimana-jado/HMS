@@ -4,14 +4,19 @@ package domain;
 import enums.EPaymentMode;
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 import java.util.UUID;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
 
 /**
  *
@@ -27,9 +32,16 @@ public class Payment implements Serializable {
     private EPaymentMode paymentMode;
     private Double amountPaid;
     private String mobileNumber;
+    private String status;
+    private String billNo;
+    
+    
+    @OneToMany(mappedBy = "payment", fetch = FetchType.EAGER)
+    @Fetch(FetchMode.SUBSELECT)
+    private List<TableTransaction> tableTransaction;
     
     @ManyToOne
-    private TableTransaction tableTransaction;
+    private Person cashier;
 
     public String getPaymentId() {
         return paymentId;
@@ -63,11 +75,11 @@ public class Payment implements Serializable {
         this.amountPaid = amountPaid;
     }
 
-    public TableTransaction getTableTransaction() {
+    public List<TableTransaction> getTableTransaction() {
         return tableTransaction;
     }
 
-    public void setTableTransaction(TableTransaction tableTransaction) {
+    public void setTableTransaction(List<TableTransaction> tableTransaction) {
         this.tableTransaction = tableTransaction;
     }
 
@@ -78,6 +90,31 @@ public class Payment implements Serializable {
     public void setMobileNumber(String mobileNumber) {
         this.mobileNumber = mobileNumber;
     }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
+    public String getBillNo() {
+        return billNo;
+    }
+
+    public void setBillNo(String billNo) {
+        this.billNo = billNo;
+    }
+
+    public Person getCashier() {
+        return cashier;
+    }
+
+    public void setCashier(Person cashier) {
+        this.cashier = cashier;
+    }
+    
     
     
 }

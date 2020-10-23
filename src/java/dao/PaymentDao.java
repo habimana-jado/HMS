@@ -21,4 +21,12 @@ public class PaymentDao extends GenericDao<Payment>{
         s.close();
         return list;
     }
+    
+    public List<Payment> findByBillNo(){
+        Session s = HibernateUtil.getSessionFactory().openSession();
+        Query q = s.createQuery("SELECT DISTINCT a.billNo, a.amountPaid, a.paymentDate, a.paymentMode FROM Payment a ");
+        List<Payment> list = q.list();
+        s.close();
+        return list;
+    }
 }

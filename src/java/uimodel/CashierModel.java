@@ -50,6 +50,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.UUID;
 import javax.annotation.PostConstruct;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
@@ -84,6 +85,7 @@ public class CashierModel {
     private UserDepartment waitery = new UserDepartmentDao().findByDepartment("Waiter");
     private List<Person> waiters = new PersonDao().findByDepartment(waitery);
     private List<Payment> payments = new ArrayList<>();
+    private List<Payment> dailySales = new ArrayList<>();
     private String waiterId = new String();
     private List<Item> suggestedItems = new ArrayList<>();
     private String itemSearchKeyWord = new String();
@@ -104,7 +106,8 @@ public class CashierModel {
     private String kotType = new String();
     private boolean foodKotType;
     private boolean beverageKotType;
-    
+    private List<TableTransaction> paidTableTransactions = new ArrayList<>();
+
     @PostConstruct
     public void init() {
         userInit();
@@ -120,10 +123,18 @@ public class CashierModel {
         occupiedTable = new TableMasterDao().findTotalByStatus(ETableStatus.FULL);
     }
 
-    public void retrievePaymentReport(){
+    public void retrievePaymentReport() {
         payments = new PaymentDao().findByTransactionDate(chosenDate);
+
     }
-    
+
+    public void retrieveTransactions(Payment p) {
+        paidTableTransactions.clear();
+        for (TableTransaction tr : p.getTableTransaction()) {
+            paidTableTransactions.add(tr);
+        }
+    }
+
     public void userInit() {
         loggedInUser = (Person) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("session");
     }
@@ -144,19 +155,19 @@ public class CashierModel {
 
     public String redirectKotPrint() {
         try {
-            
+
             if (!tableTransactions.isEmpty() || tableTransactions != null) {
                 foodTableTransactions.clear();
                 beverageTableTransactions.clear();
                 foodKotType = Boolean.FALSE;
                 beverageKotType = Boolean.FALSE;
-                
+
                 for (TableTransaction t : tableTransactions) {
-                    if (t.getItem().getMenuType().equalsIgnoreCase("Food")&& t.getPrintStatus().equalsIgnoreCase("UnPrinted")) {
+                    if (t.getItem().getMenuType().equalsIgnoreCase("Food") && t.getPrintStatus().equalsIgnoreCase("UnPrinted")) {
                         kotType = "Food";
                         foodKotType = Boolean.TRUE;
                         foodTableTransactions.add(t);
-                    } else if (t.getItem().getMenuType().equalsIgnoreCase("Beverage")&& t.getPrintStatus().equalsIgnoreCase("UnPrinted")) {
+                    } else if (t.getItem().getMenuType().equalsIgnoreCase("Beverage") && t.getPrintStatus().equalsIgnoreCase("UnPrinted")) {
                         kotType = "Beverage";
                         beverageKotType = Boolean.TRUE;
                         beverageTableTransactions.add(t);
@@ -165,7 +176,7 @@ public class CashierModel {
                     }
                 }
             }
-            
+
             TableMaster master = new TableMaster();
 
             for (TableTransaction table : tableTransactions) {
@@ -192,7 +203,7 @@ public class CashierModel {
             occupiedTable = new TableMasterDao().findTotalByStatus(ETableStatus.FULL);
 
             return "print-kot.xhtml?faces-redirect=true";
-            
+
         } catch (Exception e) {
             e.printStackTrace();
             return "print-kot.xhtml?faces-redirect=true";
@@ -202,7 +213,7 @@ public class CashierModel {
     public void populateSentTableTransactions(TableMaster tableMaster) {
         chosenTableMaster = tableMaster;
         tableTransactions = new TableTransactionDao().findByTableAndStatus(tableMaster, "Sent");
-        
+
         totalBilledBeverage = new TableTransactionDao().findTotalByTableAndStatus(tableMaster, "Sent", "Beverage");
         totalBilledFoods = new TableTransactionDao().findTotalByTableAndStatus(tableMaster, "Sent", "Food");
 
@@ -477,7 +488,7 @@ public class CashierModel {
             new TableTransactionDao().delete(t);
         });
         tableMasters = new TableMasterDao().findByType("Table");
-        
+
         roomMasters = new TableMasterDao().findByType("Room");
         vipRoomMasters = new TableMasterDao().findByType("VipRoom");
         availableTable = new TableMasterDao().findTotalByStatus(ETableStatus.VACANT);
@@ -503,6 +514,7 @@ public class CashierModel {
     }
 
     public void registerTransaction() {
+        Payment p = new Payment();
         try {
             if (itemChosen == null) {
                 FacesContext fc = FacesContext.getCurrentInstance();
@@ -511,6 +523,19 @@ public class CashierModel {
                 FacesContext fc = FacesContext.getCurrentInstance();
                 fc.addMessage(null, new FacesMessage("Choose Waiter"));
             } else {
+
+                tableTransactions = new TableTransactionDao().findByTableAndOrStatus(chosenTableMaster, "Pending", "Sent");
+                if (tableTransactions.isEmpty() || tableTransactions == null) {
+                    p.setStatus("Inititated");
+                    p.setAmountPaid(0.0);
+                    new PaymentDao().register(p);
+                } else {
+                    for (TableTransaction t : tableTransactions) {
+                        p = t.getPayment();
+                        break;
+                    }
+                }
+                tableTransaction.setPayment(p);
                 tableTransaction.setTransactionDate(new Date());
                 tableTransaction.setStatus("Pending");
                 tableTransaction.setPrintStatus("UnPrinted");
@@ -566,10 +591,6 @@ public class CashierModel {
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }
-    }
-
-    public void test(TableTransaction trans) {
-        System.out.println(trans.getItem().getItemName() + "----" + trans.getQuantity());
     }
 
     public void completeTransaction() {
@@ -644,37 +665,42 @@ public class CashierModel {
     public void payTransaction() {
         try {
             TableMaster master = new TableMaster();
+            String billId = UUID.randomUUID().toString().substring(0, 5);
 
             for (TableTransaction table : tableTransactions) {
+                payment = table.getPayment();
                 table.setStatus("Completed");
+                table.setBillNo(billId);
                 new TableTransactionDao().update(table);
 
                 master = table.getTableMaster();
                 master.setTableStatus(ETableStatus.VACANT);
                 tableDao.update(master);
 
-                payment.setTableTransaction(table);
-                payment.setAmountPaid(table.getTotalPrice());
-
-                if (paymentMode.equalsIgnoreCase("CASH")) {
-                    payment.setPaymentMode(EPaymentMode.CASH);
-                } else if (paymentMode.equalsIgnoreCase("CARD")) {
-                    payment.setPaymentMode(EPaymentMode.CARD);
-                } else if (paymentMode.equalsIgnoreCase("CREDIT")) {
-                    payment.setPaymentMode(EPaymentMode.CREDIT);
-                } else if (paymentMode.equalsIgnoreCase("NC")) {
-                    payment.setPaymentMode(EPaymentMode.NC);
-                } else if (paymentMode.equalsIgnoreCase("MOBILEMONEY")) {
-                    payment.setPaymentMode(EPaymentMode.MOBILEMONEY);
-                } else if (paymentMode.equalsIgnoreCase("POSTTOROOM")) {
-                    payment.setPaymentMode(EPaymentMode.POSTTOROOM);
-                }
-                payment.setMobileNumber(payerNumber);
-                payment.setPaymentDate(new Date());
-                new PaymentDao().register(payment);
-                payment = new Payment();
+//                payment.setTableTransaction(table);
+                payment.setAmountPaid(payment.getAmountPaid() + table.getTotalPrice());
 
             }
+            if (paymentMode.equalsIgnoreCase("CASH")) {
+                payment.setPaymentMode(EPaymentMode.CASH);
+            } else if (paymentMode.equalsIgnoreCase("CARD")) {
+                payment.setPaymentMode(EPaymentMode.CARD);
+            } else if (paymentMode.equalsIgnoreCase("CREDIT")) {
+                payment.setPaymentMode(EPaymentMode.CREDIT);
+            } else if (paymentMode.equalsIgnoreCase("NC")) {
+                payment.setPaymentMode(EPaymentMode.NC);
+            } else if (paymentMode.equalsIgnoreCase("MOBILEMONEY")) {
+                payment.setPaymentMode(EPaymentMode.MOBILEMONEY);
+            } else if (paymentMode.equalsIgnoreCase("POSTTOROOM")) {
+                payment.setPaymentMode(EPaymentMode.POSTTOROOM);
+            }
+            payment.setCashier(loggedInUser);
+            payment.setMobileNumber(payerNumber);
+            payment.setBillNo(billId);
+            payment.setStatus("Completed");
+            payment.setPaymentDate(new Date());
+            new PaymentDao().update(payment);
+            payment = new Payment();
 
             tableTransactions = new TableTransactionDao().findByTableAndStatus(chosenTableMaster, "Completed");
 
@@ -704,402 +730,402 @@ public class CashierModel {
             e.printStackTrace();
         }
     }
-    public void generateDailySalesReport() throws FileNotFoundException, DocumentException, BadElementException, IOException, Exception {
-
-        FacesContext context = FacesContext.getCurrentInstance();
-        Document document = new Document();
-        Rectangle rect = new Rectangle(20, 20, 580, 500);
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        PdfWriter writer = PdfWriter.getInstance((com.lowagie.text.Document) document, baos);
-        writer.setBoxSize("art", rect);
-        document.setPageSize(rect);
-        if (!document.isOpen()) {
-            document.open();
-        }
-//        String path = FacesContext.getCurrentInstance().getExternalContext().getRealPath("\\uploads");
-//        path = path.substring(0, path.indexOf("\\build"));
-//        path = path + "\\web\\uploads\\hotel-logo\\" + hotel.getLogo();
-//        Image image = Image.getInstance(path);
-//        image.scaleAbsolute(50, 50);
-//        image.setAlignment(Element.ALIGN_LEFT);
-        Paragraph title = new Paragraph();
-        //BEGIN page
-//        title.add(image);
-        document.add(title);
-        com.lowagie.text.Font font0 = new com.lowagie.text.Font(com.lowagie.text.Font.TIMES_ROMAN, 9, com.lowagie.text.Font.NORMAL);
-        com.lowagie.text.Font font1 = new com.lowagie.text.Font(com.lowagie.text.Font.TIMES_ROMAN, 14, com.lowagie.text.Font.ITALIC, new Color(37, 46, 158));
-        com.lowagie.text.Font font2 = new com.lowagie.text.Font(com.lowagie.text.Font.TIMES_ROMAN, 9, com.lowagie.text.Font.NORMAL, new Color(0, 0, 0));
-        com.lowagie.text.Font font5 = new com.lowagie.text.Font(com.lowagie.text.Font.TIMES_ROMAN, 10, com.lowagie.text.Font.ITALIC, new Color(0, 0, 0));
-        com.lowagie.text.Font colorFont = new com.lowagie.text.Font(com.lowagie.text.Font.TIMES_ROMAN, 10, com.lowagie.text.Font.BOLD, new Color(0, 0, 0));
-        com.lowagie.text.Font font6 = new com.lowagie.text.Font(com.lowagie.text.Font.TIMES_ROMAN, 9, com.lowagie.text.Font.NORMAL);
-        document.add(new Paragraph("Rebero Resort\n"));
-        document.add(new Paragraph("KG 625 ST 4\n", font0));
-        document.add(new Paragraph("P.O.BOX 131 \n", font0));
-        document.add(new Paragraph("KIGALI-RWANDA\n\n", font0));
-        Paragraph p = new Paragraph("Daily Sales Report ", colorFont);
-        p.setAlignment(Element.ALIGN_CENTER);
-        document.add(p);
-        document.add(new Paragraph("\n"));
-        PdfPTable tables = new PdfPTable(7);
-        tables.setWidthPercentage(100);
-
-        PdfPCell cell1 = new PdfPCell(new Phrase("No", font2));
-        cell1.setBorder(Rectangle.BOX);
-        tables.addCell(cell1);
-
-        PdfPCell c2 = new PdfPCell(new Phrase("Table No", font2));
-        c2.setBorder(Rectangle.BOX);
-        tables.addCell(c2);
-
-        PdfPCell c3 = new PdfPCell(new Phrase("Payment Mode", font2));
-        c3.setBorder(Rectangle.BOX);
-        tables.addCell(c3);
-
-//        PdfPCell c4 = new PdfPCell(new Phrase("Food", font2));
-//        c4.setBorder(Rectangle.BOX);
-//        tables.addCell(c4);
+//    public void generateDailySalesReport() throws FileNotFoundException, DocumentException, BadElementException, IOException, Exception {
 //
-//        PdfPCell c5 = new PdfPCell(new Phrase("Beverage", font2));
-//        c5.setBorder(Rectangle.BOX);
-//        tables.addCell(c5);
+//        FacesContext context = FacesContext.getCurrentInstance();
+//        Document document = new Document();
+//        Rectangle rect = new Rectangle(20, 20, 580, 500);
+//        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+//        PdfWriter writer = PdfWriter.getInstance((com.lowagie.text.Document) document, baos);
+//        writer.setBoxSize("art", rect);
+//        document.setPageSize(rect);
+//        if (!document.isOpen()) {
+//            document.open();
+//        }
+////        String path = FacesContext.getCurrentInstance().getExternalContext().getRealPath("\\uploads");
+////        path = path.substring(0, path.indexOf("\\build"));
+////        path = path + "\\web\\uploads\\hotel-logo\\" + hotel.getLogo();
+////        Image image = Image.getInstance(path);
+////        image.scaleAbsolute(50, 50);
+////        image.setAlignment(Element.ALIGN_LEFT);
+//        Paragraph title = new Paragraph();
+//        //BEGIN page
+////        title.add(image);
+//        document.add(title);
+//        com.lowagie.text.Font font0 = new com.lowagie.text.Font(com.lowagie.text.Font.TIMES_ROMAN, 9, com.lowagie.text.Font.NORMAL);
+//        com.lowagie.text.Font font1 = new com.lowagie.text.Font(com.lowagie.text.Font.TIMES_ROMAN, 14, com.lowagie.text.Font.ITALIC, new Color(37, 46, 158));
+//        com.lowagie.text.Font font2 = new com.lowagie.text.Font(com.lowagie.text.Font.TIMES_ROMAN, 9, com.lowagie.text.Font.NORMAL, new Color(0, 0, 0));
+//        com.lowagie.text.Font font5 = new com.lowagie.text.Font(com.lowagie.text.Font.TIMES_ROMAN, 10, com.lowagie.text.Font.ITALIC, new Color(0, 0, 0));
+//        com.lowagie.text.Font colorFont = new com.lowagie.text.Font(com.lowagie.text.Font.TIMES_ROMAN, 10, com.lowagie.text.Font.BOLD, new Color(0, 0, 0));
+//        com.lowagie.text.Font font6 = new com.lowagie.text.Font(com.lowagie.text.Font.TIMES_ROMAN, 9, com.lowagie.text.Font.NORMAL);
+//        document.add(new Paragraph("Rebero Resort\n"));
+//        document.add(new Paragraph("KG 625 ST 4\n", font0));
+//        document.add(new Paragraph("P.O.BOX 131 \n", font0));
+//        document.add(new Paragraph("KIGALI-RWANDA\n\n", font0));
+//        Paragraph p = new Paragraph("Daily Sales Report ", colorFont);
+//        p.setAlignment(Element.ALIGN_CENTER);
+//        document.add(p);
+//        document.add(new Paragraph("\n"));
+//        PdfPTable tables = new PdfPTable(7);
+//        tables.setWidthPercentage(100);
 //
-//        PdfPCell c6 = new PdfPCell(new Phrase("Cigarette", font2));
-//        c6.setBorder(Rectangle.BOX);
-//        tables.addCell(c6);
-
-        PdfPCell c7 = new PdfPCell(new Phrase("Food", font2));
-        c7.setBorder(Rectangle.BOX);
-        tables.addCell(c7);
-
-        PdfPCell c8 = new PdfPCell(new Phrase("Beverage", font2));
-        c8.setBorder(Rectangle.BOX);
-        tables.addCell(c8);
-
-        PdfPCell c9 = new PdfPCell(new Phrase("Cigarette", font2));
-        c9.setBorder(Rectangle.BOX);
-        tables.addCell(c9);
-
-        PdfPCell c10 = new PdfPCell(new Phrase("Kot Remarks", font2));
-        c10.setBorder(Rectangle.BOX);
-        tables.addCell(c10);
-
-        tables.setHeaderRows(1);
-        PdfPCell pdfc5;
-        PdfPCell pdfc1;
-        PdfPCell pdfc3;
-        PdfPCell pdfc2;
-        PdfPCell pdfc4;
-        PdfPCell pdfc6;
-        PdfPCell pdfc7;
-        PdfPCell pdfc8;
-        PdfPCell pdfc9;
-        PdfPCell pdfc10;
-        int i = 1;
-        DecimalFormat dcf = new DecimalFormat("###,###,###");
-        SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
-        Double cash = 0.0;
-        Double card = 0.0;
-        Double momo = 0.0;
-        Double credit = 0.0;
-        Double postToRoom = 0.0;
-        Double nc = 0.0;
-        Double totalFood = 0.0;
-        Double totalBeverage = 0.0;
-        
-        for (Payment x : payments) {
-            
-            pdfc5 = new PdfPCell(new Phrase(i + "", font6));
-            pdfc5.setBorder(Rectangle.BOX);
-            tables.addCell(pdfc5);
-
-            pdfc4 = new PdfPCell(new Phrase(x.getTableTransaction().getTableMaster().getTableNo() + "", font6));
-            pdfc4.setBorder(Rectangle.BOX);
-            tables.addCell(pdfc4);
-
-            pdfc3 = new PdfPCell(new Phrase(x.getPaymentMode() + "", font6));
-            pdfc3.setBorder(Rectangle.BOX);
-            tables.addCell(pdfc3);
-
-//            if (x.getPaymentMode().toString().equalsIgnoreCase("CREDIT")) {
-//                System.out.println("True");
+//        PdfPCell cell1 = new PdfPCell(new Phrase("No", font2));
+//        cell1.setBorder(Rectangle.BOX);
+//        tables.addCell(cell1);
 //
-//                pdfc7 = new PdfPCell(new Phrase(0 + "", font6));
-//                pdfc7.setBorder(Rectangle.BOX);
-//                tables.addCell(pdfc7);
+//        PdfPCell c2 = new PdfPCell(new Phrase("Table No", font2));
+//        c2.setBorder(Rectangle.BOX);
+//        tables.addCell(c2);
 //
-//                pdfc8 = new PdfPCell(new Phrase(0 + "", font6));
-//                pdfc8.setBorder(Rectangle.BOX);
-//                tables.addCell(pdfc8);
+//        PdfPCell c3 = new PdfPCell(new Phrase("Payment Mode", font2));
+//        c3.setBorder(Rectangle.BOX);
+//        tables.addCell(c3);
 //
-//                pdfc9 = new PdfPCell(new Phrase(0 + "", font6));
-//                pdfc9.setBorder(Rectangle.BOX);
-//                tables.addCell(pdfc9);
+////        PdfPCell c4 = new PdfPCell(new Phrase("Food", font2));
+////        c4.setBorder(Rectangle.BOX);
+////        tables.addCell(c4);
+////
+////        PdfPCell c5 = new PdfPCell(new Phrase("Beverage", font2));
+////        c5.setBorder(Rectangle.BOX);
+////        tables.addCell(c5);
+////
+////        PdfPCell c6 = new PdfPCell(new Phrase("Cigarette", font2));
+////        c6.setBorder(Rectangle.BOX);
+////        tables.addCell(c6);
+//
+//        PdfPCell c7 = new PdfPCell(new Phrase("Food", font2));
+//        c7.setBorder(Rectangle.BOX);
+//        tables.addCell(c7);
+//
+//        PdfPCell c8 = new PdfPCell(new Phrase("Beverage", font2));
+//        c8.setBorder(Rectangle.BOX);
+//        tables.addCell(c8);
+//
+//        PdfPCell c9 = new PdfPCell(new Phrase("Cigarette", font2));
+//        c9.setBorder(Rectangle.BOX);
+//        tables.addCell(c9);
+//
+//        PdfPCell c10 = new PdfPCell(new Phrase("Kot Remarks", font2));
+//        c10.setBorder(Rectangle.BOX);
+//        tables.addCell(c10);
+//
+//        tables.setHeaderRows(1);
+//        PdfPCell pdfc5;
+//        PdfPCell pdfc1;
+//        PdfPCell pdfc3;
+//        PdfPCell pdfc2;
+//        PdfPCell pdfc4;
+//        PdfPCell pdfc6;
+//        PdfPCell pdfc7;
+//        PdfPCell pdfc8;
+//        PdfPCell pdfc9;
+//        PdfPCell pdfc10;
+//        int i = 1;
+//        DecimalFormat dcf = new DecimalFormat("###,###,###");
+//        SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
+//        Double cash = 0.0;
+//        Double card = 0.0;
+//        Double momo = 0.0;
+//        Double credit = 0.0;
+//        Double postToRoom = 0.0;
+//        Double nc = 0.0;
+//        Double totalFood = 0.0;
+//        Double totalBeverage = 0.0;
+//        
+//        for (Payment x : payments) {
+//            
+//            pdfc5 = new PdfPCell(new Phrase(i + "", font6));
+//            pdfc5.setBorder(Rectangle.BOX);
+//            tables.addCell(pdfc5);
+//
+//            pdfc4 = new PdfPCell(new Phrase(x.getTableTransaction().getTableMaster().getTableNo() + "", font6));
+//            pdfc4.setBorder(Rectangle.BOX);
+//            tables.addCell(pdfc4);
+//
+//            pdfc3 = new PdfPCell(new Phrase(x.getPaymentMode() + "", font6));
+//            pdfc3.setBorder(Rectangle.BOX);
+//            tables.addCell(pdfc3);
+//
+////            if (x.getPaymentMode().toString().equalsIgnoreCase("CREDIT")) {
+////                System.out.println("True");
+////
+////                pdfc7 = new PdfPCell(new Phrase(0 + "", font6));
+////                pdfc7.setBorder(Rectangle.BOX);
+////                tables.addCell(pdfc7);
+////
+////                pdfc8 = new PdfPCell(new Phrase(0 + "", font6));
+////                pdfc8.setBorder(Rectangle.BOX);
+////                tables.addCell(pdfc8);
+////
+////                pdfc9 = new PdfPCell(new Phrase(0 + "", font6));
+////                pdfc9.setBorder(Rectangle.BOX);
+////                tables.addCell(pdfc9);
+////
+////                if (x.getTableTransaction().getItem().getMenuType().equalsIgnoreCase("Food")) {
+////                    pdfc2 = new PdfPCell(new Phrase(x.getTableTransaction().getItem().getUnitRate() * x.getTableTransaction().getQuantity() + "", font6));
+////                    pdfc2.setBorder(Rectangle.BOX);
+////                    tables.addCell(pdfc2);
+////
+////                    pdfc1 = new PdfPCell(new Phrase(0 + "", font6));
+////                    pdfc1.setBorder(Rectangle.BOX);
+////                    tables.addCell(pdfc1);
+////
+////                    pdfc6 = new PdfPCell(new Phrase(0 + "", font6));
+////                    pdfc6.setBorder(Rectangle.BOX);
+////                    tables.addCell(pdfc6);
+////
+////                } else if (x.getTableTransaction().getItem().getMenuType().equalsIgnoreCase("Beverage")) {
+////                    pdfc1 = new PdfPCell(new Phrase(x.getTableTransaction().getItem().getUnitRate() * x.getTableTransaction().getQuantity() + "", font6));
+////                    pdfc1.setBorder(Rectangle.BOX);
+////                    tables.addCell(pdfc1);
+////
+////                    pdfc2 = new PdfPCell(new Phrase(0 + "", font6));
+////                    pdfc2.setBorder(Rectangle.BOX);
+////                    tables.addCell(pdfc2);
+////
+////                    pdfc6 = new PdfPCell(new Phrase(0 + "", font6));
+////                    pdfc6.setBorder(Rectangle.BOX);
+////                    tables.addCell(pdfc6);
+////
+//////                } else {
+////                    pdfc1 = new PdfPCell(new Phrase(0 + "", font6));
+////                    pdfc1.setBorder(Rectangle.BOX);
+////                    tables.addCell(pdfc1);
+////
+////                    pdfc2 = new PdfPCell(new Phrase(0 + "", font6));
+////                    pdfc2.setBorder(Rectangle.BOX);
+////                    tables.addCell(pdfc2);
+////
+////                    pdfc6 = new PdfPCell(new Phrase(x.getTableTransaction().getItem().getUnitRate() * x.getTableTransaction().getQuantity() + "", font6));
+////                    pdfc6.setBorder(Rectangle.BOX);
+////                    tables.addCell(pdfc6);
+//////                }
+////
+//////            } else {
+//                System.out.println("False");
+////                pdfc2 = new PdfPCell(new Phrase(0 + "", font6));
+////                pdfc2.setBorder(Rectangle.BOX);
+////                tables.addCell(pdfc2);
+////
+////                pdfc1 = new PdfPCell(new Phrase(0 + "", font6));
+////                pdfc1.setBorder(Rectangle.BOX);
+////                tables.addCell(pdfc1);
+////
+////                pdfc6 = new PdfPCell(new Phrase(0 + "", font6));
+////                pdfc6.setBorder(Rectangle.BOX);
+////                tables.addCell(pdfc6);
 //
 //                if (x.getTableTransaction().getItem().getMenuType().equalsIgnoreCase("Food")) {
-//                    pdfc2 = new PdfPCell(new Phrase(x.getTableTransaction().getItem().getUnitRate() * x.getTableTransaction().getQuantity() + "", font6));
-//                    pdfc2.setBorder(Rectangle.BOX);
-//                    tables.addCell(pdfc2);
+//                    System.out.println("Menu Type----"+x.getTableTransaction().getItem().getMenuType());
+//                    
+//                    
+//                    pdfc7 = new PdfPCell(new Phrase(x.getTableTransaction().getItem().getUnitRate() * x.getTableTransaction().getQuantity() + "", font6));
+//                    pdfc7.setBorder(Rectangle.BOX);
+//                    tables.addCell(pdfc7);
 //
-//                    pdfc1 = new PdfPCell(new Phrase(0 + "", font6));
-//                    pdfc1.setBorder(Rectangle.BOX);
-//                    tables.addCell(pdfc1);
+//                    pdfc8 = new PdfPCell(new Phrase(0+"", font6));
+//                    pdfc8.setBorder(Rectangle.BOX);
+//                    tables.addCell(pdfc8);
 //
-//                    pdfc6 = new PdfPCell(new Phrase(0 + "", font6));
-//                    pdfc6.setBorder(Rectangle.BOX);
-//                    tables.addCell(pdfc6);
-//
+//                    pdfc9 = new PdfPCell(new Phrase(0+"", font6));
+//                    pdfc9.setBorder(Rectangle.BOX);
+//                    tables.addCell(pdfc9);
 //                } else if (x.getTableTransaction().getItem().getMenuType().equalsIgnoreCase("Beverage")) {
-//                    pdfc1 = new PdfPCell(new Phrase(x.getTableTransaction().getItem().getUnitRate() * x.getTableTransaction().getQuantity() + "", font6));
-//                    pdfc1.setBorder(Rectangle.BOX);
-//                    tables.addCell(pdfc1);
+//                    System.out.println("Menu Type----"+x.getTableTransaction().getItem().getMenuType()+x.getTableTransaction().getTotalPrice());
+//                    
+//                    pdfc7 = new PdfPCell(new Phrase(0+"", font6));
+//                    pdfc7.setBorder(Rectangle.BOX);
+//                    tables.addCell(pdfc7);
+//                    
+//                    pdfc8 = new PdfPCell(new Phrase(x.getTableTransaction().getItem().getUnitRate() * x.getTableTransaction().getQuantity() + "", font6));
+//                    pdfc8.setBorder(Rectangle.BOX);
+//                    tables.addCell(pdfc8);
 //
-//                    pdfc2 = new PdfPCell(new Phrase(0 + "", font6));
-//                    pdfc2.setBorder(Rectangle.BOX);
-//                    tables.addCell(pdfc2);
 //
-//                    pdfc6 = new PdfPCell(new Phrase(0 + "", font6));
-//                    pdfc6.setBorder(Rectangle.BOX);
-//                    tables.addCell(pdfc6);
+//                    pdfc9 = new PdfPCell(new Phrase(0+"", font6));
+//                    pdfc9.setBorder(Rectangle.BOX);
+//                    tables.addCell(pdfc9);
 //
-////                } else {
-//                    pdfc1 = new PdfPCell(new Phrase(0 + "", font6));
-//                    pdfc1.setBorder(Rectangle.BOX);
-//                    tables.addCell(pdfc1);
+//                } else {
+//                    pdfc7 = new PdfPCell(new Phrase(0 + "", font6));
+//                    pdfc7.setBorder(Rectangle.BOX);
+//                    tables.addCell(pdfc7);
 //
-//                    pdfc2 = new PdfPCell(new Phrase(0 + "", font6));
-//                    pdfc2.setBorder(Rectangle.BOX);
-//                    tables.addCell(pdfc2);
+//                    pdfc8 = new PdfPCell(new Phrase(0 + "", font6));
+//                    pdfc8.setBorder(Rectangle.BOX);
+//                    tables.addCell(pdfc8);
 //
-//                    pdfc6 = new PdfPCell(new Phrase(x.getTableTransaction().getItem().getUnitRate() * x.getTableTransaction().getQuantity() + "", font6));
-//                    pdfc6.setBorder(Rectangle.BOX);
-//                    tables.addCell(pdfc6);
-////                }
+//                    pdfc9 = new PdfPCell(new Phrase(x.getTableTransaction().getItem().getUnitRate() * x.getTableTransaction().getQuantity() + "", font6));
+//                    pdfc9.setBorder(Rectangle.BOX);
+//                    tables.addCell(pdfc9);
+//                }
+////            }
+//            pdfc10 = new PdfPCell(new Phrase(x.getTableTransaction().getKotRemarks() + "", font6));
+//            pdfc10.setBorder(Rectangle.BOX);
+//            tables.addCell(pdfc10);
 //
-////            } else {
-                System.out.println("False");
-//                pdfc2 = new PdfPCell(new Phrase(0 + "", font6));
-//                pdfc2.setBorder(Rectangle.BOX);
-//                tables.addCell(pdfc2);
-//
-//                pdfc1 = new PdfPCell(new Phrase(0 + "", font6));
-//                pdfc1.setBorder(Rectangle.BOX);
-//                tables.addCell(pdfc1);
-//
-//                pdfc6 = new PdfPCell(new Phrase(0 + "", font6));
-//                pdfc6.setBorder(Rectangle.BOX);
-//                tables.addCell(pdfc6);
-
-                if (x.getTableTransaction().getItem().getMenuType().equalsIgnoreCase("Food")) {
-                    System.out.println("Menu Type----"+x.getTableTransaction().getItem().getMenuType());
-                    
-                    
-                    pdfc7 = new PdfPCell(new Phrase(x.getTableTransaction().getItem().getUnitRate() * x.getTableTransaction().getQuantity() + "", font6));
-                    pdfc7.setBorder(Rectangle.BOX);
-                    tables.addCell(pdfc7);
-
-                    pdfc8 = new PdfPCell(new Phrase(0+"", font6));
-                    pdfc8.setBorder(Rectangle.BOX);
-                    tables.addCell(pdfc8);
-
-                    pdfc9 = new PdfPCell(new Phrase(0+"", font6));
-                    pdfc9.setBorder(Rectangle.BOX);
-                    tables.addCell(pdfc9);
-                } else if (x.getTableTransaction().getItem().getMenuType().equalsIgnoreCase("Beverage")) {
-                    System.out.println("Menu Type----"+x.getTableTransaction().getItem().getMenuType()+x.getTableTransaction().getTotalPrice());
-                    
-                    pdfc7 = new PdfPCell(new Phrase(0+"", font6));
-                    pdfc7.setBorder(Rectangle.BOX);
-                    tables.addCell(pdfc7);
-                    
-                    pdfc8 = new PdfPCell(new Phrase(x.getTableTransaction().getItem().getUnitRate() * x.getTableTransaction().getQuantity() + "", font6));
-                    pdfc8.setBorder(Rectangle.BOX);
-                    tables.addCell(pdfc8);
-
-
-                    pdfc9 = new PdfPCell(new Phrase(0+"", font6));
-                    pdfc9.setBorder(Rectangle.BOX);
-                    tables.addCell(pdfc9);
-
-                } else {
-                    pdfc7 = new PdfPCell(new Phrase(0 + "", font6));
-                    pdfc7.setBorder(Rectangle.BOX);
-                    tables.addCell(pdfc7);
-
-                    pdfc8 = new PdfPCell(new Phrase(0 + "", font6));
-                    pdfc8.setBorder(Rectangle.BOX);
-                    tables.addCell(pdfc8);
-
-                    pdfc9 = new PdfPCell(new Phrase(x.getTableTransaction().getItem().getUnitRate() * x.getTableTransaction().getQuantity() + "", font6));
-                    pdfc9.setBorder(Rectangle.BOX);
-                    tables.addCell(pdfc9);
-                }
+//            if(x.getPaymentMode().toString().equalsIgnoreCase("CASH")){
+//                cash = cash + x.getTableTransaction().getTotalPrice();
+//            }else if(x.getPaymentMode().toString().equalsIgnoreCase("CARD")){
+//                card = card + x.getTableTransaction().getTotalPrice();
+//            }else if(x.getPaymentMode().toString().equalsIgnoreCase("MOBILEMONEY")){
+//                momo = momo + x.getTableTransaction().getTotalPrice();
+//            }else if(x.getPaymentMode().toString().equalsIgnoreCase("CREDIT")){
+//                credit = credit + x.getTableTransaction().getTotalPrice();
+//            }else if(x.getPaymentMode().toString().equalsIgnoreCase("POST TO ROOM")){
+//                postToRoom = postToRoom + x.getTableTransaction().getTotalPrice();
+//            }else if(x.getPaymentMode().toString().equalsIgnoreCase("NC")){
+//                nc = nc + x.getTableTransaction().getTotalPrice();
 //            }
-            pdfc10 = new PdfPCell(new Phrase(x.getTableTransaction().getKotRemarks() + "", font6));
-            pdfc10.setBorder(Rectangle.BOX);
-            tables.addCell(pdfc10);
-
-            if(x.getPaymentMode().toString().equalsIgnoreCase("CASH")){
-                cash = cash + x.getTableTransaction().getTotalPrice();
-            }else if(x.getPaymentMode().toString().equalsIgnoreCase("CARD")){
-                card = card + x.getTableTransaction().getTotalPrice();
-            }else if(x.getPaymentMode().toString().equalsIgnoreCase("MOBILEMONEY")){
-                momo = momo + x.getTableTransaction().getTotalPrice();
-            }else if(x.getPaymentMode().toString().equalsIgnoreCase("CREDIT")){
-                credit = credit + x.getTableTransaction().getTotalPrice();
-            }else if(x.getPaymentMode().toString().equalsIgnoreCase("POST TO ROOM")){
-                postToRoom = postToRoom + x.getTableTransaction().getTotalPrice();
-            }else if(x.getPaymentMode().toString().equalsIgnoreCase("NC")){
-                nc = nc + x.getTableTransaction().getTotalPrice();
-            }
-            
-            if(x.getPaymentMode().toString().equalsIgnoreCase("CASH") && x.getTableTransaction().getItem().getMenuType().equalsIgnoreCase("Food")){
-                totalFood = totalFood + x.getTableTransaction().getTotalPrice();
-            }else if(x.getPaymentMode().toString().equalsIgnoreCase("CARD") && x.getTableTransaction().getItem().getMenuType().equalsIgnoreCase("Food")){
-                totalFood = totalFood + x.getTableTransaction().getTotalPrice();
-            }else if(x.getPaymentMode().toString().equalsIgnoreCase("MOBILEMONEY") && x.getTableTransaction().getItem().getMenuType().equalsIgnoreCase("Food")){
-                totalFood = totalFood + x.getTableTransaction().getTotalPrice();
-            }
-            
-            if(x.getPaymentMode().toString().equalsIgnoreCase("CASH") && x.getTableTransaction().getItem().getMenuType().equalsIgnoreCase("Beverage")){
-                totalBeverage = totalBeverage + x.getTableTransaction().getTotalPrice();
-            }else if(x.getPaymentMode().toString().equalsIgnoreCase("CARD") && x.getTableTransaction().getItem().getMenuType().equalsIgnoreCase("Beverage")){
-                totalBeverage = totalBeverage + x.getTableTransaction().getTotalPrice();
-            }else if(x.getPaymentMode().toString().equalsIgnoreCase("MOBILEMONEY") && x.getTableTransaction().getItem().getMenuType().equalsIgnoreCase("Beverage")){
-                totalBeverage = totalBeverage + x.getTableTransaction().getTotalPrice();
-            }
-            
-            i++;
-        }
-        
-        
-        PdfPTable tables1 = new PdfPTable(4);
-        tables1.setWidthPercentage(100);
-        
-        PdfPCell ce1 = new PdfPCell(new Phrase("CASH", font2));
-        ce1.setBorder(Rectangle.BOX);
-        tables1.addCell(ce1);
-
-        PdfPCell ce2 = new PdfPCell(new Phrase(cash+"", font2));
-        ce2.setBorder(Rectangle.BOX);
-        tables1.addCell(ce2);
-
-        PdfPCell cee1 = new PdfPCell(new Phrase("TOTAL FOOD(CASH + CARD + MOBILE)", font2));
-        cee1.setBorder(Rectangle.BOX);
-        tables1.addCell(cee1);
-        
-        PdfPCell cee2 = new PdfPCell(new Phrase(totalFood+"", font2));
-        cee2.setBorder(Rectangle.BOX);
-        tables1.addCell(cee2);
-        
-        PdfPCell ce3 = new PdfPCell(new Phrase("CARD", font2));
-        ce3.setBorder(Rectangle.BOX);
-        tables1.addCell(ce3);
-
-        PdfPCell ce4 = new PdfPCell(new Phrase(card+"", font2));
-        ce4.setBorder(Rectangle.BOX);
-        tables1.addCell(ce4);
-
-        PdfPCell ce5 = new PdfPCell(new Phrase("TOTAL BEVERAGE(CASH + CARD + MOBILE)", font2));
-        ce5.setBorder(Rectangle.BOX);
-        tables1.addCell(ce5);
-        
-        PdfPCell ce6 = new PdfPCell(new Phrase(totalBeverage+"", font2));
-        ce6.setBorder(Rectangle.BOX);
-        tables1.addCell(ce6);
-
-        PdfPCell ce7 = new PdfPCell(new Phrase("MOBILE MONEY", font2));
-        ce7.setBorder(Rectangle.BOX);
-        tables1.addCell(ce7);
-
-        PdfPCell ce8 = new PdfPCell(new Phrase(momo+"", font2));
-        ce8.setBorder(Rectangle.BOX);
-        tables1.addCell(ce8);
-
-        PdfPCell ce9 = new PdfPCell(new Phrase("TOTAL CIGARETTE(CASH + CARD + MOBILE)", font2));
-        ce9.setBorder(Rectangle.BOX);
-        tables1.addCell(ce9);
-        
-        PdfPCell ce10 = new PdfPCell(new Phrase(0+"", font2));
-        ce10.setBorder(Rectangle.BOX);
-        tables1.addCell(ce10);
-        
-        PdfPCell ce11 = new PdfPCell(new Phrase("CREDIT", font2));
-        ce11.setBorder(Rectangle.BOX);
-        tables1.addCell(ce11);
-
-        PdfPCell ce12 = new PdfPCell(new Phrase(credit+"", font2));
-        ce12.setBorder(Rectangle.BOX);
-        tables1.addCell(ce12);
-
-        PdfPCell ce13 = new PdfPCell(new Phrase("", font2));
-        ce13.setBorder(Rectangle.BOX);
-        tables1.addCell(ce13);
-        
-        PdfPCell ce14 = new PdfPCell(new Phrase("", font2));
-        ce14.setBorder(Rectangle.BOX);
-        tables1.addCell(ce14);
-
-        
-        PdfPCell ce15 = new PdfPCell(new Phrase("POST TO ROOM", font2));
-        ce15.setBorder(Rectangle.BOX);
-        tables1.addCell(ce15);
-
-        PdfPCell ce16 = new PdfPCell(new Phrase(postToRoom+"", font2));
-        ce16.setBorder(Rectangle.BOX);
-        tables1.addCell(ce16);
-
-        PdfPCell ce17 = new PdfPCell(new Phrase("", font2));
-        ce17.setBorder(Rectangle.BOX);
-        tables1.addCell(ce17);
-        
-        PdfPCell ce18 = new PdfPCell(new Phrase("", font2));
-        ce18.setBorder(Rectangle.BOX);
-        tables1.addCell(ce18);
-        
-        PdfPCell ce19 = new PdfPCell(new Phrase("NC", font2));
-        ce19.setBorder(Rectangle.BOX);
-        tables1.addCell(ce19);
-
-        PdfPCell ce20 = new PdfPCell(new Phrase(nc+"", font2));
-        ce20.setBorder(Rectangle.BOX);
-        tables1.addCell(ce20);
-
-        PdfPCell ce26 = new PdfPCell(new Phrase("", font2));
-        ce26.setBorder(Rectangle.BOX);
-        tables1.addCell(ce26);
-        
-        PdfPCell ce21 = new PdfPCell(new Phrase("", font2));
-        ce21.setBorder(Rectangle.BOX);
-        tables1.addCell(ce21);
-        
-        PdfPCell ce27 = new PdfPCell(new Phrase("Total", font2));
-        ce27.setBorder(Rectangle.BOX);
-        tables1.addCell(ce27);
-        
-        PdfPCell ce22 = new PdfPCell(new Phrase((cash+credit+momo+nc+postToRoom+card)+"", font2));
-        ce22.setBorder(Rectangle.BOX);
-        tables1.addCell(ce22);
-        
-        
-        PdfPCell ce23 = new PdfPCell(new Phrase("TOTAL (CASH + CARD + MOBILE)", font2));
-        ce23.setBorder(Rectangle.BOX);
-        tables1.addCell(ce23);
-        
-        PdfPCell ce24 = new PdfPCell(new Phrase((totalFood+totalBeverage)+"", font2));
-        ce24.setBorder(Rectangle.BOX);
-        tables1.addCell(ce24);
-
-        document.add(tables);
-        document.add(Chunk.NEWLINE);
-        document.add(tables1);
-        Paragraph par = new Paragraph("\n\nPrinted On: " + sdf.format(new Date()) + ". By: " + loggedInUser.getNames(), font1);
-        par.setAlignment(Element.ALIGN_RIGHT);
-        document.add(par);
-        document.close();
-        String fileName = "Report_" + new Date().getTime() / (1000 * 3600 * 24);
-        writePDFToResponse(context.getExternalContext(), baos, fileName);
-        context.responseComplete();
-    }
+//            
+//            if(x.getPaymentMode().toString().equalsIgnoreCase("CASH") && x.getTableTransaction().getItem().getMenuType().equalsIgnoreCase("Food")){
+//                totalFood = totalFood + x.getTableTransaction().getTotalPrice();
+//            }else if(x.getPaymentMode().toString().equalsIgnoreCase("CARD") && x.getTableTransaction().getItem().getMenuType().equalsIgnoreCase("Food")){
+//                totalFood = totalFood + x.getTableTransaction().getTotalPrice();
+//            }else if(x.getPaymentMode().toString().equalsIgnoreCase("MOBILEMONEY") && x.getTableTransaction().getItem().getMenuType().equalsIgnoreCase("Food")){
+//                totalFood = totalFood + x.getTableTransaction().getTotalPrice();
+//            }
+//            
+//            if(x.getPaymentMode().toString().equalsIgnoreCase("CASH") && x.getTableTransaction().getItem().getMenuType().equalsIgnoreCase("Beverage")){
+//                totalBeverage = totalBeverage + x.getTableTransaction().getTotalPrice();
+//            }else if(x.getPaymentMode().toString().equalsIgnoreCase("CARD") && x.getTableTransaction().getItem().getMenuType().equalsIgnoreCase("Beverage")){
+//                totalBeverage = totalBeverage + x.getTableTransaction().getTotalPrice();
+//            }else if(x.getPaymentMode().toString().equalsIgnoreCase("MOBILEMONEY") && x.getTableTransaction().getItem().getMenuType().equalsIgnoreCase("Beverage")){
+//                totalBeverage = totalBeverage + x.getTableTransaction().getTotalPrice();
+//            }
+//            
+//            i++;
+//        }
+//        
+//        
+//        PdfPTable tables1 = new PdfPTable(4);
+//        tables1.setWidthPercentage(100);
+//        
+//        PdfPCell ce1 = new PdfPCell(new Phrase("CASH", font2));
+//        ce1.setBorder(Rectangle.BOX);
+//        tables1.addCell(ce1);
+//
+//        PdfPCell ce2 = new PdfPCell(new Phrase(cash+"", font2));
+//        ce2.setBorder(Rectangle.BOX);
+//        tables1.addCell(ce2);
+//
+//        PdfPCell cee1 = new PdfPCell(new Phrase("TOTAL FOOD(CASH + CARD + MOBILE)", font2));
+//        cee1.setBorder(Rectangle.BOX);
+//        tables1.addCell(cee1);
+//        
+//        PdfPCell cee2 = new PdfPCell(new Phrase(totalFood+"", font2));
+//        cee2.setBorder(Rectangle.BOX);
+//        tables1.addCell(cee2);
+//        
+//        PdfPCell ce3 = new PdfPCell(new Phrase("CARD", font2));
+//        ce3.setBorder(Rectangle.BOX);
+//        tables1.addCell(ce3);
+//
+//        PdfPCell ce4 = new PdfPCell(new Phrase(card+"", font2));
+//        ce4.setBorder(Rectangle.BOX);
+//        tables1.addCell(ce4);
+//
+//        PdfPCell ce5 = new PdfPCell(new Phrase("TOTAL BEVERAGE(CASH + CARD + MOBILE)", font2));
+//        ce5.setBorder(Rectangle.BOX);
+//        tables1.addCell(ce5);
+//        
+//        PdfPCell ce6 = new PdfPCell(new Phrase(totalBeverage+"", font2));
+//        ce6.setBorder(Rectangle.BOX);
+//        tables1.addCell(ce6);
+//
+//        PdfPCell ce7 = new PdfPCell(new Phrase("MOBILE MONEY", font2));
+//        ce7.setBorder(Rectangle.BOX);
+//        tables1.addCell(ce7);
+//
+//        PdfPCell ce8 = new PdfPCell(new Phrase(momo+"", font2));
+//        ce8.setBorder(Rectangle.BOX);
+//        tables1.addCell(ce8);
+//
+//        PdfPCell ce9 = new PdfPCell(new Phrase("TOTAL CIGARETTE(CASH + CARD + MOBILE)", font2));
+//        ce9.setBorder(Rectangle.BOX);
+//        tables1.addCell(ce9);
+//        
+//        PdfPCell ce10 = new PdfPCell(new Phrase(0+"", font2));
+//        ce10.setBorder(Rectangle.BOX);
+//        tables1.addCell(ce10);
+//        
+//        PdfPCell ce11 = new PdfPCell(new Phrase("CREDIT", font2));
+//        ce11.setBorder(Rectangle.BOX);
+//        tables1.addCell(ce11);
+//
+//        PdfPCell ce12 = new PdfPCell(new Phrase(credit+"", font2));
+//        ce12.setBorder(Rectangle.BOX);
+//        tables1.addCell(ce12);
+//
+//        PdfPCell ce13 = new PdfPCell(new Phrase("", font2));
+//        ce13.setBorder(Rectangle.BOX);
+//        tables1.addCell(ce13);
+//        
+//        PdfPCell ce14 = new PdfPCell(new Phrase("", font2));
+//        ce14.setBorder(Rectangle.BOX);
+//        tables1.addCell(ce14);
+//
+//        
+//        PdfPCell ce15 = new PdfPCell(new Phrase("POST TO ROOM", font2));
+//        ce15.setBorder(Rectangle.BOX);
+//        tables1.addCell(ce15);
+//
+//        PdfPCell ce16 = new PdfPCell(new Phrase(postToRoom+"", font2));
+//        ce16.setBorder(Rectangle.BOX);
+//        tables1.addCell(ce16);
+//
+//        PdfPCell ce17 = new PdfPCell(new Phrase("", font2));
+//        ce17.setBorder(Rectangle.BOX);
+//        tables1.addCell(ce17);
+//        
+//        PdfPCell ce18 = new PdfPCell(new Phrase("", font2));
+//        ce18.setBorder(Rectangle.BOX);
+//        tables1.addCell(ce18);
+//        
+//        PdfPCell ce19 = new PdfPCell(new Phrase("NC", font2));
+//        ce19.setBorder(Rectangle.BOX);
+//        tables1.addCell(ce19);
+//
+//        PdfPCell ce20 = new PdfPCell(new Phrase(nc+"", font2));
+//        ce20.setBorder(Rectangle.BOX);
+//        tables1.addCell(ce20);
+//
+//        PdfPCell ce26 = new PdfPCell(new Phrase("", font2));
+//        ce26.setBorder(Rectangle.BOX);
+//        tables1.addCell(ce26);
+//        
+//        PdfPCell ce21 = new PdfPCell(new Phrase("", font2));
+//        ce21.setBorder(Rectangle.BOX);
+//        tables1.addCell(ce21);
+//        
+//        PdfPCell ce27 = new PdfPCell(new Phrase("Total", font2));
+//        ce27.setBorder(Rectangle.BOX);
+//        tables1.addCell(ce27);
+//        
+//        PdfPCell ce22 = new PdfPCell(new Phrase((cash+credit+momo+nc+postToRoom+card)+"", font2));
+//        ce22.setBorder(Rectangle.BOX);
+//        tables1.addCell(ce22);
+//        
+//        
+//        PdfPCell ce23 = new PdfPCell(new Phrase("TOTAL (CASH + CARD + MOBILE)", font2));
+//        ce23.setBorder(Rectangle.BOX);
+//        tables1.addCell(ce23);
+//        
+//        PdfPCell ce24 = new PdfPCell(new Phrase((totalFood+totalBeverage)+"", font2));
+//        ce24.setBorder(Rectangle.BOX);
+//        tables1.addCell(ce24);
+//
+//        document.add(tables);
+//        document.add(Chunk.NEWLINE);
+//        document.add(tables1);
+//        Paragraph par = new Paragraph("\n\nPrinted On: " + sdf.format(new Date()) + ". By: " + loggedInUser.getNames(), font1);
+//        par.setAlignment(Element.ALIGN_RIGHT);
+//        document.add(par);
+//        document.close();
+//        String fileName = "Report_" + new Date().getTime() / (1000 * 3600 * 24);
+//        writePDFToResponse(context.getExternalContext(), baos, fileName);
+//        context.responseComplete();
+//    }
 
     private void writePDFToResponse(ExternalContext externalContext, ByteArrayOutputStream baos, String fileName) throws IOException {
         externalContext.responseReset();
@@ -1457,6 +1483,22 @@ public class CashierModel {
 
     public void setPayments(List<Payment> payments) {
         this.payments = payments;
+    }
+
+    public List<Payment> getDailySales() {
+        return dailySales;
+    }
+
+    public void setDailySales(List<Payment> dailySales) {
+        this.dailySales = dailySales;
+    }
+
+    public List<TableTransaction> getPaidTableTransactions() {
+        return paidTableTransactions;
+    }
+
+    public void setPaidTableTransactions(List<TableTransaction> paidTableTransactions) {
+        this.paidTableTransactions = paidTableTransactions;
     }
 
 }

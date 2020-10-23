@@ -30,13 +30,13 @@ public class TableTransaction implements Serializable {
     private String status;
     private Double totalPrice;
     private String printStatus;
+    private String billNo;
     
     @ManyToOne
     private TableMaster tableMaster;
     
-    @OneToMany(mappedBy = "tableTransaction", fetch = FetchType.EAGER)
-    @Fetch(FetchMode.SUBSELECT)
-    private List<Payment> payment;
+    @ManyToOne
+    private Payment payment;
 
     @ManyToOne
     private Item item;
@@ -81,11 +81,11 @@ public class TableTransaction implements Serializable {
         this.tableMaster = tableMaster;
     }
 
-    public List<Payment> getPayment() {
+    public Payment getPayment() {
         return payment;
     }
 
-    public void setPayment(List<Payment> payment) {
+    public void setPayment(Payment payment) {
         this.payment = payment;
     }
 
@@ -119,6 +119,14 @@ public class TableTransaction implements Serializable {
 
     public void setPrintStatus(String printStatus) {
         this.printStatus = printStatus;
+    }
+
+    public String getBillNo() {
+        return billNo;
+    }
+
+    public void setBillNo(String billNo) {
+        this.billNo = billNo;
     }
     
 }

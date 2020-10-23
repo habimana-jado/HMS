@@ -44,6 +44,10 @@ public class Person implements Serializable{
     @OneToMany(mappedBy = "person", fetch = FetchType.EAGER)
     @Fetch(FetchMode.SUBSELECT)
     private List<TableMaster> tableMaster;
+     
+    @OneToMany(mappedBy = "cashier", fetch = FetchType.EAGER)
+    @Fetch(FetchMode.SUBSELECT)
+    private List<Payment> payment;
     
     public String getUserId() {
         return userId;
@@ -131,6 +135,14 @@ public class Person implements Serializable{
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public List<Payment> getPayment() {
+        return payment;
+    }
+
+    public void setPayment(List<Payment> payment) {
+        this.payment = payment;
     }
 
 }

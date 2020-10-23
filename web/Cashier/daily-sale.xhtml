@@ -148,7 +148,7 @@
                             </li>
                         </ul>
                         <ul class="metismenu" id="menu1" style="padding-top: 20px;">
-                            
+
                             <li>
                                 <a class="has-arrow" href="menu-item.xhtml" aria-expanded="false"><i class="fa big-icon fa-pie-chart icon-wrap"></i> <span class="mini-click-non">Menu Configuration</span></a>
                                 <ul class="submenu-angle" aria-expanded="false">
@@ -159,11 +159,11 @@
                                 <a class="has-arrow" href="main.xhtml" aria-expanded="false"><i class="fa big-icon fa-bar-chart-o icon-wrap"></i> <span class="mini-click-non">Restaurant Configuration</span></a>
                                 <ul class="submenu-angle" aria-expanded="false">
                                     <li><a title="Restaurant KOT" href="main.xhtml"><i class="fa fa-signal sub-icon-mg" aria-hidden="true"></i> <span class="mini-sub-pro">Restaurant KOT</span></a></li>
-                                    <li><a title="Table Master" href="#"><i class="fa fa-signal sub-icon-mg" aria-hidden="true"></i> <span class="mini-sub-pro">Table Master</span></a></li>
+                                    <li><a title="Table Master" href="table.xhtml"><i class="fa fa-signal sub-icon-mg" aria-hidden="true"></i> <span class="mini-sub-pro">Table Master</span></a></li>
                                 </ul>
                             </li>
                             <li>
-                                <a class="has-arrow" href="daily-sale.xhtml" aria-expanded="false"><i class="fa big-icon fa-flask icon-wrap"></i> <span class="mini-click-non">Sales Report</span></a>
+                                <a class="has-arrow" href="#" aria-expanded="false"><i class="fa big-icon fa-flask icon-wrap"></i> <span class="mini-click-non">Sales Report</span></a>
                                 <ul class="submenu-angle" aria-expanded="false">
                                     <li><a title="Daily Report" href="daily-sale.xhtml"><i class="fa fa-map-marker sub-icon-mg" aria-hidden="true"></i> <span class="mini-sub-pro">Daily Sales Report</span></a></li>
                                 </ul>
@@ -326,68 +326,87 @@
                         <div class="col-lg-3"></div>
                         <div class="col-lg-6 col-md-6 col-sm-6">
                             <h:form>
-                                <h:commandLink class="text-left" value="Close" action="#{cashierModel.redirectHome()}" />
+                                <div class="form-group-inner">
+                                    <div class="row">
+                                        <div class="col-lg-3 col-md-3 col-sm-3 col-xs-12">
+                                            <label class="login2 pull-right pull-right-pro">From Date:</label>
+                                        </div>
+                                        <div class="col-lg-9 col-md-9 col-sm-9 col-xs-12">
+                                            <h:inputText value="#{cashierModel.chosenDate}" class="form-control" required="true" requiredMessage="Please Choose Date">
+                                                <f:convertDateTime pattern="dd/MM/yyyy" />
+                                            </h:inputText>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group-inner">
+                                    <div class="row">
+                                        <div class="col-lg-3 col-md-3 col-sm-3 col-xs-12">
+
+                                        </div>
+                                        <div class="col-lg-9 col-md-9 col-sm-9 col-xs-12">
+                                            <h:commandButton value="Search" action="#{cashierModel.retrievePaymentReport()}" />
+                                        </div>
+                                    </div>
+                                </div>
                             </h:form>
                         </div>
                         <div class="col-lg-3"></div>
                     </div>
-                    <h:form id="billPrint">
+                    <h:form id="reportPrint">
                         <div class="row">
                             <div class="col-lg-3"></div>
-                            <div class="col-lg-6 col-md-6 col-sm-6">
-                                <p class="text-right">VAT No.: xxxx-xxx-xx</p>
-                                <p class="text-right">ST No.: Kg 345 St</p>
-                                <p class="text-right">#{cashierModel.hotel.phone}</p>
-                                <p class="text-center font-weight-bold">#{cashierModel.chosenTableMaster.restaurant.name}</p>
-                                <p class="text-center">#{cashierModel.chosenTableMaster.restaurant.slogan}</p>
-                                <p class="text-center">#{cashierModel.hotel.hotelName}</p>
-                                <p class="text-left">Bill Date: #{cashierModel.nowDate}</p>
-                                <p class="text-left">Table No.: #{cashierModel.chosenTableMaster.tableNo}</p>
-                                <p class="text-left font-weight-light">Waiter: #{cashierModel.chosenTableMaster.person.names}</p>
+                            <div class="col-lg-6">
 
-                                <table class="table table-bordered">
-                                    <thead>
-                                        <tr>
-                                            <th scope="col">Particulars</th>
-                                            <th scope="col">Qty</th>
-                                            <th scope="col">Rate</th>
-                                            <th scope="col">Amount</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <c:forEach items="#{cashierModel.tableTransactions}" var="elements" >
-                                            <tr><td>
-                                                    #{elements.item.itemName}
-                                                </td>
-                                                <td>
-                                                    #{elements.quantity}
-                                                </td>
-                                                <td>
-                                                    #{elements.item.unitRate}
-                                                </td>
-                                                <td>
-                                                    #{elements.item.unitRate * elements.quantity}
-                                                </td>
-                                            </tr>
-                                        </c:forEach>                               
-                                    </tbody>
-                                </table>
+                                <p:dataTable var="car" value="#{cashierModel.payments}">
+                                    <p:ajax event="rowToggle" listener="#{cashierModel.retrieveTransactions(car)}" update="trans" />
+                                    <p:column style="width:32px">
+                                        <p:rowToggler ></p:rowToggler>
+                                    </p:column>
+                                    <p:column headerText="Bill No.">
+                                        <h:outputText value="#{car.billNo}" />
+                                    </p:column>
+                                    <p:column headerText="Bill Date">
+                                        <h:outputText value="#{car.paymentDate}" />
+                                    </p:column>
+                                    <p:column headerText="Net Amount">
+                                        <h:outputText value="#{car.amountPaid}" />
+                                    </p:column>
+                                    <p:column headerText="Mode">
+                                        <h:outputText value="#{car.paymentMode}" />
+                                    </p:column>
+                                    <p:column headerText="Remarks">
+                                        <h:outputText />
+                                    </p:column>
+                                    <p:column headerText="Cashier">
+                                        <h:outputText value="#{car.cashier.names}" />
+                                    </p:column>
 
-                                <p class="text-right">Sub Total(Food): RWF #{cashierModel.totalBilledFoods}</p>
-                                <p class="text-right">Sub Total(Drinks): RWF #{cashierModel.totalBilledBeverage}</p>
-                                <p class="text-right">Bill Amount: RWF #{cashierModel.totalBilledBeverage + cashierModel.totalBilledFoods}</p>
-                                <hr></hr>
-                                <p class="text-left">Bill Generated By: #{cashierModel.loggedInUser.names}</p>                            
-
+                                    <p:rowExpansion>
+                                        <p:dataTable id="trans" var="c" value="#{cashierModel.paidTableTransactions}">
+                                            <p:column>
+                                                <h:outputText value="#{c.item.itemName}" />
+                                            </p:column>
+                                            <p:column>
+                                                <h:outputText value="#{c.quantity}" />
+                                            </p:column>
+                                            <p:column>
+                                                <h:outputText value="#{c.item.unitRate}" />
+                                            </p:column>
+                                            <p:column>
+                                                <h:outputText value="#{c.totalPrice}" />
+                                            </p:column>
+                                        </p:dataTable>
+                                    </p:rowExpansion>
+                                </p:dataTable>
                             </div>
-                            <div class="col-lg-3" />
+                            <div class="col-lg-3"></div>
                         </div>
                     </h:form>
                     <h:form>
                         <div class="col-lg-4" />
                         <div class="col-lg-4">
                             <p:commandButton class="btn btn-primary" value="Print" type="button" icon="pi pi-print" style="display:block;margin-bottom: 20px">
-                                <p:printer target="billPrint" />
+                                <p:printer target="reportPrint" />
                             </p:commandButton>
                         </div>
 

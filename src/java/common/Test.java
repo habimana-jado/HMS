@@ -17,7 +17,6 @@ import domain.UserDepartment;
 import enums.EStatus;
 import enums.ETableStatus;
 import java.util.List;
-import uimodel.RestaurantModel1;
 
 public class Test {
     public static void main(String[] args) throws Exception {
@@ -78,6 +77,6 @@ public class Test {
 //            t.setType("Table");
 //            new TableMasterDao().update(t);
 //        }
-        new RestaurantModel1().generateDailySalesReport();
+//        new RestaurantModel1().generateDailySalesReport();
     }
 }
