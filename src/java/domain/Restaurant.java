@@ -31,12 +31,12 @@ public class Restaurant implements Serializable{
     private EStatus status;
     private String logo;
     
-    @OneToMany(mappedBy = "restaurant", fetch = FetchType.EAGER)
-    @Fetch(FetchMode.SUBSELECT)
+    @OneToMany(mappedBy = "restaurant")
+//    @Fetch(FetchMode.SUBSELECT)
     private List<TableGroup> tableGroup;
      
-    @OneToMany(mappedBy = "restaurant", fetch = FetchType.EAGER)
-    @Fetch(FetchMode.SUBSELECT)
+    @OneToMany(mappedBy = "restaurant")
+//    @Fetch(FetchMode.SUBSELECT)
     private List<TableMaster> tableMaster;
     
     public String getRestaurantId() {

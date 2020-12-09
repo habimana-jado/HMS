@@ -26,8 +26,8 @@ public class Vendor implements Serializable {
     private String tinNo;
     private String email;
     
-    @OneToMany(mappedBy = "vendor", fetch = FetchType.EAGER)
-    @Fetch(FetchMode.SUBSELECT)
+    @OneToMany(mappedBy = "vendor")
+//    @Fetch(FetchMode.SUBSELECT)
     private List<Purchase> purchase;
 
     public String getVendorId() {

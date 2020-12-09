@@ -26,12 +26,12 @@ public class ItemDescription implements Serializable {
     private Double totalPrice;
     private String status;
     
-    @OneToMany(mappedBy = "itemDescription", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-    @Fetch(FetchMode.SUBSELECT)
+    @OneToMany(mappedBy = "itemDescription", cascade = CascadeType.ALL)
+//    @Fetch(FetchMode.SUBSELECT)
     private List<Purchase> purchase;
 
-    @OneToMany(mappedBy = "itemDescription", fetch = FetchType.EAGER)
-    @Fetch(FetchMode.SUBSELECT)
+    @OneToMany(mappedBy = "itemDescription")
+//    @Fetch(FetchMode.SUBSELECT)
     private List<Transfer> transfer;
     
     @ManyToOne

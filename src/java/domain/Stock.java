@@ -22,16 +22,16 @@ public class Stock implements Serializable {
     private String stockName;
     private Boolean isDefault;
     
-    @OneToMany(mappedBy = "stock", fetch = FetchType.EAGER)
-    @Fetch(FetchMode.SUBSELECT)
+    @OneToMany(mappedBy = "stock")
+//    @Fetch(FetchMode.SUBSELECT)
     private List<Purchase> purchase;
 
-    @OneToMany(mappedBy = "toStock", fetch = FetchType.EAGER)
-    @Fetch(FetchMode.SUBSELECT)
+    @OneToMany(mappedBy = "toStock")
+//    @Fetch(FetchMode.SUBSELECT)
     private List<Transfer> transfer;
     
-    @OneToMany(mappedBy = "fromStock", fetch = FetchType.EAGER)
-    @Fetch(FetchMode.SUBSELECT)
+    @OneToMany(mappedBy = "fromStock")
+//    @Fetch(FetchMode.SUBSELECT)
     private List<Transfer> transfer1;
     
     public String getStockId() {

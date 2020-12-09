@@ -5,12 +5,9 @@ import java.io.Serializable;
 import java.util.List;
 import java.util.UUID;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
-import org.hibernate.annotations.Fetch;
-import org.hibernate.annotations.FetchMode;
 
 /**
  *
@@ -24,12 +21,12 @@ public class Item implements Serializable {
     private Double unitRate;
     private String menuType;
     
-    @OneToMany(mappedBy = "item", fetch = FetchType.EAGER)
-    @Fetch(FetchMode.SUBSELECT)
+    @OneToMany(mappedBy = "item")
+//    @Fetch(FetchMode.SUBSELECT)
     private List<ItemDescription> itemDescription;
 
-    @OneToMany(mappedBy = "item", fetch = FetchType.EAGER)
-    @Fetch(FetchMode.SUBSELECT)
+    @OneToMany(mappedBy = "item")
+//    @Fetch(FetchMode.SUBSELECT)
     private List<TableTransaction> tableTransaction;
             
     @ManyToOne

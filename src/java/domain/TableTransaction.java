@@ -23,7 +23,7 @@ import org.hibernate.annotations.FetchMode;
 public class TableTransaction implements Serializable {
     @Id
     private String transactionId = UUID.randomUUID().toString();
-    @Temporal(TemporalType.DATE)
+    @Temporal(TemporalType.TIMESTAMP)
     private Date transactionDate;
     private Double quantity;
     private String kotRemarks;

@@ -22,8 +22,8 @@ public class ItemCategory implements Serializable {
     private String categoryName;
     private String underCategory;
     
-    @OneToMany(mappedBy = "itemCategory", fetch = FetchType.EAGER)
-    @Fetch(FetchMode.SUBSELECT)
+    @OneToMany(mappedBy = "itemCategory")
+//    @Fetch(FetchMode.SUBSELECT)
     private List<Item> item;
 
     public String getItemCategoryId() {

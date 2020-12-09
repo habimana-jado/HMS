@@ -21,8 +21,8 @@ public class ItemUnit implements Serializable {
     private String itemUnitId = UUID.randomUUID().toString();
     private String unitName;
     
-    @OneToMany(mappedBy = "itemUnit", fetch = FetchType.EAGER)
-    @Fetch(FetchMode.SUBSELECT)
+    @OneToMany(mappedBy = "itemUnit")
+//    @Fetch(FetchMode.SUBSELECT)
     private List<Item> item;
 
     public String getItemUnitId() {

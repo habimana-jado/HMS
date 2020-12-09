@@ -25,8 +25,8 @@ public class TableGroup implements Serializable{
     @ManyToOne
     private Restaurant restaurant;
     
-    @OneToMany(mappedBy = "tableGroup", fetch = FetchType.EAGER)
-    @Fetch(FetchMode.SUBSELECT)
+    @OneToMany(mappedBy = "tableGroup")
+//    @Fetch(FetchMode.SUBSELECT)
     private List<TableMaster> tableMaster;
 
     public String getTableGroupId() {

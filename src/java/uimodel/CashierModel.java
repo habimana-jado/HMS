@@ -1,16 +1,5 @@
 package uimodel;
 
-import com.lowagie.text.BadElementException;
-import com.lowagie.text.Chunk;
-import com.lowagie.text.Document;
-import com.lowagie.text.DocumentException;
-import com.lowagie.text.Element;
-import com.lowagie.text.Paragraph;
-import com.lowagie.text.Phrase;
-import com.lowagie.text.Rectangle;
-import com.lowagie.text.pdf.PdfPCell;
-import com.lowagie.text.pdf.PdfPTable;
-import com.lowagie.text.pdf.PdfWriter;
 import dao.HotelConfigDao;
 import dao.ItemDao;
 import dao.PaymentDao;
@@ -29,7 +18,6 @@ import domain.TableTransaction;
 import domain.UserDepartment;
 import enums.EPaymentMode;
 import enums.ETableStatus;
-import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
@@ -41,7 +29,6 @@ import static java.awt.print.Printable.PAGE_EXISTS;
 import java.awt.print.PrinterException;
 import java.awt.print.PrinterJob;
 import java.io.ByteArrayOutputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.text.DecimalFormat;
@@ -124,11 +111,13 @@ public class CashierModel {
     }
 
     public void retrievePaymentReport() {
+        nowDate = now();
         payments = new PaymentDao().findByTransactionDate(chosenDate);
 
     }
 
     public void retrieveTransactions(Payment p) {
+        nowDate = now();
         paidTableTransactions.clear();
         for (TableTransaction tr : p.getTableTransaction()) {
             paidTableTransactions.add(tr);
@@ -136,24 +125,49 @@ public class CashierModel {
     }
 
     public void userInit() {
+        nowDate = now();
         loggedInUser = (Person) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("session");
     }
 
     public void populateTableTransactions(TableMaster tableMaster) {
+        nowDate = now();
         chosenTableMaster = tableMaster;
         tableTransactions = new ArrayList<>();
     }
 
     public String updateTableTransactions() {
+        nowDate = now();
         tableTransactions = new TableTransactionDao().findByTableAndStatus(chosenTableMaster, "Sent");
         return "print-bill.xhtml?faces-redirect=true";
     }
 
+    public String navigateBillPrint(Payment p) {
+        nowDate = now();
+        totalBilledFoods = 0.0;
+        totalBilledBeverage = 0.0;
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MMM-dd HH:mm:ss a");
+
+        tableTransactions.clear();
+        for (TableTransaction tr : p.getTableTransaction()) {
+            tableTransactions.add(tr);
+            chosenTableMaster = tr.getTableMaster();
+            if (tr.getItem().getMenuType().equalsIgnoreCase("Food")) {
+                totalBilledFoods = totalBilledFoods + tr.getTotalPrice();
+            } else if (tr.getItem().getMenuType().equalsIgnoreCase("Beverage")) {
+                totalBilledBeverage = totalBilledBeverage + tr.getTotalPrice();
+            }
+            nowDate = sdf.format(tr.getTransactionDate());
+        }
+        return "print-bill.xhtml?faces-redirect=true";
+    }
+
     public void updateTableBilledTransactions() {
+        nowDate = now();
         tableTransactions = new TableTransactionDao().findByTableAndStatus(chosenTableMaster, "Sent");
     }
 
     public String redirectKotPrint() {
+        nowDate = now();
         try {
 
             if (!tableTransactions.isEmpty() || tableTransactions != null) {
@@ -211,6 +225,7 @@ public class CashierModel {
     }
 
     public void populateSentTableTransactions(TableMaster tableMaster) {
+        nowDate = now();
         chosenTableMaster = tableMaster;
         tableTransactions = new TableTransactionDao().findByTableAndStatus(tableMaster, "Sent");
 
@@ -224,13 +239,14 @@ public class CashierModel {
     public static String kotTitle[] = new String[]{"Product", "Qty"};
 
     public static String now() {
+        
         Calendar cal = Calendar.getInstance();
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MMM-dd HH:mm:ss a");
         return sdf.format(cal.getTime());
     }
 
     public void printBill() {
-
+        nowDate = now();
         final PrinterJob job = PrinterJob.getPrinterJob();
 
         Printable contentToPrint = new Printable() {
@@ -297,7 +313,7 @@ public class CashierModel {
     }
 
     public void printKotBill2() {
-
+        nowDate = now();
         final PrinterJob job = PrinterJob.getPrinterJob();
 
         Printable contentToPrint = new Printable() {
@@ -370,7 +386,7 @@ public class CashierModel {
     }
 
     public void printKotBill() {
-
+        nowDate = now();
         final PrinterJob job = PrinterJob.getPrinterJob();
 
         Printable contentToPrint = new Printable() {
@@ -467,7 +483,7 @@ public class CashierModel {
     }
 
     public void populateBilledTableTransactions(TableMaster tableMaster) {
-
+        nowDate = now();
         totalBilledBeverage = new TableTransactionDao().findTotalByTableAndStatus(tableMaster, "Sent", "Beverage");
         totalBilledFoods = new TableTransactionDao().findTotalByTableAndStatus(tableMaster, "Sent", "Food");
 
@@ -484,6 +500,7 @@ public class CashierModel {
     }
 
     public void removeUnsavedTransactions() {
+nowDate = now();
         new TableTransactionDao().findByStatus("Pending").forEach((t) -> {
             new TableTransactionDao().delete(t);
         });
@@ -497,6 +514,7 @@ public class CashierModel {
     }
 
     public void updateBillingTables() {
+        nowDate = now();
         tableMasters = new TableMasterDao().findByType("Table");
 
         roomMasters = new TableMasterDao().findByType("Room");
@@ -507,13 +525,14 @@ public class CashierModel {
     }
 
     public void updatePaymentTables() {
-
+        nowDate = now();
         availableTable = new TableMasterDao().findTotalByStatus(ETableStatus.VACANT);
         billedTable = new TableMasterDao().findTotalByStatus(ETableStatus.BILLED);
         occupiedTable = new TableMasterDao().findTotalByStatus(ETableStatus.FULL);
     }
 
     public void registerTransaction() {
+        nowDate = now();
         Payment p = new Payment();
         try {
             if (itemChosen == null) {
@@ -568,6 +587,7 @@ public class CashierModel {
     }
 
     public void deleteTransaction(TableTransaction transaction) {
+        nowDate = now();
         try {
             tableTransactions = new TableTransactionDao().findByTableAndOrStatus(chosenTableMaster, "Pending", "Sent");
             if (tableTransactions.size() == 1) {
@@ -594,6 +614,7 @@ public class CashierModel {
     }
 
     public void completeTransaction() {
+        nowDate = now();
         try {
             TableMaster master = new TableMaster();
 
@@ -627,11 +648,12 @@ public class CashierModel {
     }
 
     public String redirectHome() {
-
+        nowDate = now();
         return "main.xhtml?faces-redirect=true";
     }
 
     public void completeTransactionAndPrint() {
+        nowDate = now();
         try {
             TableMaster master = new TableMaster();
 
@@ -663,6 +685,7 @@ public class CashierModel {
     }
 
     public void payTransaction() {
+        nowDate = now();
         try {
             TableMaster master = new TableMaster();
             String billId = UUID.randomUUID().toString().substring(0, 5);
@@ -720,6 +743,7 @@ public class CashierModel {
     }
 
     public void searchItems() {
+        nowDate = now();
         try {
             if (itemSearchKeyWord.isEmpty() || itemSearchKeyWord == null) {
                 suggestedItems = new ArrayList<>();
@@ -1141,7 +1165,7 @@ public class CashierModel {
     }
 
     public void refreshTables() {
-
+nowDate = now();
         dailyCollection = new TableTransactionDao().findTotalByDate(new Date());
         dailyBilled = new TableTransactionDao().findTotalByDateAndTableStatus(new Date(), "Billed");
 
@@ -1152,6 +1176,7 @@ public class CashierModel {
     }
 
     public void chooseItem(Item it) {
+        nowDate = now();
         itemChosen = it;
         suggestedItems = new ArrayList<>();
         itemSearchKeyWord = itemChosen.getItemName();

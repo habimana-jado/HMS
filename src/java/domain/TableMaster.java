@@ -35,8 +35,8 @@ public class TableMaster implements Serializable{
     @ManyToOne
     private Restaurant restaurant;
     
-    @OneToMany(mappedBy = "tableMaster", fetch = FetchType.EAGER)
-    @Fetch(FetchMode.SUBSELECT)
+    @OneToMany(mappedBy = "tableMaster")
+//    @Fetch(FetchMode.SUBSELECT)
     private List<TableTransaction> tableTransaction;
     
     

@@ -26,8 +26,8 @@ public class UserDepartment implements Serializable{
     @Enumerated(EnumType.STRING)
     private EStatus status;
     
-    @OneToMany(mappedBy = "userDepartment", fetch = FetchType.EAGER)
-    @Fetch(FetchMode.SUBSELECT)
+    @OneToMany(mappedBy = "userDepartment")
+//    @Fetch(FetchMode.SUBSELECT)
     private List<Person> user;
 
     public String getDepartmentId() {

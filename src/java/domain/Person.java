@@ -37,16 +37,16 @@ public class Person implements Serializable{
     @ManyToOne
     private UserDepartment userDepartment;
     
-    @OneToMany(mappedBy = "person", fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "person")
     @Fetch(FetchMode.SUBSELECT)
     private List<Transfer> transfer;
     
-    @OneToMany(mappedBy = "person", fetch = FetchType.EAGER)
-    @Fetch(FetchMode.SUBSELECT)
+    @OneToMany(mappedBy = "person")
+//    @Fetch(FetchMode.SUBSELECT)
     private List<TableMaster> tableMaster;
      
-    @OneToMany(mappedBy = "cashier", fetch = FetchType.EAGER)
-    @Fetch(FetchMode.SUBSELECT)
+    @OneToMany(mappedBy = "cashier")
+//    @Fetch(FetchMode.SUBSELECT)
     private List<Payment> payment;
     
     public String getUserId() {

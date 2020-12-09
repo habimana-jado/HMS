@@ -354,9 +354,11 @@
                     </div>
                     <h:form id="reportPrint">
                         <div class="row">
+                            
                             <div class="col-lg-3"></div>
                             <div class="col-lg-6">
-
+                                <center><h2>#{cashierModel.hotel.hotelName}</h2></center>
+                                <center><h4>Daily Sales Report</h4></center>
                                 <p:dataTable var="car" value="#{cashierModel.payments}">
                                     <p:ajax event="rowToggle" listener="#{cashierModel.retrieveTransactions(car)}" update="trans" />
                                     <p:column style="width:32px">
@@ -379,6 +381,9 @@
                                     </p:column>
                                     <p:column headerText="Cashier">
                                         <h:outputText value="#{car.cashier.names}" />
+                                    </p:column>
+                                    <p:column headerText="Action">
+                                        <h:commandButton class="btn btn-link btn-sm" action="#{cashierModel.navigateBillPrint(car)}" value="Print" />
                                     </p:column>
 
                                     <p:rowExpansion>
